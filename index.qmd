@@ -1,14 +1,14 @@
 ---
-title: "colekehrberg"
-1image: ~/R/colekehrberg/ColeKehrberg-3.jpg
-2toc: false
+title: "Cole Kehrberg"
+image: ColeKehrberg-3.jpg
+toc: false
 about: 
-3  template: jolla
-4  image-shape: round
+  template: jolla
+  image-shape: round
   image-width: 17em
-5  links:
+  links:
     - text: LinkedIn
-      href: www.linkedin.com/in/colekehrberg
+      href: https://www.linkedin.com/in/colekehrberg
     - text: GitHub
       href: https://github.com/colekehrberg
 ---
