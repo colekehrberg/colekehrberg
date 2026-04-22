@@ -12,6 +12,10 @@ about:
       href: https://www.linkedin.com/in/colekehrberg
     - text: GitHub
       href: https://github.com/colekehrberg
+format:
+  html:
+    theme: lux
+    css: styles.css
 ---
 
 Using creative, data-driven perspectives, I bring clarity to complex problems. As a student of the liberal arts, I value a balanced, diverse skill set. On any given day at St. Olaf, you might find me analyzing data on a consulting project for NASA, leading study sessions as a Teaching Assistant for St. Olaf's Economics Department, or using R to conduct independent research. 
