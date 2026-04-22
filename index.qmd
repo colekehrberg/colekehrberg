@@ -1,5 +1,6 @@
 ---
-title: "colekehrberg"
+title: "Cole Kehrberg"
+subtitle: "Quantitative Economics, Environmental Studies, and Statistics & Data Science @ St. Olaf College | NASA Innovation Scholar | President, St. Olaf Band | Environmental Coalition Leader"
 image: ColeKehrberg-3.jpg
 toc: false
 about: 
@@ -13,10 +14,8 @@ about:
       href: https://github.com/colekehrberg
 ---
 
-This is a Quarto website.
+Using creative, data-driven perspectives, I bring clarity to complex problems. As a student of the liberal arts, I value a balanced, diverse skill set. On any given day at St. Olaf, you might find me analyzing data on a consulting project for NASA, leading study sessions as a Teaching Assistant for St. Olaf's Economics Department, or using R to conduct independent research. 
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+My attention to detail, resilient mindset, and steady kindness have led me to numerous executive roles. I currently serve as the President, Flute Section Leader, and Co-Principal Flutist for the St. Olaf Band, leading 99 members and advising our conductor, while fostering an inclusive culture. I also serve as a leader for St. Olaf’s Environmental Coalition, where our student-run organization uses our ~$20,000 in funds to implement campus-wide sustainability projects. In my years as an organizer, Environmental Coalition has planned over 40 events in partnership with over 20 different organizations, engaging around 450 students. 
 
-```{r}
-1 + 1
-```
+Away from campus, I’ve studied abroad in Costa Rica, South Africa, Namibia, and Vietnam, exploring sustainability, political and social change, and economic development around the world. Engaging with students and locals, I deepened my appreciation for interdisciplinary perspectives.
