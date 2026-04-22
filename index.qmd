@@ -1,5 +1,5 @@
 ---
-title: "colekehrberg"
+title: "Cole Kehrberg"
 image: ColeKehrberg-3.jpg
 toc: false
 about: 
