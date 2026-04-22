@@ -1,8 +1,16 @@
 ---
 title: "colekehrberg"
-project:
-  type: website
-  output-dir: docs
+1image: ~/R/colekehrberg/ColeKehrberg-3.jpg
+2toc: false
+about: 
+3  template: jolla
+4  image-shape: round
+  image-width: 17em
+5  links:
+    - text: LinkedIn
+      href: www.linkedin.com/in/colekehrberg
+    - text: GitHub
+      href: https://github.com/colekehrberg
 ---
 
 This is a Quarto website.
