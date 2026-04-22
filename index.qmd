@@ -1,6 +1,6 @@
 ---
 title: "Cole Kehrberg"
-subtitle: "Quantitative Economics, Environmental Studies, and Statistics & Data Science @ St. Olaf College | NASA Innovation Scholar | President, St. Olaf Band | Environmental Coalition Leader"
+subtitle: "Quantitative Economics, Environmental Studies, and Statistics & Data Science @ St. Olaf College"
 image: ColeKehrberg-3.jpg
 toc: false
 about: 
