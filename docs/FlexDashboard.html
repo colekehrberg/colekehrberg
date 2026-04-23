@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Science Mini Project #1 – Cole Kehrberg</title>
+<title>Flex Dashboard – Cole Kehrberg</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -35,11 +35,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-872e900a155e990e89d7b6fcf623f4fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,6 +68,10 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/ionrangeslider-javascript-2.3.1/js/ion.rangeSlider.min.js"></script>
+<script src="site_libs/strftime-0.9.2/strftime-min.js"></script>
+<link href="site_libs/ionrangeslider-css-2.3.1/css/ion.rangeSlider.css" rel="stylesheet">
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -96,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="./about.html"> 
 <span class="menu-text">Data Science Mini Project #1</span></a>
   </li>  
 </ul>
@@ -110,102 +115,90 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#column" id="toc-column" class="nav-link active" data-scroll-target="#column">Column</a>
+  <ul class="collapse">
+  <li><a href="#chart-a" id="toc-chart-a" class="nav-link" data-scroll-target="#chart-a">Chart A</a></li>
+  </ul></li>
+  <li><a href="#column-1" id="toc-column-1" class="nav-link" data-scroll-target="#column-1">Column</a>
+  <ul class="collapse">
+  <li><a href="#chart-b" id="toc-chart-b" class="nav-link" data-scroll-target="#chart-b">Chart B</a></li>
+  <li><a href="#chart-c" id="toc-chart-c" class="nav-link" data-scroll-target="#chart-c">Chart C</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-jolla column-page">
- <header id="title-block-header" class="quarto-title-block default">
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Science Mini Project #1</h1>
-<p class="subtitle lead">Congressional Elections Sentiment Analysis</p>
+<h1 class="title">Flex Dashboard</h1>
 </div>
-<div class="quarto-title-meta column-page">
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
   </div>
-</header><main class="content column-page" id="quarto-document-content">
-<section id="introduction" class="level2">
-<h2 data-anchor-id="introduction">Introduction</h2>
-<p>As the political polarization in the United States escalates, as it has in recent years, how do candidates decide to portray themselves? In this project, rather than examining the nature of candidates’ attacks on another side’s politics, I looked into the words congressional candidates use to describe themselves. I believe that turning policy focus in towards the candidates themselves will help in understanding some of the fundamental differences that lead to polarization, while also uncovering paths to common ground.</p>
-<p>Pulling data from a Harvard database, I analyzed candidates’ biographical narratives, as detailed on their campaign websites. The database includes 5,114 biographies for U.S. Congressional candidates from 2018-2022, but I focused specifically on candidates that advanced through the primary and into the general election, which ended up being 2,348 candidates. The most commonly appearing words for Democrats and Republican candidates for Congress are shown below, in the blue and red word clouds, respectively.</p>
-</section>
-<section id="word-cloud-of-democratic-biographies" class="level2">
-<h2 data-anchor-id="word-cloud-of-democratic-biographies">Word Cloud of Democratic Biographies</h2>
+  
+
+
+</header>
+
+
+<section id="column" class="level2" data-width="650">
+<h2 data-width="650" class="anchored" data-anchor-id="column">Column</h2>
+<section id="chart-a" class="level3">
+<h3 class="anchored" data-anchor-id="chart-a">Chart A</h3>
 <div class="cell">
 <div class="cell-output-display">
+<div class="shiny-input-panel">
+<div class="shiny-flow-layout">
 <div>
-<figure class="figure">
-<p><img src="../SDS264/DemWordCloud.png" class="img-fluid figure-img" width="616"></p>
-</figure>
+<div class="form-group shiny-input-container">
+<label class="control-label" id="year_slider-label" for="year_slider">Year</label>
+<input class="js-range-slider" id="year_slider" data-skin="shiny" data-min="1872" data-max="2010" data-from="1960" data-step="1" data-grid="true" data-grid-num="9.85714285714286" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number">
 </div>
 </div>
 </div>
-<p>The biographies of Democratic candidates tended to focus on words related to the public good. Words like ‘public’, ‘district’, ‘served’, ‘health’, ‘community’, and ‘service’ demonstrate a messaging strategy of commitment to the local public interests. While Democrats focused in on a community-oriented brand of politics, Republicans had a slight shift in tone.</p>
-</section>
-<section id="word-cloud-of-republican-biographies" class="level2">
-<h2 data-anchor-id="word-cloud-of-republican-biographies">Word Cloud of Republican Biographies</h2>
-<div class="cell">
+</div>
+</div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="../SDS264/RepWordCloud.png" class="img-fluid figure-img" width="616"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The biographies of Republican candidates echoed some of the same interests as Democrats, but also included private interests on a broader scale. The emphasis of words like ‘business’, ‘law’, ‘national’, and ‘American’ demonstrate values that expand beyond community impact, and into a federal, private realm.</p>
-<p>Once I understood some high-level values that go into each party’s messages, I turned my attention specifically to what sets the parties apart.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="about_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<div class="shiny-plot-output html-fill-item" id="out359c0236226cfee0" style="width:100%;height:400px;"></div>
 </div>
 </div>
 </section>
-<section id="tf-idf-statistic" class="level2">
-<h2 data-anchor-id="tf-idf-statistic">TF-IDF Statistic</h2>
-<p>The tf-idf statistic describes how important unique terms are, between different dataframes. The bar chart above describes the most commonly used used words used by Democrats and not Republicans, and vice versa.</p>
-<p>Clearly, from 2018-2022, Democratic candidates focused in on issues of lgbtq rights. Similarly, many words associated with Democratic platforms were used, including ‘gerry’ (most likely used in the context of opposition to gerrymandering), ‘universal’ (probably used in the context of social welfare programs), and ‘reproductive’ (likely used for describing support for the pro-choice movement).</p>
-<p>Republicans ran on the opposite site of the abortion issue, using words like ‘unborn’ and ‘creators’. The word ‘creators’ could also be viewed in a religious context, which would make sense alongside other highly scored words with religious sentiments, like ‘pray’ and ‘Islamic’. I assumed that Republicans used the word ‘socialist’ with the intent of politically attacking Democratic policies.</p>
-<p>With a greater understanding of the differences between Democratic and Republican messaging in biographies, I turned my attention to the impacts of these words across the United States.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="about_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
-<section id="democratic-map-of-sentiment-differences" class="level2">
-<h2 data-anchor-id="democratic-map-of-sentiment-differences">Democratic Map of Sentiment Differences</h2>
-<p>In my attempt to understand the relationship between location and messaging across the country, I used NRC sentiments to focus specifically on ten sentiments: joy, positive, anticipation, trust, surprise, anger, sadness, fear, disgust, and negative. Using the average proportion of each of these sentiments, I calculated the largest difference in sentiment for each state to determine what the messaging strategy is in different areas of the country. For Democratic candidates, most of the states had a uniquely positive highest sentiment difference (denoted with a green color). A few states had a more negative sentiment, particularly in New England.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="about_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="column-1" class="level2" data-width="350">
+<h2 data-width="350" class="anchored" data-anchor-id="column-1">Column</h2>
+<section id="chart-b" class="level3">
+<h3 class="anchored" data-anchor-id="chart-b">Chart B</h3>
 </section>
-<section id="republican-map-of-sentiment-differences" class="level2">
-<h2 data-anchor-id="republican-map-of-sentiment-differences">Republican Map of Sentiment Differences</h2>
-<p>For Republicans, many of the same trends emerge. A majority of the states in the heartland and the west tend to have more positive top sentiment differences, while some states along the east coast, particularly New England, have stronger negative sentiments.</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 data-anchor-id="conclusion">Conclusion</h2>
-<p>Across the board, understanding how politicians communicate is critical to understanding polarization in the United States. In a country where candidates dominate the headlines through an ability to yell the loudest, it is important to dig deeper and understand how politicians describe themselves. Only then can we see their true colors.</p>
+<section id="chart-c" class="level3">
+<h3 class="anchored" data-anchor-id="chart-c">Chart C</h3>
 
 
 </section>
-</main>  
-</div>
- <!-- /main -->
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
