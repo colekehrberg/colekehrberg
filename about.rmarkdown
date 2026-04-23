@@ -1,0 +1,461 @@
+---
+title: "Data Science Mini Project #1"
+subtitle: "Congressional Elections Sentiment Analysis"
+toc: false
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+format:
+  html:
+    theme: lux
+    css: styles.css
+---
+
+```{r}
+#| include: FALSE
+
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(wordcloud)
+library(wordcloud2)
+library(viridis)
+library(ggthemes)
+library(gutenbergr)
+library(maps)
+library(mapproj)
+
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+###Pulling Data
+biographical_narratives <-read_csv("~/Downloads/SDS_264_Project_1_Data/biographical_narratives.csv")
+policy_platforms_aggregated <- read_csv("~/Downloads/SDS_264_Project_1_Data/policy_platforms_aggregated.csv")
+smart_stopwords <- get_stopwords(source = "smart")
+afinn_sentiments <- get_sentiments(lexicon = "afinn")
+nrc_sentiments <- get_sentiments(lexicon = "nrc")
+bing_sentiments <- get_sentiments(lexicon = "bing")
+
+state_region <- data.frame(state = str_to_lower(state.name), region = state.region, stringsAsFactors = FALSE)
+
+us_map <- map_data("state")
+
+#data source: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/JIEAPT&faces-redirect=true
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+###Data to Pull From
+all <- biographical_narratives |>
+  filter(!is.na(win_general)) |>                #pulls out only candidates who won primaries
+  rename("state" = state_postal,
+         "party" = cand_party,                  #renames variables
+         "name" = candidate_webname) |>
+  select(state, name, party, biography_text, win_general) |> #selects 4 variables to focus on
+  unnest_tokens(word, biography_text, token = "words") |>   #breaks down lines of text for word-by-word code
+  mutate(name = str_replace(name, "^(?:[A-Za-z]+\\.\\s+)?([A-Za-z]+).*?\\s+([A-Za-z]+)$",
+                             "\\1 \\2")) |>     #Eliminates prefixes to first names, middle                                                        initials, and middle names, keeps only first                                                      name and last name
+  mutate(name = str_to_lower(name)) |>
+  mutate(state = state.name[match(state, state.abb)],
+         state = str_to_lower(state)) |>
+  separate(name, c("first_name", "last_name")) |>
+  filter(first_name != word,
+         last_name != word) |>                  #eliminates all names from 'word' column
+  anti_join(smart_stopwords) |>                 #eliminates all the stop words
+  left_join(state_region)                       #creates new column for region
+  
+  
+democrats <- biographical_narratives |>
+  filter(cand_party == "Democrat",
+         !is.na(win_general)) |>                #pulls out only democrats that advanced to gen election
+  rename("state" = state_postal,
+         "party" = cand_party,                  #renames variables
+         "name" = candidate_webname) |>
+  select(state, name, party, biography_text, win_general) |> #selects 4 variables to focus on
+  unnest_tokens(word, biography_text, token = "words") |>   #breaks down lines of text for word-by-word code
+  mutate(name = str_replace(name, "^(?:[A-Za-z]+\\.\\s+)?([A-Za-z]+).*?\\s+([A-Za-z]+)$",
+                             "\\1 \\2")) |>         #Eliminates prefixes to first names, middle                                                        initials, and middle names, keeps only first                                                      name and last name
+  mutate(name = str_to_lower(name)) |>
+  mutate(state = state.name[match(state, state.abb)],
+         state = str_to_lower(state)) |>
+  separate(name, c("first_name", "last_name")) |>
+  filter(first_name != word,
+         last_name != word) |>                  #eliminates all names from 'word' column
+  anti_join(smart_stopwords) |>                 #eliminates all the stop words
+  left_join(state_region)                       #creates new column for region
+
+    
+republicans <- biographical_narratives |>
+  filter(cand_party == "Republican",
+         !is.na(win_general)) |>              #pulls out only republicans that advanced to gen election
+  rename("state" = state_postal,
+         "party" = cand_party,                  #renames variables
+         "name" = candidate_webname) |>
+  select(state, name, party, biography_text, win_general) |> #selects 4 variables to focus on
+  unnest_tokens(word, biography_text, token = "words") |>   #breaks down lines of text for word-by-word code
+  mutate(name = str_replace(name, "^(?:[A-Za-z]+\\.\\s+)?([A-Za-z]+).*?\\s+([A-Za-z]+)$",
+                             "\\1 \\2")) |>         #Eliminates prefixes to first names, middle                                                        initials, and middle names, keeps only first                                                      name and last name
+  mutate(name = str_to_lower(name)) |>
+  mutate(state = state.name[match(state, state.abb)],
+         state = str_to_lower(state)) |>
+  separate(name, c("first_name", "last_name")) |>
+  filter(first_name != word,
+         last_name != word) |>                  #eliminates all names from 'word' column
+  anti_join(smart_stopwords, by = "word") |>    #eliminates all the stop words
+  left_join(state_region)                       #creates new column for region
+```
+
+## Introduction
+
+As the political polarization in the United States escalates, as it has in recent years, how do candidates decide to portray themselves? In this project, rather than examining the nature of candidates' attacks on another side's politics, I looked into the words congressional candidates use to describe themselves. I believe that turning policy focus in towards the candidates themselves will help in understanding some of the fundamental differences that lead to polarization, while also uncovering paths to common ground.
+
+Pulling data from a Harvard database, I analyzed candidates' biographical narratives, as detailed on their campaign websites. The database includes 5,114 biographies for U.S. Congressional candidates from 2018-2022, but I focused specifically on candidates that advanced through the primary and into the general election, which ended up being 2,348 candidates. The most commonly appearing words for Democrats and Republican candidates for Congress are shown below, in the blue and red word clouds, respectively.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
+###Word Cloud 2 - Democrats
+dem_words <- democrats |>
+  mutate(word = str_replace_all(word, "^congress\\w*", "congress"),    #combines all words that begin with "congress"
+         word = str_replace_all(word, "^work\\w*", "work")) |>     #combines all words that begin with "work"
+  count(word) |>
+  arrange(desc(n))
+
+blues = c("#151B54", "#0041C2", "#1E90FF")    #sets the shades of blues to be used in cloud
+
+wordcloud2(data = dem_words,
+           shape = 'circle',
+           size = .25, 
+           minSize = 10,
+           color = rep_len(blues, nrow(dem_words)))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
+###Word Cloud 2 - Republicans
+rep_words <- republicans |>
+  mutate(word = str_replace_all(word, "^congress\\w*", "congress"),    #combines all words that begin with "congress"
+         word = str_replace_all(word, "^work\\w*", "work")) |>     #combines all words that begin with "work"
+  count(word) |>
+  arrange(desc(n))
+
+reds = c("#8B0000", "#BD2734", "#d70000")    #sets the shades of reds to be used in cloud
+
+wordcloud2(data = rep_words,
+           shape = 'circle',
+           size = .25, 
+           minSize = 10,
+           color = rep_len(reds, nrow(rep_words)))
+```
+
+## Word Cloud of Democratic Biographies
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/SDS264/DemWordCloud.png") #uploads image of word cloud for pdf render
+```
+
+The biographies of Democratic candidates tended to focus on words related to the public good. Words like 'public', 'district', 'served', 'health', 'community', and 'service' demonstrate a messaging strategy of commitment to the local public interests. While Democrats focused in on a community-oriented brand of politics, Republicans had a slight shift in tone.
+
+## Word Cloud of Republican Biographies
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/SDS264/RepWordCloud.png") #uploads image of word cloud for pdf render
+```
+
+The biographies of Republican candidates echoed some of the same interests as Democrats, but also included private interests on a broader scale. The emphasis of words like 'business', 'law', 'national', and 'American' demonstrate values that expand beyond community impact, and into a federal, private realm. 
+
+Once I understood some high-level values that go into each party's messages, I turned my attention specifically to what sets the parties apart. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+cut_words <- c("wasserman", "ral", "chuy", "deb", "andr", "button.button","cdata", "ltc", "ross", "gt", "ffffff", "pomona", "alderman", "www.cloudforcongress.com", "weld", "dillsburg", "val", "greencastle" , "0px", "snohomish")
+
+all_words <- all |>
+    mutate(word = str_replace_all(word, "^lgbt\\w*", "lgbtq")) |>    #combines all words that begin with "lgbt"
+  group_by(party) |>
+  filter(!word %in% c(cut_words)) |>
+  mutate(linenumber = row_number()) |>
+  ungroup()
+
+all_word_count <- all_words |>
+  count(word, party, sort = TRUE)
+
+all_tfidf <- all_word_count |>
+  bind_tf_idf(word, party, n)
+
+all_tfidf |>
+  group_by(party) |>
+  arrange(desc(tf_idf)) |>
+  slice_max(tf_idf, n = 6) |>
+  ungroup() |>
+  ggplot(aes(x = fct_reorder(word, tf_idf), y = tf_idf, fill = party)) +
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    facet_wrap(~party, scales = "free") +
+  labs(title = "TF-IDF for Both Parties", 
+       x = "Word", 
+       y = "TF IDF",
+       alt = "This is a horizontal bar chart, showing the most common unique words for both Democratic and Republican candidates for Congress. Words associated with democratic candidates are shown on the left with a blue fill, and words associated with republican candidates are shown on the right with red fill. The tf-idf statistic is displayed on the x axis, and the words are shown on the y-axis. For Democrats, the tf-idf scores range from 0.00005 to .00025. For Republicans the tf-idf scores range from ~.00005 to .0004. Based on these results, Democrats tend to focus primarily on social issues, like lgbtq rights, reproductive rights, and human rights. Republicans tended to focus on religion and attacks on Democratic politics.") +
+  scale_fill_manual(values = c("Democrat" = "darkblue",
+                               "Republican" = "darkred"))
+```
+
+## TF-IDF Statistic
+
+The tf-idf statistic describes how important unique terms are, between different dataframes. The bar chart above describes the most commonly used used words used by Democrats and not Republicans, and vice versa. 
+
+Clearly, from 2018-2022, Democratic candidates focused in on issues of lgbtq rights. Similarly, many words associated with Democratic platforms were used, including 'gerry' (most likely used in the context of opposition to gerrymandering), 'universal' (probably used in the context of social welfare programs), and 'reproductive' (likely used for describing support for the pro-choice movement). 
+
+Republicans ran on the opposite site of the abortion issue, using words like 'unborn' and 'creators'. The word 'creators' could also be viewed in a religious context, which would make sense alongside other highly scored words with religious sentiments, like 'pray' and 'Islamic'. I assumed that Republicans used the word 'socialist' with the intent of politically attacking Democratic policies.
+
+With a greater understanding of the differences between Democratic and Republican messaging in biographies, I turned my attention to the impacts of these words across the United States.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+###Democrats Proportion of Sentiment in Each State
+democrats |>
+  left_join(nrc_sentiments, by = "word") |>         #shows sentiment of each word
+  filter(!is.na(sentiment)) |>                      #eliminates words with NA sentiments
+  count(state, sentiment, name = "total_words") |>  #counts the number of sentiments in each state
+  group_by(state) |>
+  mutate(n_words = sum(total_words),                #counts sum of all words in each state
+    prop_words = total_words / n_words) |>          #finds the proportion of each sentiment
+  ungroup() |>
+  group_by(sentiment) |>
+    mutate(avg_prop = mean(prop_words),     #finds the average sentiment proportion of all states
+    diff_prop = prop_words - avg_prop) |> #finds the difference between proportions in each state
+  ungroup() |>
+  group_by(state) |>
+  slice_max(diff_prop, n = 1, with_ties = FALSE) |> #selects the top prop difference in each state
+  ungroup() |>
+  left_join(us_map,
+            by = c("state" = "region")) |>
+  ggplot(aes(long, lat, group = group, fill = sentiment)) +
+  geom_polygon(color = "white") +
+  coord_map() +
+  labs(title = "Democrats - Largest Sentiment Difference", fill = "Top Sentiment") + 
+  scale_fill_manual(values = c("anticipation" = "olivedrab",
+                               "surprise" = "chartreuse3",
+                               "trust" = "green4",
+                               "joy" = "darkgreen",
+                               "positive" = "darkolivegreen",
+                               "anger" = "indianred2",
+                               "fear" = "orangered2",
+                               "sadness" = "tomato3",
+                               "disgust" = "red3",
+                               "negative" = "red4"),  
+  #assigns negative sentiments red colors, positive sentiments green colors
+                    breaks = c("joy",
+                               "positive",
+                               "anticipation",
+                               "trust",
+                               "surprise",
+                               "anger",
+                               "sadness",
+                               "fear",
+                               "disgust",
+                               "negative")) +
+  #orders legend in best possible way
+  theme_void()
+```
+
+## Democratic Map of Sentiment Differences
+
+In my attempt to understand the relationship between location and messaging across the country, I used NRC sentiments to focus specifically on ten sentiments: joy, positive, anticipation, trust, surprise, anger, sadness, fear, disgust, and negative. Using the average proportion of each of these sentiments, I calculated the largest difference in sentiment for each state to determine what the messaging strategy is in different areas of the country. For Democratic candidates, most of the states had a uniquely positive highest sentiment difference (denoted with a green color). A few states had a more negative sentiment, particularly in New England. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+###Republicans Proportion of Sentiment in Each State
+republicans |>
+  left_join(nrc_sentiments, by = "word") |>         #shows sentiment of each word
+  filter(!is.na(sentiment)) |>                      #eliminates words with NA sentiments
+  count(state, sentiment, name = "total_words") |>  #counts the number of sentiments in each state
+  group_by(state) |>
+  mutate(n_words = sum(total_words),                #counts sum of all words in each state
+    prop_words = total_words / n_words) |>          #finds the proportion of each sentiment
+  ungroup() |>
+  group_by(sentiment) |>
+  mutate(avg_prop = mean(prop_words),     #finds the average sentiment proportion of all states
+    diff_prop = prop_words - avg_prop) |> #finds the difference between proportions in each state
+  ungroup() |>
+  group_by(state) |>
+  slice_max(diff_prop, n = 1, with_ties = FALSE) |> #selects the top prop difference in each state
+  ungroup() |>
+  left_join(us_map,
+            by = c("state" = "region")) |>
+  ggplot(aes(long, lat, group = group, fill = sentiment)) +
+  geom_polygon(color = "white") +
+  coord_map() +
+ labs(title = "Republicans - Largest Sentiment Difference", fill = "Top Sentiment") +
+  scale_fill_manual(values = c("anticipation" = "olivedrab",
+                               "surprise" = "chartreuse3",
+                               "trust" = "green4",
+                               "joy" = "darkgreen",
+                               "positive" = "darkolivegreen",
+                               "anger" = "indianred2",
+                               "fear" = "orangered2",
+                               "sadness" = "tomato3",
+                               "disgust" = "red3",
+                               "negative" = "red4"),  
+  #assigns negative sentiments red colors, positive sentiments green colors
+                    breaks = c("joy",
+                               "positive",
+                               "anticipation",
+                               "trust",
+                               "surprise",
+                               "anger",
+                               "sadness",
+                               "fear",
+                               "disgust",
+                               "negative")) +
+  #orders legend in best possible way
+  theme_void()
+```
+
+## Republican Map of Sentiment Differences
+
+For Republicans, many of the same trends emerge. A majority of the states in the heartland and the west tend to have more positive top sentiment differences, while some states along the east coast, particularly New England, have stronger negative sentiments.
+
+## Conclusion
+
+Across the board, understanding how politicians communicate is critical to understanding polarization in the United States. In a country where candidates dominate the headlines through an ability to yell the loudest, it is important to dig deeper and understand how politicians describe themselves. Only then can we see their true colors.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE, fig.show = 'hide'}
+#unused code
+###Most common words  for pos/neg sentiment - Democrats
+democrats |>
+  inner_join(bing_sentiments) |>                       #joins with sentiment words
+  count(sentiment, word, sort = TRUE) |>               #counts each word
+  group_by(sentiment) |>
+  slice_max(n, n = 10) |>                              #takes top words by pos/neg sentiment
+  ungroup() |>
+  ggplot(aes(x = fct_reorder(word, n), y = n, fill = sentiment)) +
+    geom_col() +  
+    coord_flip() +
+    facet_wrap(~ sentiment, scales = "free")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE, fig.show = 'hide'}
+#unused code
+###Most common words for pos/neg sentiment - Republicans
+republicans |>
+  inner_join(bing_sentiments) |>                      #joins with sentiment words
+  count(sentiment, word, sort = TRUE) |>              #counts each word
+  group_by(sentiment) |>
+  slice_max(n, n = 10) |>                             #takes top words by pos/neg sentiment
+  ungroup() |>
+  ggplot(aes(x = fct_reorder(word, n), y = n, fill = sentiment)) +
+    geom_col() +  
+    coord_flip() +
+    facet_wrap(~ sentiment, scales = "free")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
+#unused code
+###Most Negative Candidates - Democrats
+democrats |>
+  inner_join(bing_sentiments) |>
+  mutate(sentiment = ifelse(sentiment == "positive", 1, 0)) |>  #assigns binary value to sentiment
+  count(last_name, sentiment, name = "number", sort = TRUE) |>  #counts all positive sentiments
+  group_by(last_name) |>
+  mutate(
+    n_sentiment = sum(number),                                 #counts all words
+    prop = number / n_sentiment) |>                            #finds proportion of positive words
+  ungroup() |>
+  filter(n_sentiment >= 100,                           #only takes candidates with over 100 words
+         sentiment == 1) |>
+  arrange(prop)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
+#unused code
+###Most Negative Candidates - Republicans
+republicans |>
+  inner_join(bing_sentiments) |>
+  mutate(sentiment = ifelse(sentiment == "positive", 1, 0)) |>  #assigns binary value to sentiment
+  count(last_name, sentiment, name = "number", sort = TRUE) |>  #counts all positive sentiments
+  group_by(last_name) |>
+  mutate(
+    n_sentiment = sum(number),                                 #counts all words
+    prop = number / n_sentiment) |>                            #finds proportion of positive words
+  ungroup() |>
+  filter(n_sentiment >= 100,                           #only takes candidates with over 100 words
+         sentiment == 1) |>
+  arrange(prop)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE, fig.show = 'hide'}
+#unused code
+###Word Cloud Democrats
+dem_words <- democrats |>
+  count(word) |>
+  arrange(desc(n))
+wordcloud(words = dem_words$word, 
+          freq = dem_words$n, 
+          max.words = 300, 
+          random.order = FALSE, 
+          rot.per = 0.35,
+          scale = c(3.5, 0.25),
+          colors = brewer.pal(6, "Blues"))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE, fig.show = 'hide'}
+#unused code
+###Word Cloud Republicans
+rep_words <- republicans |>
+  count(word) |>
+  arrange(desc(n))
+wordcloud(words = rep_words$word, 
+          freq = rep_words$n, 
+          max.words = 200, 
+          random.order = FALSE, 
+          rot.per = 0.35,
+          scale = c(3.5, 0.25),
+          colors = brewer.pal(6, "Reds"))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE, fig.show = 'hide'}
+#unused code
+###Most common words in each region
+dem_words <- democrats |>
+  group_by(region) |>
+  mutate(linenumber = row_number()) |>
+  ungroup()
+  
+dem_word_count <- dem_words |>
+  count(word, region, sort = TRUE)
+
+dem_tfidf <- dem_word_count |>
+  bind_tf_idf(word, region, n)
+
+dem_tfidf |>
+  group_by(region) |>
+  arrange(desc(tf_idf)) |>
+  slice_max(tf_idf, n = 10) |>
+  ungroup() |>
+  ggplot(aes(x = fct_reorder(word, tf_idf), y = tf_idf, fill = region)) +
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    facet_wrap(~region, scales = "free")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE, fig.show = 'hide'}
+#unused code
+###Most common words in each region - Republicans
+rep_words <- republicans |>
+  group_by(region) |>
+  mutate(linenumber = row_number()) |>
+  ungroup()
+  
+rep_word_count <- rep_words |>
+  count(word, region, sort = TRUE)
+
+rep_tfidf <- rep_word_count |>
+  bind_tf_idf(word, region, n)
+
+rep_tfidf |>
+  group_by(region) |>
+  arrange(desc(tf_idf)) |>
+  slice_max(tf_idf, n = 10) |>
+  ungroup() |>
+  ggplot(aes(x = fct_reorder(word, tf_idf), y = tf_idf, fill = region)) +
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    facet_wrap(~region, scales = "free")
+```
+
+
