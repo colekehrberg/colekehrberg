@@ -1,5 +1,5 @@
 ---
-title: "Data Science Mini Project #1"
+title: "Mini-Project #1"
 subtitle: "Congressional Elections Sentiment Analysis"
 toc: false
 about: 
@@ -148,7 +148,7 @@ wordcloud2(data = rep_words,
 ## Word Cloud of Democratic Biographies
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-knitr::include_graphics("~/R/SDS264/DemWordCloud.png") #uploads image of word cloud for pdf render
+knitr::include_graphics("Images/DemWordCloud.png") #uploads image of word cloud for pdf render
 ```
 
 The biographies of Democratic candidates tended to focus on words related to the public good. Words like 'public', 'district', 'served', 'health', 'community', and 'service' demonstrate a messaging strategy of commitment to the local public interests. While Democrats focused in on a community-oriented brand of politics, Republicans had a slight shift in tone.
@@ -156,7 +156,7 @@ The biographies of Democratic candidates tended to focus on words related to the
 ## Word Cloud of Republican Biographies
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-knitr::include_graphics("~/R/SDS264/RepWordCloud.png") #uploads image of word cloud for pdf render
+knitr::include_graphics("Images/RepWordCloud.png") #uploads image of word cloud for pdf render
 ```
 
 The biographies of Republican candidates echoed some of the same interests as Democrats, but also included private interests on a broader scale. The emphasis of words like 'business', 'law', 'national', and 'American' demonstrate values that expand beyond community impact, and into a federal, private realm. 
