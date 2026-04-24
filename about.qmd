@@ -163,6 +163,8 @@ The biographies of Republican candidates echoed some of the same interests as De
 
 Once I understood some high-level values that go into each party's messages, I turned my attention specifically to what sets the parties apart. 
 
+## TF-IDF Statistic
+
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 cut_words <- c("wasserman", "ral", "chuy", "deb", "andr", "button.button","cdata", "ltc", "ross", "gt", "ffffff", "pomona", "alderman", "www.cloudforcongress.com", "weld", "dillsburg", "val", "greencastle" , "0px", "snohomish")
 
@@ -196,8 +198,6 @@ all_tfidf |>
                                "Republican" = "darkred"))
 ```
 
-## TF-IDF Statistic
-
 The tf-idf statistic describes how important unique terms are, between different dataframes. The bar chart above describes the most commonly used used words used by Democrats and not Republicans, and vice versa. 
 
 Clearly, from 2018-2022, Democratic candidates focused in on issues of lgbtq rights. Similarly, many words associated with Democratic platforms were used, including 'gerry' (most likely used in the context of opposition to gerrymandering), 'universal' (probably used in the context of social welfare programs), and 'reproductive' (likely used for describing support for the pro-choice movement). 
@@ -205,6 +205,8 @@ Clearly, from 2018-2022, Democratic candidates focused in on issues of lgbtq rig
 Republicans ran on the opposite site of the abortion issue, using words like 'unborn' and 'creators'. The word 'creators' could also be viewed in a religious context, which would make sense alongside other highly scored words with religious sentiments, like 'pray' and 'Islamic'. I assumed that Republicans used the word 'socialist' with the intent of politically attacking Democratic policies.
 
 With a greater understanding of the differences between Democratic and Republican messaging in biographies, I turned my attention to the impacts of these words across the United States.
+
+## Democratic Map of Sentiment Differences
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 ###Democrats Proportion of Sentiment in Each State
@@ -254,9 +256,9 @@ democrats |>
   theme_void()
 ```
 
-## Democratic Map of Sentiment Differences
-
 In my attempt to understand the relationship between location and messaging across the country, I used NRC sentiments to focus specifically on ten sentiments: joy, positive, anticipation, trust, surprise, anger, sadness, fear, disgust, and negative. Using the average proportion of each of these sentiments, I calculated the largest difference in sentiment for each state to determine what the messaging strategy is in different areas of the country. For Democratic candidates, most of the states had a uniquely positive highest sentiment difference (denoted with a green color). A few states had a more negative sentiment, particularly in New England. 
+
+## Republican Map of Sentiment Differences
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 ###Republicans Proportion of Sentiment in Each State
@@ -305,8 +307,6 @@ republicans |>
   #orders legend in best possible way
   theme_void()
 ```
-
-## Republican Map of Sentiment Differences
 
 For Republicans, many of the same trends emerge. A majority of the states in the heartland and the west tend to have more positive top sentiment differences, while some states along the east coast, particularly New England, have stronger negative sentiments.
 
