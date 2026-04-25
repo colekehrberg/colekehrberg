@@ -7,5 +7,156 @@ format:
   html:
     theme: lux
     css: styles.css
+editor_options: 
+  chunk_output_type: console
 ---
 
+```{r}
+#| include: FALSE
+
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(viridis)
+library(ggthemes)
+library(maps)
+library(statebins)
+library(leaflet)
+library(sf)
+library(htmltools)
+library(glue)
+library(stringr)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+###Pulling Data
+col_data <- read_csv("Mini_Project_3_Dataset.csv")  #Dataset from Council for Community & Economic Research (C2ER)
+us_map <- map_data("state")  #For static plot
+states_sf <- read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson")  #For interactive plot
+
+col <- col_data |>
+  mutate(state = str_to_lower(State)) |>
+  mutate(state = str_replace_all(state," ", "")) |>
+  filter(!state %in% c("alaska", "hawaii", "districtofcolumbia", "puertorico")) |>
+  rename(State_Name = State) |>
+  mutate(Housing = cut(Housing, breaks=c(0, 80, 100, 120, 225),
+              labels=c("Low", "Low-Medium", "Medium-High", "High")))
+
+states_stat <- us_map |>
+  mutate(region = str_replace_all(region," ", "")) |>
+  rename(state = region) |>
+  filter(!state %in% c("districtofcolumbia"))
+
+states_int <- states_sf |>
+  mutate(name = str_replace_all(name, " ", "")) |>
+  mutate(name = str_to_lower(name)) |>
+  rename(state = name) |>
+  filter(!state %in% c("alaska", "hawaii", "districtofcolumbia", "puertorico"))
+
+static <- col |>
+  left_join(states_stat)
+
+interactive <- col |>
+  left_join(states_int)
+
+interactive <- st_as_sf(interactive)
+```
+
+## Cost of Living Index
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+ggplot(static, aes(long, lat, group = group)) + 
+  geom_polygon(aes(fill = Index), colour = "white", linetype = 1) + 
+  theme_void() +
+  scale_fill_gradient(low = "lightyellow", high = "red") +
+  labs(title = "Cost of Living Index in the United States in 2025", caption = "Source: Council for Community & Economic Research (C2ER) - https://meric.mo.gov/data/cost-living-data-series")
+```
+
+As the cost of living has become a prevalent issue throughout the United States, I was interested to see how the affordability of certain states stacked up against others. This map details the Cost of Living Index in each contiguous state in the US, as obtained by a survey done through the Council for Community & Economic Research (C2ER). Coastal states tend to have the highest cost of living, with California and Massachusetts having the highest scores. Meanwhile, the cost to live in the middle of the US is significantly lower, with Oklahoma and Mississippi being among the most inexpensive places to call home. Although this map presents interesting data, it is important to note that many factors contribute to the cost of living, aside from location.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+bins <- c(80, 90, 95, 100, 105, 110, 115, 120, 130, Inf)
+pal <- colorBin("YlOrRd", domain = interactive$Index, bins = bins)
+
+states <- interactive |>
+  mutate(labels = str_c(State_Name, ": ", Index, " cost of living index (100 avg)"))
+
+labels <- lapply(states$labels, HTML)
+
+leaflet(interactive) |>
+  setView(-96, 37.8, 4) |>
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal(Index),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) |>
+  addLegend(pal = pal, values = ~Index, opacity = 0.7, title = "Cost of Living Index",
+    position = "bottomright")
+```
+
+## Cost of Housing
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+ggplot(static, aes(long, lat, group = group)) + 
+  geom_polygon(aes(fill = Housing), colour = "white", linetype = 1) + 
+  theme_void() +
+  scale_fill_manual(values = c(
+    "Low" = "red",
+    "Low-Medium" = "lightsalmon",
+    "Medium-High" = "lightblue1",
+    "High" = "blue"
+  )) + 
+  labs(title = "Housing Costs in the United States in 2025", caption = "Source: Council for Community & Economic Research (C2ER) - https://meric.mo.gov/data/cost-living-data-series")
+```
+
+As I prepare to move on from college life, a significant new expenditure I anticipate is paying for housing. The rising cost of rent has been an issue in many communities around my home, so I wanted to explore how housing prices in Minnesota different from other states. Broadly speaking, Minnesota has a low-medium cost of housing, compared to other states. However, the cost of housing tends to be higher specifically in cities, so states with more dense populations may experience higher housing costs. A more accurate depiction of housing costs in the United States may examine this data on a county-by-county level, to show the nuances in housing prices between urban and rural communities.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+pal2 <- colorFactor("RdBu", domain = interactive$Housing)
+
+states2 <- interactive |>
+  mutate(labels = str_c(State_Name, ": ", Housing, " cost on average housing index"))
+
+labels2 <- lapply(states2$labels, HTML)
+
+leaflet(interactive) |>
+  setView(-96, 37.8, 4) |>
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal2(Housing),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels2,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) |>
+  addLegend(pal = pal2, values = ~Housing, opacity = 0.7, title = "Housing Prices",
+    position = "bottomright")
+```
+
+Data source: https://meric.mo.gov/data/cost-living-data-series
