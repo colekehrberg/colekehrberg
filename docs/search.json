@@ -18,90 +18,62 @@
     "href": "maps.html#cost-of-housing",
     "title": "Maps!",
     "section": "Cost of Housing",
-    "text": "Cost of Housing\n\n\n\n\n\n\n\n\n\nAs I prepare to move on from college life, a significant new expenditure I anticipate is paying for housing. The rising cost of rent has been an issue in many communities around my home, so I wanted to explore how housing prices in Minnesota different from other states. Broadly speaking, Minnesota has a low-medium cost of housing, compared to other states. However, the cost of housing tends to be higher specifically in cities, so states with more dense populations may experience higher housing costs. A more accurate depiction of housing costs in the United States may examine this data on a county-by-county level, to show the nuances in housing prices between urban and rural communities."
+    "text": "Cost of Housing\n\n\n\n\n\n\n\n\n\nAs I prepare to move on from college life, a significant new expenditure I anticipate is paying for housing. The rising cost of rent has been an issue in many communities around my home, so I wanted to explore how housing prices in Minnesota different from other states. Broadly speaking, Minnesota has a low-medium cost of housing, compared to other states. However, the cost of housing tends to be higher specifically in cities, so states with more dense populations may experience higher housing costs. A more accurate depiction of housing costs in the United States may examine this data on a county-by-county level, to show the nuances in housing prices between urban and rural communities.\n\n\n\n\n\n\nData source: https://meric.mo.gov/data/cost-living-data-series"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "",
     "text": "As the political polarization in the United States escalates, as it has in recent years, how do candidates decide to portray themselves? In this project, rather than examining the nature of candidates’ attacks on another side’s politics, I looked into the words congressional candidates use to describe themselves. I believe that turning policy focus in towards the candidates themselves will help in understanding some of the fundamental differences that lead to polarization, while also uncovering paths to common ground.\nPulling data from a Harvard database, I analyzed candidates’ biographical narratives, as detailed on their campaign websites. The database includes 5,114 biographies for U.S. Congressional candidates from 2018-2022, but I focused specifically on candidates that advanced through the primary and into the general election, which ended up being 2,348 candidates. The most commonly appearing words for Democrats and Republican candidates for Congress are shown below, in the blue and red word clouds, respectively."
   },
   {
     "objectID": "about.html#introduction",
     "href": "about.html#introduction",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "",
     "text": "As the political polarization in the United States escalates, as it has in recent years, how do candidates decide to portray themselves? In this project, rather than examining the nature of candidates’ attacks on another side’s politics, I looked into the words congressional candidates use to describe themselves. I believe that turning policy focus in towards the candidates themselves will help in understanding some of the fundamental differences that lead to polarization, while also uncovering paths to common ground.\nPulling data from a Harvard database, I analyzed candidates’ biographical narratives, as detailed on their campaign websites. The database includes 5,114 biographies for U.S. Congressional candidates from 2018-2022, but I focused specifically on candidates that advanced through the primary and into the general election, which ended up being 2,348 candidates. The most commonly appearing words for Democrats and Republican candidates for Congress are shown below, in the blue and red word clouds, respectively."
   },
   {
     "objectID": "about.html#word-cloud-of-democratic-biographies",
     "href": "about.html#word-cloud-of-democratic-biographies",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "Word Cloud of Democratic Biographies",
     "text": "Word Cloud of Democratic Biographies\n\n\n\n\n\n\n\n\n\nThe biographies of Democratic candidates tended to focus on words related to the public good. Words like ‘public’, ‘district’, ‘served’, ‘health’, ‘community’, and ‘service’ demonstrate a messaging strategy of commitment to the local public interests. While Democrats focused in on a community-oriented brand of politics, Republicans had a slight shift in tone."
   },
   {
     "objectID": "about.html#word-cloud-of-republican-biographies",
     "href": "about.html#word-cloud-of-republican-biographies",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "Word Cloud of Republican Biographies",
     "text": "Word Cloud of Republican Biographies\n\n\n\n\n\n\n\n\n\nThe biographies of Republican candidates echoed some of the same interests as Democrats, but also included private interests on a broader scale. The emphasis of words like ‘business’, ‘law’, ‘national’, and ‘American’ demonstrate values that expand beyond community impact, and into a federal, private realm.\nOnce I understood some high-level values that go into each party’s messages, I turned my attention specifically to what sets the parties apart."
   },
   {
     "objectID": "about.html#tf-idf-statistic",
     "href": "about.html#tf-idf-statistic",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "TF-IDF Statistic",
     "text": "TF-IDF Statistic\n\n\n\n\n\n\n\n\n\nThe tf-idf statistic describes how important unique terms are, between different dataframes. The bar chart above describes the most commonly used used words used by Democrats and not Republicans, and vice versa.\nClearly, from 2018-2022, Democratic candidates focused in on issues of lgbtq rights. Similarly, many words associated with Democratic platforms were used, including ‘gerry’ (most likely used in the context of opposition to gerrymandering), ‘universal’ (probably used in the context of social welfare programs), and ‘reproductive’ (likely used for describing support for the pro-choice movement).\nRepublicans ran on the opposite site of the abortion issue, using words like ‘unborn’ and ‘creators’. The word ‘creators’ could also be viewed in a religious context, which would make sense alongside other highly scored words with religious sentiments, like ‘pray’ and ‘Islamic’. I assumed that Republicans used the word ‘socialist’ with the intent of politically attacking Democratic policies.\nWith a greater understanding of the differences between Democratic and Republican messaging in biographies, I turned my attention to the impacts of these words across the United States."
   },
   {
     "objectID": "about.html#democratic-map-of-sentiment-differences",
     "href": "about.html#democratic-map-of-sentiment-differences",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "Democratic Map of Sentiment Differences",
     "text": "Democratic Map of Sentiment Differences\n\n\n\n\n\n\n\n\n\nIn my attempt to understand the relationship between location and messaging across the country, I used NRC sentiments to focus specifically on ten sentiments: joy, positive, anticipation, trust, surprise, anger, sadness, fear, disgust, and negative. Using the average proportion of each of these sentiments, I calculated the largest difference in sentiment for each state to determine what the messaging strategy is in different areas of the country. For Democratic candidates, most of the states had a uniquely positive highest sentiment difference (denoted with a green color). A few states had a more negative sentiment, particularly in New England."
   },
   {
     "objectID": "about.html#republican-map-of-sentiment-differences",
     "href": "about.html#republican-map-of-sentiment-differences",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "Republican Map of Sentiment Differences",
     "text": "Republican Map of Sentiment Differences\n\n\n\n\n\n\n\n\n\nFor Republicans, many of the same trends emerge. A majority of the states in the heartland and the west tend to have more positive top sentiment differences, while some states along the east coast, particularly New England, have stronger negative sentiments."
   },
   {
     "objectID": "about.html#conclusion",
     "href": "about.html#conclusion",
-    "title": "Mini-Project #1",
+    "title": "Text Analysis",
     "section": "Conclusion",
     "text": "Conclusion\nAcross the board, understanding how politicians communicate is critical to understanding polarization in the United States. In a country where candidates dominate the headlines through an ability to yell the loudest, it is important to dig deeper and understand how politicians describe themselves. Only then can we see their true colors."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Cole Kehrberg",
-    "section": "",
-    "text": "Using creative, data-driven perspectives, I bring clarity to complex problems. As a student of the liberal arts, I value a balanced, diverse skill set. On any given day at St. Olaf, you might find me analyzing data on a consulting project for NASA, leading study sessions as a Teaching Assistant for St. Olaf’s Economics Department, or using R to conduct independent research.\nMy attention to detail, resilient mindset, and steady kindness have led me to numerous executive roles. I currently serve as the President, Flute Section Leader, and Co-Principal Flutist for the St. Olaf Band, leading 99 members and advising our conductor, while fostering an inclusive culture. I also serve as a leader for St. Olaf’s Environmental Coalition, where our student-run organization uses our ~$20,000 in funds to implement campus-wide sustainability projects. In my years as an organizer, Environmental Coalition has planned over 40 events in partnership with over 20 different organizations, engaging around 450 students.\nAway from campus, I’ve studied abroad in Costa Rica, South Africa, Namibia, and Vietnam, exploring sustainability, political and social change, and economic development around the world. Engaging with students and locals, I deepened my appreciation for interdisciplinary perspectives."
-  },
-  {
-    "objectID": "FlexDashboard.html",
-    "href": "FlexDashboard.html",
-    "title": "Flex Dashboard",
-    "section": "",
-    "text": "Year"
-  },
-  {
-    "objectID": "FlexDashboard.html#column",
-    "href": "FlexDashboard.html#column",
-    "title": "Flex Dashboard",
-    "section": "",
-    "text": "Year"
-  },
-  {
-    "objectID": "FlexDashboard.html#column-1",
-    "href": "FlexDashboard.html#column-1",
-    "title": "Flex Dashboard",
-    "section": "Column",
-    "text": "Column\n\nChart B\n\n\nChart C"
   }
 ]
