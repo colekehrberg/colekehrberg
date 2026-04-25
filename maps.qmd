@@ -129,7 +129,7 @@ ggplot(static, aes(long, lat, group = group)) +
     "Medium-High" = "lightblue1",
     "High" = "blue"
   )) + 
-  labs(title = "Housing Costs in the United States in 2025", caption = "Source: Council for Community & Economic Research (C2ER) - https://meric.mo.gov/data/cost-living-data-series")
+  labs(title = "Housing Costs in the United States in 2025", caption = "Council for Community & Economic Research (C2ER) - https://meric.mo.gov/data/cost-living-data-series")
 ```
 
 As I prepare to move on from college life, a significant new expenditure I anticipate is paying for housing. The rising cost of rent has been an issue in many communities around my home, so I wanted to explore how housing prices in Minnesota different from other states. Broadly speaking, Minnesota has a low-medium cost of housing, compared to other states. However, the cost of housing tends to be higher specifically in cities, so states with more dense populations may experience higher housing costs. A more accurate depiction of housing costs in the United States may examine this data on a county-by-county level, to show the nuances in housing prices between urban and rural communities.
