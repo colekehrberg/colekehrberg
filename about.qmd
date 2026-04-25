@@ -1,5 +1,5 @@
 ---
-title: "Mini-Project #1"
+title: "Text Analysis"
 subtitle: "Congressional Elections Sentiment Analysis"
 toc: false
 about: 
@@ -23,7 +23,6 @@ library(ggthemes)
 library(gutenbergr)
 library(maps)
 library(mapproj)
-
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
