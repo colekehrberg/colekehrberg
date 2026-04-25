@@ -4,8 +4,6 @@ subtitle: "Congressional Elections Sentiment Analysis"
 toc: false
 about: 
   template: jolla
-  image-shape: round
-  image-width: 17em
 format:
   html:
     theme: lux

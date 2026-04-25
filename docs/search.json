@@ -1,33 +1,5 @@
 [
   {
-    "objectID": "FlexDashboard.html",
-    "href": "FlexDashboard.html",
-    "title": "Flex Dashboard",
-    "section": "",
-    "text": "Year"
-  },
-  {
-    "objectID": "FlexDashboard.html#column",
-    "href": "FlexDashboard.html#column",
-    "title": "Flex Dashboard",
-    "section": "",
-    "text": "Year"
-  },
-  {
-    "objectID": "FlexDashboard.html#column-1",
-    "href": "FlexDashboard.html#column-1",
-    "title": "Flex Dashboard",
-    "section": "Column",
-    "text": "Column\n\nChart B\n\n\nChart C"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Cole Kehrberg",
-    "section": "",
-    "text": "Using creative, data-driven perspectives, I bring clarity to complex problems. As a student of the liberal arts, I value a balanced, diverse skill set. On any given day at St. Olaf, you might find me analyzing data on a consulting project for NASA, leading study sessions as a Teaching Assistant for St. Olaf’s Economics Department, or using R to conduct independent research.\nMy attention to detail, resilient mindset, and steady kindness have led me to numerous executive roles. I currently serve as the President, Flute Section Leader, and Co-Principal Flutist for the St. Olaf Band, leading 99 members and advising our conductor, while fostering an inclusive culture. I also serve as a leader for St. Olaf’s Environmental Coalition, where our student-run organization uses our ~$20,000 in funds to implement campus-wide sustainability projects. In my years as an organizer, Environmental Coalition has planned over 40 events in partnership with over 20 different organizations, engaging around 450 students.\nAway from campus, I’ve studied abroad in Costa Rica, South Africa, Namibia, and Vietnam, exploring sustainability, political and social change, and economic development around the world. Engaging with students and locals, I deepened my appreciation for interdisciplinary perspectives."
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "Mini-Project #1",
@@ -82,5 +54,33 @@
     "title": "Mini-Project #1",
     "section": "Conclusion",
     "text": "Conclusion\nAcross the board, understanding how politicians communicate is critical to understanding polarization in the United States. In a country where candidates dominate the headlines through an ability to yell the loudest, it is important to dig deeper and understand how politicians describe themselves. Only then can we see their true colors."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Cole Kehrberg",
+    "section": "",
+    "text": "Using creative, data-driven perspectives, I bring clarity to complex problems. As a student of the liberal arts, I value a balanced, diverse skill set. On any given day at St. Olaf, you might find me analyzing data on a consulting project for NASA, leading study sessions as a Teaching Assistant for St. Olaf’s Economics Department, or using R to conduct independent research.\nMy attention to detail, resilient mindset, and steady kindness have led me to numerous executive roles. I currently serve as the President, Flute Section Leader, and Co-Principal Flutist for the St. Olaf Band, leading 99 members and advising our conductor, while fostering an inclusive culture. I also serve as a leader for St. Olaf’s Environmental Coalition, where our student-run organization uses our ~$20,000 in funds to implement campus-wide sustainability projects. In my years as an organizer, Environmental Coalition has planned over 40 events in partnership with over 20 different organizations, engaging around 450 students.\nAway from campus, I’ve studied abroad in Costa Rica, South Africa, Namibia, and Vietnam, exploring sustainability, political and social change, and economic development around the world. Engaging with students and locals, I deepened my appreciation for interdisciplinary perspectives."
+  },
+  {
+    "objectID": "FlexDashboard.html",
+    "href": "FlexDashboard.html",
+    "title": "Flex Dashboard",
+    "section": "",
+    "text": "Year"
+  },
+  {
+    "objectID": "FlexDashboard.html#column",
+    "href": "FlexDashboard.html#column",
+    "title": "Flex Dashboard",
+    "section": "",
+    "text": "Year"
+  },
+  {
+    "objectID": "FlexDashboard.html#column-1",
+    "href": "FlexDashboard.html#column-1",
+    "title": "Flex Dashboard",
+    "section": "Column",
+    "text": "Column\n\nChart B\n\n\nChart C"
   }
 ]
