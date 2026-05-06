@@ -11,6 +11,26 @@ website:
       - about.qmd
       - maps.qmd
 
+sidebar:
+    - id: stats
+      title: "Statistics & Data Science Projects"
+      contents:
+        - about.qmd
+        - maps.qmd
+
+    - id: economics
+      title: "Economics Projects"
+      contents:
+      
+    - id: environmental
+      title: "Environmental Studies Projects"
+      contents:
+      
+    - id: personal
+      title: "Personal Projects"
+      contents:
+
+
 format:
   html:
     theme:
