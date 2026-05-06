@@ -4,14 +4,17 @@ project:
 
 website:
   title: "Cole Kehrberg"
+
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
-      - maps.qmd
+      - sidebar:stats
+      - sidebar:economics
+      - sidebar:environmental
+      - sidebar:personal
 
-sidebar:
+  sidebar:
     - id: stats
       title: "Statistics & Data Science Projects"
       contents:
@@ -20,16 +23,15 @@ sidebar:
 
     - id: economics
       title: "Economics Projects"
-      contents:
-      
+      contents: []
+
     - id: environmental
       title: "Environmental Studies Projects"
-      contents:
-      
+      contents: []
+
     - id: personal
       title: "Personal Projects"
-      contents:
-
+      contents: []
 
 format:
   html:
@@ -39,6 +41,3 @@ format:
     css: styles.css
     toc: true
     page-layout: full
-
-
-
