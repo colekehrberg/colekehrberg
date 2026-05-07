@@ -91,18 +91,38 @@ The first set of restrictions state that only a shock to load shedding itself wi
 According to the BIC, the optimal lag length for this model is one lag, which is one month in our time period. This means that the impacts of our variables are best reflected in PPI after one month.
 
 Below are the plots reflecting the preliminary findings of our analysis. Our simplified baseline model, which only includes load shedding hours as a predictor of the rate of change in the PPI of final manufactured goods, showed no statistical significance (Figure 1).
- 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON385Figure1.png") #uploads image of word cloud for pdf render
+```
+
 Figure 1: Simplified Model for PPI (final manufactured goods)
 
 However, a VAR-X model, with U.S. interest rates and coal prices held exogenously, and South African interest rates, industrial production, and exchange rates as additional predictors, showed a load shedding shock to have a statistically significant effect on the rate change for the PPI of final manufactured goods (Figure 2). Effects to PPI exist for at least 18 months after the initial shock.
  
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON385Figure2.png") #uploads image of word cloud for pdf render
+```
+
 Figure 2: Full VAR-X model for PPI (final manufactured goods)
 
 Similarly, we found a statistically significant impact of a load shedding shock for the rate of change for all composite indices of PPI, including intermediate goods (Figure 3), mining (Figure 4), and agriculture, forestry & fishing (Figure 5).
  
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON385Figure3.png") #uploads image of word cloud for pdf render
+```
+
 Figure 3: Full VAR-X model for PPI (intermediate manufactured goods)
  
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON385Figure4.png") #uploads image of word cloud for pdf render
+```
+ 
 Figure 4: Full VAR-X model for PPI (mining)
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON385Figure5.png") #uploads image of word cloud for pdf render
+```
  
 Figure 5: Full VAR-X model for PPI (agriculture, forestry, & fishing)
 
@@ -140,6 +160,10 @@ Our findings support our hypothesis and the existing literature, which suggest t
 
 Between 2016 and 2018, there was a brief pause in load shedding in South Africa, creating a gap in our data. To see if our significant results hold after this break in load shedding, we shortened our time frame to include only 70 observations from June 2018 to March 2024. We found that the impulse response functions from the VAR-X model delivered roughly the same results in this smaller time frame, still showing statistical significance, as shown in Figure 6.
  
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON385Figure6.png") #uploads image of word cloud for pdf render
+``` 
+
 Figure 6: Subsample analysis on rate change of PPI - final manufactured goods
 
 ## Works Cited
