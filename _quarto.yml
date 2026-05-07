@@ -16,19 +16,19 @@ website:
 
   sidebar:
     - id: stats
-      title: "Statistics & Data Science Projects"
+      title: "Statistics & Data Science"
       contents:
         - about.qmd
         - maps.qmd
 
     - id: economics
-      title: "Economics Projects"
+      title: "Economics"
       contents:
         - Economics/ECON385.qmd
         - Economics/ECON372.qmd
 
     - id: environmental
-      title: "Environmental Studies Projects"
+      title: "Environmental Studies"
       contents: []
 
     - id: personal
