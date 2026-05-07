@@ -10,6 +10,8 @@ format:
     css: styles.css
 ---
 
+By Cole Kehrberg and Maria Camilli
+
 ## Introduction
 
 Inside South Africa’s homes and businesses, the lights go out for hours at a time. To preserve energy, South Africa’s national power utility intermittently cuts off power to communities. The process of constricting the energy market by eliminating access in a series of voluntary or planned power outages is called ‘load shedding.’ Load shedding in South Africa began to account for insufficiencies in South Africa’s electrical grid, starting in 2007 and continuing into the present. These routine blackouts have lasting effects on the economy, by slowing economic growth, decreasing productivity, and lowering returns on investment opportunities (Kohler, 2006).
