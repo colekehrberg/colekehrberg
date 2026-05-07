@@ -23,7 +23,8 @@ website:
 
     - id: economics
       title: "Economics Projects"
-      contents: []
+      contents:
+        - ECON385.qmd
 
     - id: environmental
       title: "Environmental Studies Projects"
