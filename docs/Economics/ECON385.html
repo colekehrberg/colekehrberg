@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Time Series &amp; Forecasting – Cole Kehrberg</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-872e900a155e990e89d7b6fcf623f4fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Cole Kehrberg</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-statistics--data-science-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Statistics &amp; Data Science Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-statistics--data-science-projects">    
+        <li>
+    <a class="dropdown-item" href="../about.html">
+ <span class="dropdown-text">Text Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../maps.html">
+ <span class="dropdown-text">Maps!</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-economics-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Economics Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-economics-projects">    
+        <li>
+    <a class="dropdown-item" href="../Economics/ECON385.html">
+ <span class="dropdown-text">Time Series &amp; Forecasting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Economics/ECON372.html">
+ <span class="dropdown-text">Behavioral Economics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-environmental-studies-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Environmental Studies Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-environmental-studies-projects">    
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-personal-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Personal Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-personal-projects">    
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Economics/ECON385.html">Time Series &amp; Forecasting</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Economics/ECON385.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Time Series &amp; Forecasting</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Economics/ECON372.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Behavioral Economics</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<div class="quarto-about-jolla column-page-right">
+ <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Time Series &amp; Forecasting</h1>
+<p class="subtitle lead">Electrical and Purchasing Powers: The Effects of Loadshedding on Inflation in South Africa</p>
+</div>
+<div class="quarto-title-meta column-page-right">
+  </div>
+</header><main class="content column-page-right" id="quarto-document-content">
+<p>By Cole Kehrberg and Maria Camilli</p>
+<section id="introduction" class="level2">
+<h2 data-anchor-id="introduction">Introduction</h2>
+<p>Inside South Africa’s homes and businesses, the lights go out for hours at a time. To preserve energy, South Africa’s national power utility intermittently cuts off power to communities. The process of constricting the energy market by eliminating access in a series of voluntary or planned power outages is called ‘load shedding.’ Load shedding in South Africa began to account for insufficiencies in South Africa’s electrical grid, starting in 2007 and continuing into the present. These routine blackouts have lasting effects on the economy, by slowing economic growth, decreasing productivity, and lowering returns on investment opportunities (Kohler, 2006).</p>
+<p>Over 90% of South Africa’s energy comes from Eskom, an electrical company with an ongoing history of mismanagement (International Trade Administration, 2024). Since 1991, the year the apartheid system formally ended, Eskom has only built one power plant while South Africa’s electricity needs only continue to grow. After years of corruption alongside the South African government, and very limited expansion in the face of increased demand, Eskom could not produce at the level of energy that the market demanded, leading to routine load shedding. Because load shedding has become engrained into daily life in South Africa over the last two decades, there is sufficient data to study the long-term effects of these planned power outages on different parts of the economy.</p>
+<p>We theorize that constricting the supply of energy to a demanding market will inhibit production. Without reliable energy, restaurants lose food to spoilage, factories are unable to run machines, and communication networks run silent. Beyond production, cutting off energy will also have negative effects for human health, as many critical health services rely on power to operate. From a theoretical economic framework, failing health services will negatively impact labor productivity and human capital. All of these things lead to supply chain disruptions and an erosion of consumer confidence in the government’s handling of the economy. Because limited electricity supply may inhibit the production of goods, labor productivity, and consumer confidence, we expect load shedding to negatively impact production in South Africa. According to the law of supply and demand, when production and supply of goods decrease in quantity, the prices of those goods will increase. Therefore, we expect load shedding to increase the prices of goods, as measured by the Producer Price Index (PPI).</p>
+<p>Our research will identify and quantify the effects of load shedding on various measures of PPI. Accounting for control variables, this study will rely on time-series analysis to examine the time period of load shedding between 2014 to early 2024.</p>
+<section id="research-question" class="level3">
+<h3 data-anchor-id="research-question">1.2 Research Question</h3>
+<p>How has Eskom’s policy of load shedding energy in South Africa impacted the producer price index for a variety of indices from 2014 to 2024? We hope to explore how electricity blackouts impact different types of inflation, specifically using the producer price index in our analysis.</p>
+</section>
+<section id="literature-review" class="level3">
+<h3 data-anchor-id="literature-review">1.3 Literature Review</h3>
+<p>The effects of load shedding in South Africa have consequential impacts throughout the economy. According to research by the South Africa Revenue Service, the overall impacts of load shedding on the South African economy may be in excess of 500 billion Rand (~29 billion USD), which accounts for approximately 7-8% of South Africa’s GDP (Erero, 2023). Load shedding causes ruptures to communication networks, job performance, and health and safety, which sends ripple effects throughout the economy. Through our research paper, we intend to identify the impact of load shedding specifically on measures of inflation.</p>
+<p>In a case study of a South African coal-fired power station, researchers looked at the short-run and long-run effects of load shedding and the decreasing availability of electricity in the energy sector (Kock &amp; Govender, 2021). In analyzing the relationship between energy prices and South Africa’s economy, researchers found that rising energy costs constrain economic growth due to increased production costs and eliminating market competition. This study provides insight into the behind-the-scenes implications of how production failures at a plant level have significant effects on the national electricity grid scale. While this paper provides strong evidence for the causes and economic consequences of declining electricity supply, it does not specifically quantify the impact of load shedding on price formation in the PPI across different sectors.</p>
+<p>Previous research explores the relationship between energy prices and South Africa’s overall economy, as published in the Cogent Economics and Finance Journal. Researchers analyze the relationship between energy prices and South Africa’s overall economy, highlighting how fluctuations in energy costs directly influence output and long-term growth (Takentsi et al., 2022). Their findings highlight how energy price shocks ripple throughout the entire economy. While their research does not explicitly address the impact of load shedding on the energy sector, it does provide additional context.</p>
+<p>Additionally, in a study done in the United States and the European Union, researchers found that energy prices lead to an increase in inflation, in part because of their impacts on production (Patzelt and Reis, 2024). In these markets, consumers are relatively inattentive to the prices of energy, however, and therefore underestimate the effect of energy prices on inflation. Therefore, while energy prices impact inflation in these countries, energy prices do not affect inflation expectations, which may dampen the effect on overall inflation. However, in the context of South Africa’s load shedding, where energy is less dependable, firms and individuals must pay attention to how they use energy. Therefore, when the government limits supply of energy and its price increases, people may be more likely to notice these price increases, which may lead to greater inflationary expectations. Greater inflationary expectations theoretically lead to greater levels of inflation, assuming rational consumers.</p>
+<p>Research exists to clarify the relationships between load shedding and the South African economy, energy constrictions and economic development, and energy prices and inflation. However, there is no existing literature on the impacts of load shedding on Producer Price Index in South Africa, which is the gap we intend to address.</p>
+</section>
+</section>
+<section id="data-description" class="level2">
+<h2 data-anchor-id="data-description">Data Description</h2>
+<p>For this project, we have compiled seven datasets of information into one. Firstly, the load shedding dataset includes information from EskomSePush, an app that alerts South Africans about load shedding updates, found on the platform DataDesk. Additionally, we will use a dataset from the Department of Statistics in South Africa that contains the Producer Price Index (PPI) for a variety of sectors of the South African economy. We also found datasets for South African interest rates, U.S. interest rates, the price of coal, South African exchange rates, and a measure of industrial production.</p>
+<p>Eskom’s control over the South African electricity grid heavily influenced our chosen time period. Eskom began introducing controlled electricity shut offs in 2007, with these blackouts increasing in frequency and length due to population and industry growth in South Africa (Cumulative Hours of Loadshedding Scheduled by South African Power Utility Eskom by Month from January 2014, 2015). Based on the constraints of our datasets, we narrowed our time period to range from January 2014 to March 2024. The load shedding dataset we plan to work with begins in 2014, which is why our time period starts with 2014. The industrial production dataset ended in March of 2024, so we eliminated 13 observations from our analysis, giving us a total of 122 months of observed data to analyze.</p>
+<p>The load shedding dataset quantifies load shedding hours in South Africa, recorded monthly. The key variable featured in this dataset is the column, ‘hours’, which records the number of hours per month that Eskom controls power outages in the country of South Africa. This dataset does not track the number of households or regions affected by load shedding but instead provides a broad overview of this variable over the last 10 years. The variable ‘hours’ ranges from 0 to 6,908 hours per month.</p>
+<p>The PPI dataset includes 50 variables and provides an estimate of the PPI of different categories of goods and services in South Africa. The PPI is calculated by measuring the average price of a weighted basket of goods and services in one time period and then comparing this to the price in the base year. This ratio is useful when comparing changes in the price of goods and services from one time period to another. As a component of data cleaning, we converted the variables measuring PPI to rates of change, rather than levels. We included five composites of PPI as variables of interest: ‘final manufactured goods’, ‘intermediate manufactured goods’, ‘electricity and water’, ‘mining,’ and ‘agriculture, forestry, and fishing’.</p>
+<p>Before joining our datasets, we cleaned the data to facilitate interpretation. For each dataset, we reformatted and renamed key variables to improve clarity. When each dataset was clean, we assigned each time period a specific ID, allowing us to join the seven datasets easily. We eliminated any observations that included NA values and arranged the observations to be in chronological order. Running calculations on the summary statistics on our data resulted in the following table:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Table.png" class="img-fluid figure-img" width="693"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Load shedding data is heavily right skewed, with a median of 276 hours, but a mean of 808.1 hours. Over the years, the amount of load shedding in South Africa has changed dramatically. Several values from the time period of 2016-2018 contain zero hours of load shedding, while the quantity of hours in recent years has been as high as 6,908 hours in December of 2023.</p>
+<p>U.S interest rates have been somewhat variable from the 2014-2024, in part because of the economic fallout from the COVID-19 pandemic, which caused interest rates to fall to nearly 0%. While interest rates have remained fairly low, they have been recently raised to combat inflation in the U.S.</p>
+<p>Coal prices have also been fairly normal throughout the time period. Although they reached a high peak in 2022, they have stabilized since then and remain around the mean of $99 USD per metric ton.</p>
+<p>Alongside most measures of economic growth, industrial production bottomed out in April 2020, with a 94.4% decrease in production. However, South Africa’s industrial output has bounced back, and remains relatively stable around its mean of 0% growth from 2014-2024.</p>
+<p>South African exchange rates have nearly doubled from 2014-2024, going from around 10 Rand/USD to around 19 Rand/USD. This signals that the value of the South African Rand has depreciated over time, in comparison to the U.S. dollar. However, in our sample’s time period, the data is distributed fairly evenly, without outliers.</p>
+<p>South African interest rates are relatively stable throughout the time period, aside from a huge slash down to 3% during the global COVID-19 pandemic. In the aftermath of the pandemic, interest rates sailed back up, reaching as high as 8.6%, but eventually stabilizing slightly higher than the median 7%. Most of our key indicators of PPI also remain stable, with relatively low variance. However, the PPI rate change of electricity and water are highly variable, regularly containing months where the prices of goods change by double-digit figures. When looking at trends in observations, there appears to be a seasonal element to dramatic price changes in this sector. Therefore, we decided to exclude the PPI rate of change of electricity &amp; water from our final analysis.</p>
+</section>
+<section id="empirical-methods" class="level2">
+<h2 data-anchor-id="empirical-methods">Empirical Methods</h2>
+<p>To accurately analyze the effect of load shedding on South Africa’s Producer Price Index (PPI), we included several control variables that capture macroeconomic forces influencing production costs and prices, and the overall market. We have selected five control variables to reduce variable bias and to account for unexplained variation in the data: South African interest rates, U.S. Interest rates, coal prices in South Africa, industrial production index, and exchange rates between the U.S. and South Africa. We selected control variables that matched monthly frequency and held intuitive economic relevance to our models.</p>
+<p>Interest rates are a key control variable because they influence the cost of borrowing in the South African economy and overall investment behavior. Higher interest rates generally reduce investment and production by increasing firms’ overall costs, leading to lower output and slow price growth (Mathai, 2025). Lower interest rates encourage borrowing and stimulate demand in the market. We used a dataset from the Federal Reserve’s Economic Data (FRED), which captures the 90-day Interbank Rates and Yields of South Africa. Controlling for interest rates helps account for monetary policy changes that might confound the relationship between load shedding and PPI.</p>
+<p>Coal is one of the primary inputs in South Africa’s energy production, as the electrical company Eskom is heavily reliant on coal-fired power plants. Approximately 85% of South Africa’s electricity is “generated via coal-fired power stations” (International Trade Administration, 2024). Changes in coal prices directly affect electricity costs, impacting both energy availability and production costs. Data on monthly coal prices is found on the World Bank’s Commodity Markets Outlook, which tracks global commodity price trends. The Pink Sheet of World Bank Commodities Price Data reports South Africa’s coal output in $ per metric ton. South African coal use reached an all-time high in 2022 at $240.6 USD/metric ton for the annual average. This value has reduced by over half to $105.8 USD/metric ton in 2024 and this value has continued to decrease at a monthly rate in 2025 (World Bank Commodities Price Data, 2025). Controlling for South African coal prices allows us to differentiate between inflation arising from global energy market shifts and inflationary effects specifically attributed to power outages.</p>
+<p>Controlling the U.S. dollar to South African Rand (USD/ZAR) exchange rate helps capture the influence of currency fluctuations on inflation in the South African economy. Exchange rate behavior affects domestic prices and anticipates inflation. Depreciation of the Rand increases the cost of imported goods and production inputs, therefore raising the PPI (Menon, 2018). By controlling for volatility in exchange rate, we can more accurately isolate the domestic effects of load shedding on production costs.</p>
+<p>Industrial production measures the real growth in the industrial output of South Africa. Our other control variables help to account for inflation, the value of the Rand, and the electricity sector, so including a control for the output of the South African economy as a whole was important, to capture general market influence.</p>
+<p>The control variables of South African and U.S. interest rates, coal prices, exchange rate, and industrial production, allows us to account for key monetary, energy, trade, and output dynamics that jointly influence prices in South Africa. By including these variables, we account for additional important factors to more accurately estimate the causal relationship between load shedding and PPI outcomes from 2014 to 2024.</p>
+<p>We decided to use a structural vector autoregressive (VAR-X) model with exogenous variables for this process. Our response variable will be the composite measures of Producer Price Index, with load shedding hours as the explanatory variable. We include industrial production, exchange rates, and interest rates in the model as control variables, while treating coal prices and U.S. interest rates as exogenous.</p>
+<p>We selected the optimal lag length for the VAR models using the Bayesian Information Criterion (BIC). The model with the lowest BIC was selected as the optimal lag length.</p>
+<p>To draw causal inference, we tracked impulse response functions, which required a Cholesky Decomposition. Because we used 3 endogenous control variables, there are 5 total variables in the equation, when including the explanatory and response variables. The two exogenous variables are not a component of the Cholesky Decomposition because they are not affected by the other variables. Therefore, we require (5*(5-1))/2= 10 restrictions in the Cholesky Decomposition.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Decomposition.png" class="img-fluid figure-img" width="1005"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first set of restrictions state that only a shock to load shedding itself will cause an increase in the residual of load shedding in the same month. The second set of restrictions state that only a shock to load shedding and a shock to industrial production will impact industrial production contemporaneously. When unexpected load shedding occurs, we expect that the industrial production will contemporaneously decrease due to a shortage in energy supply. The third set of restrictions assert that only shocks to load shedding, industrial production, and exchange rates will affect exchange rates contemporaneously. With load shedding, a key input of production is limited, immediately impacting the South African economy. Similarly, industrial production is a measure of the South African economy, so a shock to the economy would likely influence the value of currency, measured in exchange rates. The fourth restriction states that shocks to South African interest rates will not affect PPI contemporaneously. Interest rates take a long time to have noticeable impacts on the inflation, so that relationship would not be contemporaneous (Batini &amp; Nelson, 2001).</p>
+</section>
+<section id="results" class="level2">
+<h2 data-anchor-id="results">Results</h2>
+<p>According to the BIC, the optimal lag length for this model is one lag, which is one month in our time period. This means that the impacts of our variables are best reflected in PPI after one month.</p>
+<p>Below are the plots reflecting the preliminary findings of our analysis. Our simplified baseline model, which only includes load shedding hours as a predictor of the rate of change in the PPI of final manufactured goods, showed no statistical significance (Figure 1).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Figure1.png" class="img-fluid figure-img" width="468"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 1: Simplified Model for PPI (final manufactured goods)</p>
+<p>However, a VAR-X model, with U.S. interest rates and coal prices held exogenously, and South African interest rates, industrial production, and exchange rates as additional predictors, showed a load shedding shock to have a statistically significant effect on the rate change for the PPI of final manufactured goods (Figure 2). Effects to PPI exist for at least 18 months after the initial shock.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Figure2.png" class="img-fluid figure-img" width="468"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 2: Full VAR-X model for PPI (final manufactured goods)</p>
+<p>Similarly, we found a statistically significant impact of a load shedding shock for the rate of change for all composite indices of PPI, including intermediate goods (Figure 3), mining (Figure 4), and agriculture, forestry &amp; fishing (Figure 5).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Figure3.png" class="img-fluid figure-img" width="468"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 3: Full VAR-X model for PPI (intermediate manufactured goods)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Figure4.png" class="img-fluid figure-img" width="468"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 4: Full VAR-X model for PPI (mining)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Figure5.png" class="img-fluid figure-img" width="468"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 5: Full VAR-X model for PPI (agriculture, forestry, &amp; fishing)</p>
+</section>
+<section id="discussion" class="level2">
+<h2 data-anchor-id="discussion">Discussion</h2>
+<section id="implications" class="level3">
+<h3 data-anchor-id="implications">5.1 Implications</h3>
+<p>The findings of our research indicate that load shedding has a statistically significant and persistent effect on South Africa’s PPI, with effects lasting more than a year after the initial shock. These results have meaningful implications for both economic policy and firm-level decision making in the South African market. The persistence of the impulse response suggests that disruptions in electricity supply generate sustained pressures in the production process, rather than producing temporary price fluctuations. As a result, efforts to stabilize inflation should not be separated from improving the reliability of the energy sector. Our findings support the proposal that reducing the frequency or severity of load shedding, expanding generation capacity, or improving grid infrastructure will help to mitigate inflationary pressures.</p>
+<p>The impact of load shedding on South Africa’s PPI is particularly pronounced in the intermediate goods, mining, and agricultural sectors, which are heavily dependent on continuous access to electricity (Wiese &amp; van der Westhuizen, 2024). By quantifying this sector specific relationship, our findings offer empirical evidence for policy interventions aimed at improving energy security as part of policy strategy to limit increasing rate of inflation.</p>
+</section>
+<section id="comparisons" class="level3">
+<h3 data-anchor-id="comparisons">5.2 Comparisons</h3>
+<p>The results align with existing literature documenting the adverse economic consequences of load shedding in South Africa. Previous studies demonstrate that energy shortages reduce productive capacity, weaken supply chains, and generate macroeconomic inefficiencies (Kock &amp; Govender, 2021). While this research emphasizes the effects on output and growth, our findings extend the literature by establishing a direct empirical connection between load shedding and price dynamics through a time-series economic framework.</p>
+</section>
+</section>
+<section id="limitations" class="level2">
+<h2 data-anchor-id="limitations">Limitations</h2>
+<p>Our data on load shedding comes from EskomSePush, an independently operated app that tracks load shedding in South Africa. Because of transparency issues with the South African government, this app is the best source for information, but we cannot verify the reliability of the data. Therefore, any issues with data collection or reporting may impact our results.</p>
+<p>Additionally, as a country with some of the highest levels of wealth inequality in the world, inflation in South Africa may hit poor communities especially hard, by limiting their purchasing power through higher prices. Our study did not examine the impacts on consumers, nor did it include a distributional analysis on the impacts on low-income households that may be impacted disproportionately by the economic effects of load shedding. This information may be critical to understanding where the impacts of load shedding are most apparent, affecting how results fit into the context of South African society.</p>
+</section>
+<section id="future-research" class="level2">
+<h2 data-anchor-id="future-research">Future Research</h2>
+<p>Our study also did not examine the effects of load shedding on the electricity and water composite index of PPI because of the high variability in the data. In a future study, we would recommend researching the South African utilities grid about why seasonal changes tend to affect prices. Using this knowledge, we would examine modeling adjustments to account for the seasonal component of that composite’s variability.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 data-anchor-id="conclusion">Conclusion</h2>
+<p>Our findings show that South Africa’s policy of restricting electricity supply to the grid, via the process of load shedding, drives inflation across several sectors of the South African economy, as measured in four key composites of Producer Price Index.</p>
+<p>We used a VAR-X model to account for the endogenous control variables of industrial production, exchange rates, and South African interest rates, while treating U.S. interest rates and coal prices exogenously. The results show that load shedding has the largest effect on the PPI composite index of mining and the index of agriculture, forestry, and fishing, but results are also significant for intermediate and final goods. Overall, we found load shedding to have a statistically significant effect on all sectors of PPI.</p>
+<p>Our findings support our hypothesis and the existing literature, which suggest that load shedding drives inflation because of its impact on production. We believe that policies aimed at slowing the implementation of load shedding may help to curb inflation in South Africa. Because energy insecurity disproportionately harms lower income households and smaller producers, policies that aim to reduce the frequency and severity of load shedding may not only stabilize the economy but also help mitigate the structural inequalities built into South Africa’s economy.</p>
+</section>
+<section id="robustness-check" class="level2">
+<h2 data-anchor-id="robustness-check">Robustness Check</h2>
+<p>Between 2016 and 2018, there was a brief pause in load shedding in South Africa, creating a gap in our data. To see if our significant results hold after this break in load shedding, we shortened our time frame to include only 70 observations from June 2018 to March 2024. We found that the impulse response functions from the VAR-X model delivered roughly the same results in this smaller time frame, still showing statistical significance, as shown in Figure 6.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON385Figure6.png" class="img-fluid figure-img" width="468"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 6: Subsample analysis on rate change of PPI - final manufactured goods</p>
+</section>
+<section id="works-cited" class="level2">
+<h2 data-anchor-id="works-cited">Works Cited</h2>
+<p>Batini, N., &amp; Nelson, E. (2001). The Lag from Monetary Policy Actions to Inflation: Friedman Revisited. International Finance, 4(3), 381–400. https://doi.org/10.1111/1468-2362.00079</p>
+<p>Board of Governors of the Federal Reserve System (US). (1971, January 1). South African Rand to U.S. Dollar Spot Exchange Rate. FRED, Federal Reserve Bank of St.&nbsp;Louis. https://fred.stlouisfed.org/series/EXSFUS</p>
+<p>Cumulative hours of loadshedding scheduled by South African power utility Eskom by month from January 2014. (2015). Datadesk.co.za; Eskom Se Push. https://www.datadesk.co.za/app/dataset/93444f35-1062-4f62-9527-6e71fdbaa6bd/cumulative-hours-of-loadshedding-scheduled-by-south-african-power-utility-eskom-by-month-from-january-2014?utm_</p>
+<p>Erero, J. L. (2023). Impact of Loadshedding in South Africa: A CGE Analysis. Journal of Economics and Political Economy, 10(2), 78–94. https://journals.econsciences.com/index.php/JEPE/article/view/2448/3196</p>
+<p>Federal Reserve Bank of St.&nbsp;Louis. (2025). Effective Federal Funds Rate. Stlouisfed.org. https://fred.stlouisfed.org/series/FEDFUNDS</p>
+<p>International Trade Administration. (2024, January 26). South Africa Country Commercial Guide-Energy. Www.trade.gov. https://www.trade.gov/country-commercial-guides/south-africa-energy</p>
+<p>Kock, Z., &amp; Govender, K. K. (2021). Load-shedding and the Declining Energy Availability Factor: A Case Study of a South African Power Station. Mediterranean Journal of Social Sciences, 12(6), 128. https://doi.org/10.36941/mjss-2021-0063</p>
+<p>Kohler, M. (2006). The Birchwood Hotel and Conference Centre Johannesburg, South Africa The Economic Impact of Rising Energy Prices: A Constraint on South Africa’s Growth and Poverty Reduction Opportunities. https://www.tips.org.za/files/forum/2006/papers/KholerEconomicImpact.pdf</p>
+<p>Mathai, K. (2025). Monetary Policy: Stabilizing Prices and Output. International Monetary Fund. https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/Monetary-Policy</p>
+<p>Menon, S. (2018, October 25). Struggling rand means producer inflation could well spike. Business Day. https://www.businessday.co.za/bd/economy/2018-10-25-struggling-rand-means-producer-inflation-could-well-spike/</p>
+<p>Organization for Economic Co-operation and Development. (1980, December 1). Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for South Africa. FRED, Federal Reserve Bank of St.&nbsp;Louis. https://fred.stlouisfed.org/series/IR3TIB01ZAM156N</p>
+<p>P0142.1 - Producer Price Index (PPI). (2025). Statssa.gov.za; Department of Statistics: South Africa. https://www.statssa.gov.za/?page_id=1861&amp;PPN=P0142.1&amp;SCH=74230</p>
+<p>Patzelt, P., &amp; Reis, R. (2024). Estimating the Rise in Expected Inflation from Higher Energy Prices. UK Research and Innovation. https://personal.lse.ac.uk/reisr/papers/99-oilanchoring.pdf</p>
+<p>Production, Sales, Work Started and Orders: Production Volume: Economic Activity: Manufacturing for South Africa. (2024). Stlouisfed.org. https://fred.stlouisfed.org/series/ZAFPROMANMISMEI</p>
+<p>Takentsi, S., Sibanda, K., &amp; Hosu, Y.-S. (2022). Energy prices and economic performance in South Africa: an ARDL bounds testing approach. Cogent Economics &amp; Finance, 10(1). https://doi.org/10.1080/23322039.2022.2069905</p>
+<p>Wiese, M., &amp; van der Westhuizen, L.-M. (2024). Impact of planned power outages (load shedding) on consumers in developing countries: Evidence from South Africa. Energy Policy, 187, 114033–114033. https://doi.org/10.1016/j.enpol.2024.114033</p>
+<p>World Bank. (2025). Commodity Markets. World Bank. https://www.worldbank.org/en/research/commodity-markets</p>
+
+
+</section>
+</main>  
+</div>
+ <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

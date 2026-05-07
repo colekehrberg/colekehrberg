@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Behavioral Economics – Cole Kehrberg</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-872e900a155e990e89d7b6fcf623f4fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Cole Kehrberg</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-statistics--data-science-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Statistics &amp; Data Science Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-statistics--data-science-projects">    
+        <li>
+    <a class="dropdown-item" href="../about.html">
+ <span class="dropdown-text">Text Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../maps.html">
+ <span class="dropdown-text">Maps!</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-economics-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Economics Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-economics-projects">    
+        <li>
+    <a class="dropdown-item" href="../Economics/ECON385.html">
+ <span class="dropdown-text">Time Series &amp; Forecasting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Economics/ECON372.html">
+ <span class="dropdown-text">Behavioral Economics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-environmental-studies-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Environmental Studies Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-environmental-studies-projects">    
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-personal-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Personal Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-personal-projects">    
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Economics/ECON372.html">Behavioral Economics</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Economics/ECON385.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series &amp; Forecasting</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Economics/ECON372.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Behavioral Economics</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<div class="quarto-about-jolla column-page-right">
+ <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Behavioral Economics</h1>
+<p class="subtitle lead">Education’s Role in Preserving Human Intelligence in the Era of AI</p>
+</div>
+<div class="quarto-title-meta column-page-right">
+  </div>
+</header><main class="content column-page-right" id="quarto-document-content">
+<p>By Cole Kehrberg and Ellie Porrata</p>
+<section id="introduction" class="level2">
+<h2 data-anchor-id="introduction">Introduction</h2>
+<p>Consider a high school student who has just finished a long day of school, extracurricular activities, and other obligations. They sit down at their desk, intending to write an essay, only to stare at a blank document. With exhaustion settling in and due dates for assignments approaching, the option to utilize AI for some quick help stands out. To the student, an assignment that once needed time, struggle, and critical thinking skills, now only requires a prompt in specialized software. For many students, the choice to use AI comes not from laziness, but from ease and academic survival. However, in a moment of convenience, something else is at risk.</p>
+<p>Across classrooms, students rely on AI heavily. In high schools where students have unrestricted access to AI, educational outcomes worsened when educators removed access to AI tools, indicating a dependence rather than knowledge of how to use AI effectively (Bastani, et al., 2025). At the same time, national standardized test scores are down across the board (Carrillo, 2025). Thus, AI reliance is at the center of a modern educational conundrum. Students face academic and personal pressures, making the AI shortcut very appealing, while instructors worry about the long-term consequences to their students’ learning. AI’s prevalence in schools is now an unavoidable reality. Therefore, the pressing issue is how students use the technology and how it shapes their academic development.</p>
+<p>Proponents of AI argue that the new technology is a learning tool, rather than a hindrance to education. Even with poor performance in academic studies, innovative technology needs time to evolve into useful tools. Therefore, those who support AI argue that as students learn how to use it effectively, the technology could bolster the learning of young people, rather than undermine it. To address these concerns, bringing literacy programs to schools may help to bridge the divide between the fact that AI has immense academic potential, and the reality that the innovation is currently harming learning outcomes in schools.</p>
+<p>To address educational concerns and the improper uses of AI, instructors can employ a variety of pedagogical tools, two of which this paper will examine. One strategy is an AI literacy lecture that educates students about proper use of the technology, alongside the dangers of improper use. The other strategy is an AI reflection essay that requires students to critically analyze their usage of AI, asking them to detail how and why the technology was used. With both policies, the goal is to increase AI use for supplemented student learning and decrease AI use for displaced learning.</p>
+<p>The purpose of the AI literacy lecture is to show students how to properly use the assistive learning technology. An AI literacy lecture details the benefits of responsible usage, while recognizing the technology’s shortcomings. To implement this policy, instructors must deeply understand AI themselves, develop a lecture to communicate their knowledge, and set aside time in their course schedule to deliver the information. From the student perspective, the loss of some class time creates the possibility of understanding the course learning objectives less but improves their ability to learn the content outside of class hours, by increasing their ability to recognize proper AI usage.</p>
+<p>Meanwhile, AI reflection essays require students to critically reflect on how they have used AI, allowing them to uncover its benefits and harms themselves. With an essay policy, students spend more time reflecting on how they used AI in practice. Teachers may have students reflect on how they utilized AI for learning, how they critically analyzed the results, and how they would adjust their behavior if they attempted the assignment a second time. By nature of the policy, students uncover where AI supplemented their learning and where AI displaced their learning. Each policy has its benefits, so how can educators select a policy to address the societal problem of deteriorating education quality in the wake of the AI boom?</p>
+<p>Many students’ AI tendencies start in high school because that period provides formidable and essential growth in the development of a student’s brain, habits, and mind. Currently, many high school students do not have enough time to balance homework, extracurricular activities, family obligations, a social life, and time for themselves (Parker, 2014). With a lack of time already, a reflection policy in school that results in extra work on assignments may not be what students need. At the same time, studies have found high school students often struggle to stay engaged in lectures, raising questions of the effectiveness of AI literacy programs (de Neufville, 2023). Therefore, it may come down to how teachers value AI utilization in the classroom. Do teachers put more value on students’ ability to develop AI skills that enhance their ability to learn, or do they focus their efforts on preventing improper use of the technology? This paper reveals that educators who seek to enhance student learning through proper usage will implement AI literacy lectures, while those who hope to prevent misuse will institute reflection essays.</p>
+</section>
+<section id="review-of-literature" class="level2">
+<h2 data-anchor-id="review-of-literature">Review of Literature</h2>
+<p>As the development of AI progresses, students have begun to use innovations such as ChatGPT, Gemini, PhotoMath, and Microsoft CoPilot for education on a regular basis, with usage beginning as early as thirteen (Mcclain et al., 2026). These platforms allow users to input prompts, and AI generates answers using language models trained on large databases, producing human-like responses based on patterns learned from extensive data (OpenAI, 2024). Students find these perks to improve their productivity and efficiency in completing their assignments. Students use AI to help with idea generation, feedback, tutoring, simplifying complex problems, and saving time (Munaye et. al, 2026). However, accessing information that caters to one’s personal prompts also creates opportunities for students to take advantage of AI. While the technology offers strengths, it can also encourage overreliance, increase plagiarism, and reduce critical thinking skills (Hasanein &amp; Sobaih, 2023). Therefore, while AI can improve students’ education by supplementing efficiency in classwork, it can also act as a substitute for learning. These tradeoffs inform a key question for teachers to ponder: how do educators weigh developing new skills against substituting foundational ones?</p>
+<p>Several behavioral economic factors influence students’ behavior and decision-making surrounding AI use. Effort aversion, the tendency to avoid tasks that require cognitive or physical effort, becomes especially relevant, as students now have a tool that can do the work for them (Gerlich, 2025). Therefore, the effort of reading textbooks, watching online videos, or learning from outside help takes more time than simply prompting a large language model and clicking a button. Similarly, present bias leads students to prioritize the current reward of completing the task quickly rather than investing time into knowledge that would benefit them in the long term (Lie et al., 2025). These biases imply that even with strict rules, students may continue using AI if it reduces effort, supplies an immediate reward, or if their peers utilize it. Therefore, literacy-based programs effectively reshape students’ decision-making and thought processes around AI.</p>
+<p>Inconsistencies across academic settings in AI policies reinforce this uncertainty. Due to AI being a relatively new technology, educators and institutions are still learning how to successfully incorporate it into learning environments. As a result, policies vary widely, as some instructors enforce very strict rules, while others allow for more flexible use (Chirikov, 2026). The lack of universal policies creates confusion among students regarding what constitutes acceptable AI use (Wang et al., 2023). Students interpret unclear rules differently, resulting in varying behaviors. Confusion surrounding use suggests that clarity in policy design is crucial, regardless of the type of policy. Transparent expectations on how to use AI in a literacy program establishes a foundation and skillset in students, while clear guidelines for a reflection policy heightens awareness of their actions. Through an AI literacy lecture or reflection, educators clarify their beliefs and expectations surrounding the technology, which enhances students’ ability to harness the technology for education, and reduces students’ incentive to abuse the technology for displaced learning.</p>
+<p>As AI changes the landscape of education, teachers may approach the issue with AI literacy lectures, which provide guidelines on proper utilization of AI. AI literacy lectures can take many forms, but the core components include: (1) using AI; (2) understanding AI; and (3) appreciating the relationship between AI, society, and the environment (Stolpe &amp; Hallström, 2024). These three criteria ensure that humans recognize where AI impacts them, and where they can impact AI. Through understanding this relationship, students critically engage with AI, which leads them to think about the content matter of instruction more meaningfully, as well. In short, the goal behind targeted literacy lectures is to amplify human intelligence, rather than replace it.</p>
+<p>Alternatively, reflective essays require students to think critically through their personal scenarios and how to approach the use of AI. Literacy through the form of reflection allows students to discuss the process of AI utilization more holistically, providing students with an opportunity to discuss approaches they took, challenges they faced, and insights they gained (Walter, 2024). Reflective techniques may be familiar concepts to teachers, as they echo many common pedagogical tools.</p>
+<p>Many teachers are fundamentally against the use of AI, claiming it is inherently a threat to human intelligence. However, a correlation exists between a teacher’s opinion of AI and their own personal literacy (Çayak, 2024). Thus, the first hurdle to clear for literacy in students is ensuring that the teacher properly understands AI, with respect to the core pillars of AI literacy outlined previously. Once the educator understands the technology thoroughly, they must determine a path forward with AI literacy for their students, with the understanding that some form of literacy program would be preferable to no program at all (Bećirović et al., 2025).</p>
+<p>From a student perspective, the benefits from AI literacy lectures and reflections come from critical analysis. The misuse of AI for “intellectual outsourcing,” can undermine cognitive functions and problem-solving abilities (Hassen, 2025). This misuse displaces cognitive work for students, which negatively affects their overall learning of the subject matter. Students exhibit risk aversion when they fear getting caught improperly using AI and facing academic consequences (Chiu et al., 2023). AI policies in the classroom will increase a student’s concern of getting caught, as educators set expectations. Additionally, social norms play a role as students are more likely to use AI if their peers do so (Langreo, 2023). While risk aversion varies depending on the individual, policies and expectations contribute to a classroom baseline concern of getting caught.</p>
+<p>Additionally, a student’s decision to use AI depends on their concern of the technology. Those that believe AI is inaccurate, a cheat code, or against the rules, are less likely to use it. On the other hand, those that perceive it as acceptable tend to use it more (Lund et al., 2025). Additionally, students and faculty have similar perceptions on ethical use of AI, meaning they tend to agree on AI usage in an ethical setting (Hostetter et al., 2024). Therefore, we can conclude that a literacy lecture or reflection should focus primarily on how to use technology in a critical frame and perhaps less of an ethical one. By shifting the focus to critical analysis, students have a heightened sense of metacognitive awareness, which allows them to engage with the educational material in an analytic manner. As a result of this work, students that work with AI in a critical lens may show more positive educational signs than their classmates (Öner, 2025).</p>
+<p>Given the relevant research, educators would be wise to implement lecture or reflection policies that clarify academic expectations and demand critical engagement of AI usage. Teachers will stand to benefit from educating themselves on proper use of the technology and understanding the behavioral concepts that influence students’ actions. Meanwhile, students’ critical thinking is crucial to successful implementation of either policy, regardless of when that thinking occurs.</p>
+</section>
+<section id="theoretical-model" class="level2">
+<h2 data-anchor-id="theoretical-model">Theoretical Model</h2>
+<p>Students will respond to implementation of an AI literacy lecture or reflection using the following model:</p>
+<p>e: (Enhanced learning) Student uses AI to brainstorm, research, and edit, but still does their own work</p>
+<p>d: (Displaced learning) Student uses AI to do the whole assignment for them</p>
+<p>F: Free Time</p>
+<p>l: Literacy Program</p>
+<p>r: Reflection</p>
+<p>𝑠: schedule</p>
+<p>𝐶: Cognitive Ability in Four Years</p>
+<p>𝛽d: Salience, weight that students place on critical thinking deficiency</p>
+<p>D: Concern over cognitive deficiency</p>
+<p>𝛽p: Salience, weight that students place on probability of getting busted</p>
+<p>𝐵: Probability of getting busted for using AI in schoolwork</p>
+<p>Students value free time (F) when considering their level of AI consumption. They can secure more free time with the immediate benefits of AI, which helps students to complete their work faster. Present bias contributes to this effect, where quick reward is prioritized over long-term learning. Using AI can increase free time by reducing effort required to complete schoolwork, but the extent of this benefit also depends on external constraints in scheduling, including extracurricular activities, family obligations, or other commitments. Educators’ implementation of either a literacy program or a reflection essay, however, will impact students’ free time. Lectures will help students develop the skills to harness the power of AI for educational benefit, which may save free time, while reflection essays will negatively impact free time, due to the time that writing an essay requires.</p>
+<p>Regardless of whether a student uses AI for enhanced learning or displaced learning, use of the technology is a shortcut to the tediousness of going through pages of books, watching videos, or other forms of learning. Therefore, as students use AI, misuse of the technology can lead to long-term critical thinking deficiencies (C). On the other hand, proper use of the technology may have a positive impact on cognitive development four years down the road. Both the literacy lecture and the reflection essay should have similar benefits to enhancing student cognitive functions; however, they tackle students’ development through different policy avenues.</p>
+<p>A student’s belief over how AI will affect their cognitive functions (D) will also factor into their choice of whether to use the technology. Students may be unaware of the long-term damages when they seek short-term AI assistance, but educators’ literacy policies aim to bring critical concern to the front of their students’ minds. The timing of these policies creates different effects on a student’s concern, as one policy is preemptive, while the other is reflective.</p>
+<p>Furthermore, the weight students put on the fear of getting busted (𝛽p𝐵) for using AI demonstrates the level of risk they are willing to accept with displaced learning. This model assumes that students who properly use AI to enhance their learning will not face consequences for utilizing the technology. Again, due to the timing of the policies, the reflection essay will have a higher level of accountability than the literacy lecture, which creates a difference in students’ behaviors between the policies.</p>
+</section>
+<section id="comparative-statics" class="level2">
+<h2 data-anchor-id="comparative-statics">Comparative Statics</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ECON372Graphs.png" class="img-fluid figure-img" width="918"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Both the lecture and reflection take time out of students’ schedules, and the effects from these policies create a significant change in a student’s free time (F). In the case of displaced learning (d), a baseline student opts to utilize AI tools to secure free time and will attain more free time at higher levels of usage. However, students who rely on AI to displace their learning will retain less free time after the implementation of either policy. With a reflection policy (r), students must write an essay describing their AI reliance, which they understand will take longer to write if they have a higher usage level. A literacy lecture (l) also reduces a student’s free time, and the information presented in it will decrease the appeal of using the technology for displacement of learning, which will also reduce their free time. While students clearly benefit from saving time through the use of AI to displace their learning, they save less time from using AI to enhance learning (e). Because of this reality, implementation of either the AI literacy lecture (l) or the reflection essay (r) will have a greater impact on the elasticity of displaced learning (d) than the elasticity of enhanced learning (e). Students seeking enhanced learning will also experience a loss of free time equivalent to the participation time that both policies require. The lecture (l) will positively impact students who enhance their learning with AI because the policy will build students’ skills in utilizing AI efficiently and effectively. Therefore, they will only face the relatively fixed free time cost that either policy takes to complete. However, there is a negative impact on free time (F) from a reflection essay (r) because students are merely taking time to reflect on their usage, rather than developing efficient skills for utilization of AI. Because students are not building the skills to use AI efficiently, the elasticity of the curve is roughly unchanged from the baseline. As students prioritize usage of AI on the most beneficial tasks first, they will secure marginally diminishing returns to free time with each additional unit of AI consumption, for both enhanced and displaced learning.</p>
+<p>Students who choose to enhance their learning with AI (e) will reap benefits to their cognitive abilities in four years, while students who opt to displace their learning (d) will face cognitive decline. At the margins, both δC/δe and δC/δd will have diminishing effects, as students’ habits form. This model assumes that students who enhance their learning with AI will experience equivalent cognitive benefits from either policy (l, r). In the case of displaced learning, both policies will still positively affect students’ long-term cognitive function (C), but students who need to reflect (r) will critically analyze their usage more than students who heard a lecture (l). While a student’s decision to displace learning will harm their long-term cognitive abilities, students who reflect (r) will experience diminishing δC/δd with additional AI use because they will learn about themselves as they reflect on their patterns of displaced learning. On the other hand, students who experience a lecture (l) and still choose to displace their learning will face consistent δC/δd with additional AI use because they will likely fail to critically analyze their consumption of AI.</p>
+<p>Meanwhile, students will display decreasing concern over their potential cognitive deficiencies (D) as their quantity of either enhancing or displacing AI usage increases. Because students form habits regarding AI, their actions become internalized, with decreasing δD/δe and δD/δd. When students understand that they will need to write an essay reflecting on their AI consumption (r), they will exhibit more concern over their usage, regardless of whether they enhance or displace learning. Additionally, because they will reflect on their usage (r), students may not recognize the difference between enhancing and displacing their learning with AI. However, the preemptive nature of a lecture (l) will change a student’s concern of cognitive deficiencies with usage of AI, depending on their decision to enhance (e) or displace (d) learning. An effective lecture will educate students on how to properly use AI to enhance learning (e), so any concern over a decline in their cognitive functions will be lesser than the baseline. On the other hand, a lecture will create a heightened awareness of cognitive decline for students who seek to displace learning (d), but students may not experience concern if they continue to heavily rely on AI for displaced learning, hence the parabolic shape of the curve.</p>
+<p>Lastly, students will only ‘get busted’ by their educators when they use AI to displace their learning (d). Proper use of AI, demonstrated through the enhanced learning variable, will not come with the risk of ‘getting busted’ by an educator. However, with displaced learning, students with exposure to either policy are likely to decrease their improper AI usage, with an understanding that their likelihood of ‘getting busted’ by the educator will increase. Both policies will make the curve for displaced learning more inelastic, favoring less displaced work. However, students that become AI literate through a preemptive lecture will have more incentive to displace their work than students who need to write a reflection on their work afterwards because of the elevated risk of an educator identifying improper AI use from the student’s reflection.</p>
+</section>
+<section id="model-insights" class="level2">
+<h2 data-anchor-id="model-insights">Model Insights</h2>
+<p>Further analysis of the comparative statics uncovers that the AI literacy lecture will increase students’ quantity of enhanced learning. Due to effort aversion, students will hope to maximize their free time, so students will slightly prefer the AI literacy lecture because it takes up a class period, rather than the additional time outside of class that writing an essay would take. Additionally, the lecture builds AI literacy skills that the student can harness to develop their free time further, which explains why δF/δe with the lecture policy is greater than δF/δe without it. The difference between derivatives creates a point in which the AI literacy lecture generates more free time for students seeking to enhance their learning.</p>
+<p>Additionally, the preemptive nature of the lecture will cause students more concern over their cognitive function as their use of AI to displace learning increases, and less concern if they are enhancing learning. In the case of enhanced learning, the lack of concern draws an interesting contrast from the reflection policy, which creates more concern over AI use because students are unaware of the expectations surrounding proper usage ahead of time. Because one policy provides meaningful education, students have a reference to base their actions on, which reduces their concern over cognitive decline for learning enhancements.</p>
+<p>Generally, students will also hope to reduce their chance of getting busted. People tend to be risk averse, and due to the preemptive nature of AI literacy lectures, there is less accountability, which makes displacing learning slightly more attractive to students than in the reflective essay. Therefore, the AI literacy lecture will decrease the chance of getting busted by a lesser extent than the AI reflection essay. As a result, students will prefer the lecture, but it carries an elevated risk of the continuance of displaced learning. Students generally prefer lectures, but because the lectures carry risks that may incentivize displacement of learning, instructors should approach the issue with an ethical lens.</p>
+<p>On one hand, educators may view lectures as an immoral act of libertarian paternalism, where educators nudge students to use AI in a specific way, but those who use it responsibly will face the same fixed costs of free time as those who do not. Under this frame of thinking, educators may opt against implementation of the policy, while attempting to nudge immoral displacement-focused AI users in the right direction using an asymmetric paternalist structure. Because the decision depends on an instructor’s trust in their students, alongside their own ethical beliefs, the choice between the two policies depends on the educator who implements them.</p>
+<p>Additional analysis from the model and comparative statics sections shows why a reflection policy reduces AI displacement. Looking at the model, the marginal effect of displacement on concern over cognitive deficiency is negative. As students increase displacement, their concern about cognitive deficiency decreases. Without policy intervention, students under weigh this cost because present bias pushes them to prioritize immediate timesaving over future cognitive outcomes. Also, the relationship between fear of getting busted and displacement is positive, meaning each additional unit of displacement raises the expected probability of detection.</p>
+<p>The reflection policy changes this decision process by steepening the perceived marginal costs. Each unit of additional displacement now feels like it carries a more impactful penalty and more salient risk. In behavioral terms, a reflection policy acts as a commitment mechanism. Since students anticipate that they will have to justify their actions, their concerns over cognitive loss and fear of getting busted are more immediate and harder to discount.</p>
+<p>However, this depends on students’ honesty and engagement with the reflection process. If students are dishonest or do not care, then the perceived marginal cost flattens, and displacement falls to effort aversion and present bias. But if implemented effectively, a reflection policy reduces displacement by raising salience over concerns about cognitive loss and aligning students with their decision making.</p>
+<p>With time, AI will only improve, and students will continue to utilize it. This paper explores how the use of AI in education influences free time, long-term critical thinking skills, the concern over cognitive deficiencies in students, and the risk of ‘getting busted’ by an educator. In response to the growing fear from instructors on the decrease of students’ learning development with the impact of AI, the implementation of an AI literacy lecture or an assignment reflection policy could change student behaviors surrounding AI use. While a literacy program boosts students’ understanding of how to properly use AI, they may choose to ignore the lecture’s warning about displaced learning if they value free time highly and disregard long-term critical thinking or hold little fear of getting busted. On the other hand, a reflection is a constant reminder to students to contemplate the use of AI in their everyday work, which diminishes the risk of students displacing their work. However, the reflection policy provides little developmental value, leaving students without guidance on the proper usage of AI. Therefore, the determination of the policy depends on a teacher’s belief and insights on their students’ behaviors.</p>
+<p>Additional research may seek to quantify effects to students’ free time, or thinking surrounding AI usage, to bring more concrete evidence to our theoretic comparative statics. Additionally, extensions to the scope of this paper may examine alternative levels of education, such as middle school and higher education. In addition to the variables in this paper’s model, later research may also investigate how students’ ethical and moral standards affect their decisions when it comes to AI. Other variables, such as gender, race, the type of school attended, and home life, could also influence students’ behaviors towards AI. As the role of AI in education continues to expand, now is the time to engage with the emerging challenges that educational institutions face.</p>
+</section>
+<section id="works-cited" class="level2">
+<h2 data-anchor-id="works-cited">Works Cited</h2>
+<p>Atske, S. (2026, February 24). How Teens Use and View AI. Pew Research Center. https://www.pewresearch.org/internet/2026/02/24/how-teens-use-and-view-ai/#teens-schoolwork-and-ai</p>
+<p>Bastani, H., Bastani, O., Alp Sungu, Ge, H., Özge Kabakcı, &amp; Mariman, R. (2025). Generative AI without guardrails can harm learning: Evidence from high school mathematics. Proceedings of the National Academy of Sciences, 122(26). https://doi.org/10.1073/pnas.2422633122</p>
+<p>Bećirović, S., Polz, E., &amp; Tinkel, I. (2025). Exploring students’ AI literacy and its effects on their AI output quality, self-efficacy, and academic performance. Smart Learning Environments, 12(1). https://doi.org/10.1186/s40561-025-00384-3</p>
+<p>Carrillo, S. (2025, September 9). A new Nation’s Report Card shows drops in science, math and reading scores. NPR. https://www.npr.org/2025/09/09/nx-s1-5526918/nations-report-card-scores-reading-math-science-education-cuts</p>
+<p>Çayak, S. (2024). Investigating the relationship between teachers’ attitudes toward artificial intelligence and their artificial intelligence literacy. Journal of Educational Technology &amp; Online Learning, 7(4). https://dergipark.org.tr/en/download/article-file/3957599</p>
+<p>Chirikov, I. (2026). How Instructors Regulate AI in College: Evidence from 31,000 Course Syllabi. Higher Education Working Paper Series, 26(1). https://escholarship.org/uc/item/9c51s3gs</p>
+<p>Chiu, T. K. F., Xia, Q., Zhou, X., Chai, C. S., &amp; Cheng, M. (2023). Systematic Literature Review on opportunities, challenges, and Future Research Recommendations of Artificial Intelligence in Education. Computers and Education: Artificial Intelligence, 4(100118), 100118. https://doi.org/10.1016/j.caeai.2022.100118</p>
+<p>de Neufville, R. (2023). Dealing with the Lack of Student Engagement in Lectures. MIT Faculty Newsletter, XXXV(3). https://fnl.mit.edu/january-april-2023/dealing-with-the-lack-of-student-engagement-in-lectures/</p>
+<p>Gerlich, M. (2025). AI Tools in Society: Impacts on Cognitive Offloading and the Future of Critical Thinking. Societies, 15(1), 6. https://doi.org/10.3390/soc15010006</p>
+<p>Hasanein, A. M., &amp; Sobaih, A. E. E. (2023). Drivers and Consequences of ChatGPT Use in Higher Education: Key Stakeholder Perspectives. European Journal of Investigation in Health, Psychology and Education, 13(11), 2599–2614. https://www.mdpi.com/2254-9625/13/11/181</p>
+<p>Hassen, M. Z. (2025). The Impact of AI on Students’ Reading, Critical Thinking, and Problem-Solving Skills. American Journal of Education and Information Technology, 9(2), 82–90. https://doi.org/10.11648/j.ajeit.20250902.12</p>
+<p>Hostetter, A. B., Call, N., Frazier, G., James, T., Linnertz, C., Nestle, E., &amp; Tucci, M. (2024). Student and Faculty Perceptions of Generative Artificial Intelligence in Student Writing. Teaching of Psychology, 52(3). https://doi.org/10.1177/00986283241279401</p>
+<p>Langreo, L. (2023, July 31). Survey: Most Teens Think Using AI for Schoolwork Is Cheating. GovTech. https://www.govtech.com/education/k-12/survey-most-teens-think-using-ai-for-schoolwork-is-cheating</p>
+<p>Lie, M., Sahda Putra, B., Sammuel Sulu, J., &amp; Tanjung, M. H. (2025). The Psychology of BNPL Repayment Procrastination: Behavioral Insights on Present Bias and Financial Motivation. Journal the Winners, 26(2), 171–184. https://doi.org/10.21512/tw.v26i2.13936</p>
+<p>Lund, B., Nishith Reddy Mannuru, Teel, Z. A., Lee, T. H., Ortega, N. J., Simmons, S., &amp; Ward, E. (2025). Student Perceptions of AI-Assisted Writing and Academic Integrity: Ethical Concerns, Academic Misconduct, and Use of Generative AI in Higher Education. AI in Education, 1(1), 2–2. https://doi.org/10.3390/aieduc1010002</p>
+<p>Mcclain, C., Anderson, M., Sidoti, O., &amp; Bishop, W. (2026). How Teens Use and View AI Just over half of U.S. teens say they have used chatbots for help with schoolwork , and 12% say they’ve gotten emotional support. More teens think AI will be positive for them than negative FOR MEDIA OR OTHER INQUIRIES. Pew Research Center, 24, 2026. https://www.pewresearch.org/wp-content/uploads/sites/20/2026/02/PI_2026.02.24_Teens-and-AI_REPORT.pdf</p>
+<p>Munaye, Y. Y., Admass, W., Belayneh, Y., Molla, A., &amp; Asmare, M. (2025). ChatGPT in Education: A Systematic Review on Opportunities, Challenges, and Future Directions. Algorithms, 18(6), 352. https://doi.org/10.3390/a18060352</p>
+<p>Öner, D. (2025, August 25). Building Artificial Intelligence Literacy for Research: Technical Understanding as the Foundation for Critical Evaluation. The International Academic Forum (IAFOR). https://iafor.org/journal/iafor-journal-of-education/volume-13-issue-2/article-2/</p>
+<p>OpenAI. (2024). How ChatGPT and Our Foundation Models Are Developed. OpenAI. https://help.openai.com/en/articles/7842364-how-chatgpt-and-our-foundation-models-are-developed</p>
+<p>Parker, C. (2014, March 10). More than two hours of homework may be counterproductive, research suggests. Stanford Graduate School of Education; Stanford Graduate School of Education. https://ed.stanford.edu/news/more-two-hours-homework-may-be-counterproductive-research-suggests</p>
+<p>Stolpe, K., &amp; Hallström, J. (2024). Artificial intelligence literacy for technology education. Computers and Education Open, 6(100159), 100159. https://doi.org/10.1016/j.caeo.2024.100159</p>
+<p>Walter, Y. (2024). Embracing the future of Artificial Intelligence in the classroom: the relevance of AI literacy, prompt engineering, and critical thinking in modern education. International Journal of Educational Technology in Higher Education, 21(1). https://doi.org/10.1186/s41239-024-00448-3</p>
+<p>Wang, H., Dang, A., Wu, Z., &amp; Mac, S. (2023, December 8). Seeing ChatGPT Through Universities’ Policies, Resources and Guidelines. ArXiv.org. https://arxiv.org/abs/2312.05</p>
+
+
+</section>
+</main>  
+</div>
+ <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
