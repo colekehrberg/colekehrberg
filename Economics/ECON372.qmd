@@ -52,7 +52,9 @@ Given the relevant research, educators would be wise to implement lecture or ref
 
 Students will respond to implementation of an AI literacy lecture or reflection using the following model:
 
-
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON372Model.png") #uploads image
+```
 
 e: (Enhanced learning) Student uses AI to brainstorm, research, and edit, but still does their own work
 d: (Displaced learning) Student uses AI to do the whole assignment for them 
@@ -75,6 +77,10 @@ A student’s belief over how AI will affect their cognitive functions (D) will 
 Furthermore, the weight students put on the fear of getting busted (𝛽p𝐵) for using AI demonstrates the level of risk they are willing to accept with displaced learning. This model assumes that students who properly use AI to enhance their learning will not face consequences for utilizing the technology. Again, due to the timing of the policies, the reflection essay will have a higher level of accountability than the literacy lecture, which creates a difference in students’ behaviors between the policies.
 
 ## Comparative Statics
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/ECON372Graphs.png") #uploads image
+```
 
 Both the lecture and reflection take time out of students’ schedules, and the effects from these policies create a significant change in a student’s free time (F). In the case of displaced learning (d), a baseline student opts to utilize AI tools to secure free time and will attain more free time at higher levels of usage. However, students who rely on AI to displace their learning will retain less free time after the implementation of either policy. With a reflection policy (r), students must write an essay describing their AI reliance, which they understand will take longer to write if they have a higher usage level. A literacy lecture (l) also reduces a student’s free time, and the information presented in it will decrease the appeal of using the technology for displacement of learning, which will also reduce their free time. While students clearly benefit from saving time through the use of AI to displace their learning, they save less time from using AI to enhance learning (e). Because of this reality, implementation of either the AI literacy lecture (l) or the reflection essay (r) will have a greater impact on the elasticity of displaced learning (d) than the elasticity of enhanced learning (e). Students seeking enhanced learning will also experience a loss of free time equivalent to the participation time that both policies require. The lecture (l) will positively impact students who enhance their learning with AI because the policy will build students’ skills in utilizing AI efficiently and effectively. Therefore, they will only face the relatively fixed free time cost that either policy takes to complete. However, there is a negative impact on free time (F) from a reflection essay (r) because students are merely taking time to reflect on their usage, rather than developing efficient skills for utilization of AI. Because students are not building the skills to use AI efficiently, the elasticity of the curve is roughly unchanged from the baseline. As students prioritize usage of AI on the most beneficial tasks first, they will secure marginally diminishing returns to free time with each additional unit of AI consumption, for both enhanced and displaced learning. 
 
