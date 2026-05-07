@@ -20,11 +20,11 @@ We theorize that constricting the supply of energy to a demanding market will in
 
 Our research will identify and quantify the effects of load shedding on various measures of PPI. Accounting for control variables, this study will rely on time-series analysis to examine the time period of load shedding between 2014 to early 2024.
 
-# 1.2 Research Question
+### 1.2 Research Question
 
 How has Eskom’s policy of load shedding energy in South Africa impacted the producer price index for a variety of indices from 2014 to 2024? We hope to explore how electricity blackouts impact different types of inflation, specifically using the producer price index in our analysis. 
 
-# 1.3 Literature Review
+### 1.3 Literature Review
 
 The effects of load shedding in South Africa have consequential impacts throughout the economy. According to research by the South Africa Revenue Service, the overall impacts of load shedding on the South African economy may be in excess of 500 billion Rand (~29 billion USD), which accounts for approximately 7-8% of South Africa’s GDP (Erero, 2023). Load shedding causes ruptures to communication networks, job performance, and health and safety, which sends ripple effects throughout the economy. Through our research paper, we intend to identify the impact of load shedding specifically on measures of inflation.
 
@@ -108,13 +108,13 @@ Figure 5: Full VAR-X model for PPI (agriculture, forestry, & fishing)
 
 ## Discussion
 
-# 5.1 Implications
+### 5.1 Implications
 
 The findings of our research indicate that load shedding has a statistically significant and persistent effect on South Africa’s PPI, with effects lasting more than a year after the initial shock. These results have meaningful implications for both economic policy and firm-level decision making in the South African market. The persistence of the impulse response suggests that disruptions in electricity supply generate sustained pressures in the production process, rather than producing temporary price fluctuations. As a result, efforts to stabilize inflation should not be separated from improving the reliability of the energy sector. Our findings support the proposal that reducing the frequency or severity of load shedding, expanding generation capacity, or improving grid infrastructure will help to mitigate inflationary pressures.
 
 The impact of load shedding on South Africa’s PPI is particularly pronounced in the intermediate goods, mining, and agricultural sectors, which are heavily dependent on continuous access to electricity (Wiese & van der Westhuizen, 2024). By quantifying this sector specific relationship, our findings offer empirical evidence for policy interventions aimed at improving energy security as part of policy strategy to limit increasing rate of inflation.
 
-# 5.2 Comparisons
+### 5.2 Comparisons
 
 The results align with existing literature documenting the adverse economic consequences of load shedding in South Africa. Previous studies demonstrate that energy shortages reduce productive capacity, weaken supply chains, and generate macroeconomic inefficiencies (Kock & Govender, 2021). While this research emphasizes the effects on output and growth, our findings extend the literature by establishing a direct empirical connection between load shedding and price dynamics through a time-series economic framework.
 
