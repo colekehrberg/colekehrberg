@@ -57,15 +57,25 @@ knitr::include_graphics("~/R/colekehrberg/Economics/ECON372Model.png") #uploads 
 ```
 
 e: (Enhanced learning) Student uses AI to brainstorm, research, and edit, but still does their own work
+
 d: (Displaced learning) Student uses AI to do the whole assignment for them 
+
 F: Free Time
+
 l: Literacy Program 
+
 r: Reflection 
+
 𝑠: schedule
+
 𝐶: Cognitive Ability in Four Years
+
 𝛽d: Salience, weight that students place on critical thinking deficiency
+
 D: Concern over cognitive deficiency 
+
 𝛽p: Salience, weight that students place on probability of getting busted 
+
 𝐵: Probability of getting busted for using AI in schoolwork 
 
 Students value free time (F) when considering their level of AI consumption. They can secure more free time with the immediate benefits of AI, which helps students to complete their work faster. Present bias contributes to this effect, where quick reward is prioritized over long-term learning. Using AI can increase free time by reducing effort required to complete schoolwork, but the extent of this benefit also depends on external constraints in scheduling, including extracurricular activities, family obligations, or other commitments. Educators’ implementation of either a literacy program or a reflection essay, however, will impact students’ free time. Lectures will help students develop the skills to harness the power of AI for educational benefit, which may save free time, while reflection essays will negatively impact free time, due to the time that writing an essay requires.
