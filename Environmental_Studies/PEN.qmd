@@ -25,6 +25,10 @@ Leaves had made it known
 That while the wind is blowing,
 I am never alone
 
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Environmental_Studies/Picture2.jpeg")
+```
+
 I didn’t have a clear vision for my ideal summer after graduating high school, but I know it sure as hell didn’t include the state of Montana, and definitely didn’t include a bible camp. When my mom informed me that I would be venturing to big sky country with my church youth group, I pushed back. When we found out the train was leaving on my birthday, I sulked in a way that comes too naturally to Minnesotans. With an ounce of hope, I pouted, “Well, I would really love to celebrate it with my family.” I wasn’t proud of this. Mom looked at me apologetically and shrugged.
 
 We left around 10:00pm, and the train ride to Whitefish, Montana was 23 hours. As the train left the station, I sat by my church group, knowing my mom was watching from the platform. I had never taken the train before, and its rhythmic ‘thump-a-thump-a-thump’ was soothing to me. As we rolled through the plains of Minnesota and North Dakota, I dozed off while admiring the moonlight-stained, dew-soaked grasslands as I listened to Billy Joel, with the train drumming along.
@@ -34,6 +38,11 @@ The next morning, I woke up to the sound of my pastor singing folk songs. The su
 As the sun inched across the sky and the train thumped for what must have been the millionth time, I began to realize that I recognized some of the songs. Curiously, I followed my ears, walking to the cabin where I heard the music. Opening the door, I found a room full of far-too-eager eyes welcoming me. It seems my pastor had befriended a Mennonite family, and the prospect of singing with strangers in public made my stomach churn. This was my fate for the next week, I figured. I better get used to it. As we crossed into Montana, I joined their booth in the car. I periodically checked my watch as I tapped my toes to the thump of the train and the strums of the guitar.
 
 “Oooohh I’ve seen fire and I’ve seen rain,” they sang. “I’ve seen sunny days that I thought would never end” (Taylor). I stifled a laugh. This music gets me.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Environmental_Studies/Picture1.jpeg")
+```
+
 
 Ponderosa pines scatter the shores of Flathead Lake, towering above the cabins and large wooden crosses around the bible camp. The warm hues of their bark welcomed me, and its scent of fresh vanilla graced my nose as it wafted through the breeze (Munts).
 
