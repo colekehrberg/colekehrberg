@@ -29,7 +29,8 @@ website:
 
     - id: environmental
       title: "Environmental Studies"
-      contents: []
+      contents:
+         - Environmental_Studies/PEN.qmd
 
     - id: personal
       title: "Personal Projects"
