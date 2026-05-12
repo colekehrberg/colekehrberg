@@ -11,18 +11,27 @@ format:
 ---
 
 Alone, in the dark,
+
 I heard a rustle in the wood
+
 I heard them move together
+
 And there, alone, I stood
 
 Alone, so I thought,
+
 I approached the tree
+
 And as I came closer,
+
 It approached me
 
 Alone, in the dark,
+
 Leaves had made it known
+
 That while the wind is blowing,
+
 I am never alone
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
