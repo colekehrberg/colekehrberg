@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Regression Analysis – Cole Kehrberg</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-872e900a155e990e89d7b6fcf623f4fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Cole Kehrberg</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-statistics--data-science" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Statistics &amp; Data Science</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-statistics--data-science">    
+        <li>
+    <a class="dropdown-item" href="../Stats/Stats2.html">
+ <span class="dropdown-text">Regression Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Stats/about.html">
+ <span class="dropdown-text">Text Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Stats/maps.html">
+ <span class="dropdown-text">Maps!</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-economics" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Economics</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-economics">    
+        <li>
+    <a class="dropdown-item" href="../Economics/ECON385.html">
+ <span class="dropdown-text">Time Series &amp; Forecasting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Economics/ECON372.html">
+ <span class="dropdown-text">Behavioral Economics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-environmental-studies" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Environmental Studies</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-environmental-studies">    
+        <li>
+    <a class="dropdown-item" href="../Environmental_Studies/PEN.html">
+ <span class="dropdown-text">ES Capstone Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-personal-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Personal Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-personal-projects">    
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Stats/Stats2.html">Regression Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stats/Stats2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Regression Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stats/about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Text Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stats/maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Maps!</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<div class="quarto-about-jolla column-page-right">
+ <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Regression Analysis</h1>
+<p class="subtitle lead">The Relationship Between College Prestige &amp; Career Success</p>
+</div>
+<div class="quarto-title-meta column-page-right">
+  </div>
+</header><main class="content column-page-right" id="quarto-document-content">
+<p>By Cole Kehrberg and Gaby Hoover</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>To many Americans, successful lives include careers that pay well enough to live comfortably. Oftentimes, the process of living comfortably includes the ability to pay for necessities, like shelter and food, without worry. Living comfortably can also mean affording luxuries that improve quality of life (televisions, a house, vacations, etc). Money is also a large determinant in the idea of success. Those with more money are viewed in a more redeeming light and benefit from a higher status. In order to obtain a job that pays enough to be “successful” and live in a comfortable manner, one typically needs a college degree. As college students ourselves, it is easy to wonder if our decision to attend St.&nbsp;Olaf was the “correct” choice in terms of setting us up for the most success post-graduation. This is an increasing concern for many college students with a more uncertain workforce in America.</p>
+<p>With that in mind, does the selection of college impact one’s opportunity for a successful career? Would a prestigious institution increase their students’ amount of earnings post-graduation? In 2017, Dirk Witteveen and Paul Attewell found that higher college selectivity is associated with a lower rate of low post-graduate earnings, suggesting that more prestigious institutions lead to higher pay (Witteveen &amp; Attewall, 2017). However, what makes a college prestigious? We define prestigious institutions using the rate of admissions, cost of attendance, and the average SAT scores of students.</p>
+<p>Rate of admissions is a factor we include since the lower the rate, the more selective an institution is, making it more prestigious. Cost of attendance is also a factor in prestige as when a college is more expensive, they typically offer more resources and opportunities (faculty, research, etc.) and it is more difficult to pay for. We also included average SAT scores as a factor in prestige as standardized test scores are often used in college admissions to determine the success students will have in college classes. Research has shown that scores on standardized tests like the SAT are significant predictors of success in college GPA, although there are better predictors like exam scores in an introductory course (Marsh, Vandehey, &amp; Diekhoff, 2008). As SAT scores are somewhat significant in predicting college success, we believe average SAT scores of admitted students could predict career success post-graduation. We hypothesize that the rate of admissions of a college combined with the cost of attendance and average SAT scores are significant predictors of median amount earnings post-graduation.</p>
+</section>
+<section id="materials-and-methods" class="level1">
+<h1>Materials and Methods</h1>
+<p>To research the relationship between college prestige and post-graduation earnings, we used the “College Scorecard” dataset from the Department of Education. The full dataset includes 24 variables and 183,306 observations from colleges and universities, ranging from 1996 to 2023. Because our data on post-graduate earnings are measured nominally, they do not account for changes in inflation. Therefore, the median post-graduate earnings from 1996 would be much different from the post-graduate earnings in 2023. Recognizing this problem, we filtered the data to only include information for the academic year 2020-2021, figuring that data from a recent year would make our results more relevant.</p>
+<p>When deciding what variables to include in the model, we wanted to include information that could help explain the relationship between prestige and post-graduate earnings. We kept our main explanatory variable, rate of admissions, alongside other variables that could explain additional relationships, like the average SAT score and the cost of attendance. We also included our response variable, median earnings of students working and not enrolled 10 years after entry. We broke average SAT scores into an indicator variable designating schools with above average SAT scores as “high SAT score,” and schools with below average SAT scores as “low SAT score.” Similarly, we broke schools with above average cost of attendance into “high cost” and “low cost” schools. Using a Variance Inflation Factor (VIF) test, we examined whether we would encounter any issues with multicollinearity among our variables.</p>
+<p>The U.S. Department of Education’s “College Scorecard” data is compiled from a variety of sources. They obtain the measures of college admission from colleges, who self-report the figures to the National Center for Education Statistics, following rules from the agency (Russ &amp; Chingos, 2015). These measures are calculated specifically for first-year students of the college. Meanwhile, the “College Scorecard” pulls figures of post-graduate earnings through a system of tracking the figures alongside students’ social security numbers. When students apply for the FAFSA, they submit their social security information. After graduation, when that social security number ties to IRS tax filings, the government is able to access information on post-graduate income.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption>Scatter plot of rate of admissions compared to median ten year earnings by average cost. Rate of admissions is measured in percentage points. Median earnings measured in thousands of U.S. dollars. High and low cost institutions were distiguished by the mean cost ($20,552).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the scatter plot (Figure 1) of rate of admissions vs.&nbsp;median amount earnings coded for high vs.&nbsp;low cost, the slopes for both lines appear to be roughly parallel. Since both high and low cost institutions have a similar relationship between rate of admissions and earnings, we decided to fit an additive multiple linear regression model, as there is no need for an interaction term. To get a range of the possible coefficient for cost, we performed a 95% confidence interval. In order to assess the significance of the cost coefficient, we performed a nested F-test comparing the additive model to a simple model only including rate of admissions as a predictor earnings. Our null hypothesis for the F-test is that the simple model will be preferred and that the average cost of attendance is not a significant predictor of earnings. Our alternative hypothesis is that average cost is a significant predictor and should be included in the model for predicting earnings. We also used residual panel plots to assess the multiple linear regression conditions of our model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption>Scatter plot of rate of admissions compared to median ten year earnings by average SAT score of admitted students. Rate of admissions is measured in percentage points. Median earnings measured in thousands of U.S. dollars. High and low SAT scoress were distiguished by the mean score (score of 1141).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In addition to the additive model, we fit an interaction multiple linear regression model including rate of admissions and high vs.&nbsp;low SAT scores of admitted students as predictors of amount earnings. An interaction term for SAT and rate of admissions is necessary as the slopes for low SAT scores and high SAT scores are not parallel, as seen in Figure 2. To get a range of the possible coefficients for SAT, we performed a 95% confidence interval. To assess the significance of the SAT coefficient, we performed a nested F-test comparing the interaction model to the simple model used previously. Our null hypothesis for the F-test is that the simple model will be preferred and that the average SAT score of admitted students is not a significant predictor of earnings. Our alternative hypothesis is that average SAT score is a significant predictor and should be included in the model for predicting earnings. To assess the conditions of multiple linear regression, we coded residual plots.</p>
+<p>Lastly, our full model will include all the variables and interaction terms from the previous models. This will include the rate of admissions, the SAT indicator variable, the cost of admission indicator variable, and the interaction term between the SAT indicator and rate of admissions. To get a range of the possible coefficients for our variables, we performed 95% confidence intervals. To assess the significance of our coefficients, we performed a nested F-test comparing the interaction model to the simpler models used previously. To assess the conditions of multiple linear regression, we coded residual plots. To select the best model, we will use nested f-tests, and will examine the BIC and Adjusted R^2 of our three models. The most explanatory model should have the lowest BIC and the highest Adjusted R^2 of any model.</p>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<p>In our dataset, we found no issues with multicollinearity, with all variables having VIF scores much smaller than the cutoff of 5. For all of our models, the multiple linear regression condition of independence is satisfied, as we can reasonably assume that one college’s admission rate, cost of attendance, and median earnings of students do not impact other colleges’ data.</p>
+<p>From our summary outputs for each model, we were able to find each coefficient and their significance. All coefficients for each model were found to be significant in each model (p-value &lt; 0.05) and are summarized in Table 1. With the additive multiple linear regression model, the coefficient for the rate of admissions was -302.85 (t-value = -14.608, p-value &lt; 2e-16). So, for each additional percentage point in rate of admissions, the expected median amount earnings ten years post-graduation decreases by $302.85, holding cost of attendance constant. We are 95% confident that this decrease is between $262.17 and $343.52. The cost coefficient was -7,900.1 (t-value = -9.423, p-value &lt; 2e-16). Therefore, students who attend institutions that have a lower cost of attendance are expected to make $7,900.10 less, at any given rate of admissions. We are 95% confident that this decrease in earnings is between $6,255.13 and $9,545.07. The nested F-test we performed comparing the additive model to the simple model resulted in a F-statistic of 88.80 with a p-value less than 2.2e-16. Therefore, average cost of attendance is a significant predictor of median earnings post-graduation and should be included in our model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Model Coefficients</caption>
+<colgroup>
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 23%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Intercept</th>
+<th style="text-align: left;">Rate.of.Admissions</th>
+<th style="text-align: left;">High.Cost</th>
+<th style="text-align: left;">High.SAT</th>
+<th style="text-align: left;">SAT.interaction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cost - Additive</td>
+<td style="text-align: left;">83799.2</td>
+<td style="text-align: left;">-302.85</td>
+<td style="text-align: left;">-7900.1</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sat - Interaction</td>
+<td style="text-align: left;">93368</td>
+<td style="text-align: left;">-406.09</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">-45324</td>
+<td style="text-align: left;">45232</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Full</td>
+<td style="text-align: left;">94486</td>
+<td style="text-align: left;">-392.98</td>
+<td style="text-align: left;">-4950</td>
+<td style="text-align: left;">-43758</td>
+<td style="text-align: left;">44730</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We also coded residual plots to assess the multiple linear regression assumptions (Figure 3 in Appendix). The linearity assumption is reasonably met as in the residual vs.&nbsp;fitted plot, the residuals are gathered near the line with few deviations. The normality of residuals assumption is also met as in the Q-Q plot, the residuals are all gathered near the normality line. However, there is a slight skew shown in the right side of the plot with the residuals deviating from the line, but this is not too concerning. Finally, the somewhat equal variance assumption is met as the residuals are distributed somewhat evenly across in the residual vs.&nbsp;fitted plot.</p>
+<p>For the interaction multiple linear regression model, the SAT coefficient was -45,324.13 (t-value = -16.15 p-value &lt; 2e-16). Therefore, students who attend institutions that have a lower average SAT score of admitted students are expected to make $45,324.13 less, at any given rate of admissions. We are 95% confident that this decrease in earnings is between $39,818.68 and $50,829.57. The coefficient for the interaction term between rate of admissions and average SAT scores was 452.32 (t-value = 11.72, p-value &lt; 2e-16). Therefore, for every additional percentage point increase in admission rate, students who attend a college with a high average SAT of admitted students will earn $452.32 more than those who attend a college with a low average SAT score. We are 95% confident that this difference in earnings is between $376.58 and $528.04. We performed a nested F-test to compare the interaction model to the simple model, which outputted an F-statistic of 227.59, with a p-value less than 2.2e-16. Therefore, the average SAT score of admitted students is a significant predictor of median earnings post-graduation and should be included in our model.</p>
+<p>The residual plots we coded allowed us to assess the assumptions of multiple linear regression (Figure 4 in Appendix). The linearity assumption is reasonably met as in the residual vs.&nbsp;fitted plot, the residuals are gathered near the line with few deviations. The normality of residuals assumption is also met as in the Q-Q plot, the residuals are all gathered near the normality line. However, there is a slight skew shown in the right and left sides of the plot with the residuals deviating from the line, but this is not too concerning. Finally, the somewhat equal variance assumption is not met as most of the residuals are gathered on the left side of the residual vs.&nbsp;fitted plot.</p>
+<p>Finally, for the full model we used a nested F-test, to compare the full model to the SAT interaction model. This test generated an F-statistic of 44.87, and a p-value of 3.375e-11, meaning that the simplified interaction model is not preferred. Therefore, the full model’s variables are all significant predictors of median post-graduate earnings.</p>
+<p>The residual plots of the full model prove to meet the linearity condition, because the residuals are gathered near the line with few deviations (Figure 5 in Appendix). The Q-Q plot shows residuals mostly gathered near the residual line, with only a bit of skew on the tails. However, similarly to the other models, the assumption of somewhat equal variance is not met because most of the residuals are gathered on the left side of the residual vs.&nbsp;fitted plot.</p>
+<p>In addition to passing the nested F-test, the full model also has the lowest BIC and Adjusted R-squared of any model, meaning that the full model most accurately explains the variation in post-graduate earnings as seen in Table 2.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Model Comparison</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">BIC</th>
+<th style="text-align: right;">Adjusted R^2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cost - Additive</td>
+<td style="text-align: right;">23976.96</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sat - Interaction</td>
+<td style="text-align: right;">23687.75</td>
+<td style="text-align: right;">0.42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Full</td>
+<td style="text-align: right;">23650.58</td>
+<td style="text-align: right;">0.45</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>Our results show that the relationship between college prestige and post-graduate earnings is significant. The results become more significant when also accounting for the average SAT score of admitted students, and the cost of attending the college. Both of these factors can be considered measures of prestigious post-secondary institutions.</p>
+<p>However, in our data, we assumed that every college had strong and readily available average SAT scores. More realistically, data from schools in the midwest are likely to have skewed data for SAT scores because the SAT is used more frequently in coastal colleges and universities. Therefore, only students that bolster their applications may have taken the SAT, which may make the true average of a midwestern college’s SAT score higher than what the average student of that college would secure if they were to take the SAT.</p>
+<p>Additionally, during the 2020-2021 school year, most U.S. colleges did not require SAT scores (Most U.S. Colleges Have Dropped ACT/SAT Requirement for Fall 2021 Admission, 2020). This also may affect the quality of the SAT variable. When fewer schools require data on SAT scores, students that are not confident in their scores may choose not to submit it, theoretically making the collected average SAT score for a college higher than the true mean of the school’s population.</p>
+<p>We also assumed that rate of admission was the main explanatory variable of a school’s prestige, which may not be the case. For example, student-to-faculty ratios, the quality of instruction, and reputation for highly-performing graduates could all be indicators of a school’s prestige beyond the school’s admission rate.</p>
+<p>As the data was collected from higher education institutions in the United States, our findings can only be generalized to colleges in the U.S. Since we filtered the data to only include the years 2020 through 2021, our results can not be applied to or used for making predictions more than a couple of years after or before these years due to changes in inflation, the job market, and values of education. We cannot conclude that the rate of admissions, cost of attendance, and average SAT scores of admitted students directly causes a change in the amount earnings of students post graduation as the data does not come from a randomized experiment. This is an observational study, therefore confounding variables may play a role in the observed relationships we found. A potential confounding variable is socioeconomic status of the students attending the institution. Students with a higher socioeconomic status would be able to afford a more expensive education and tutors to assist them with their studies, confounding our cost and SAT variables. Those with higher socioeconomic status may also have better connections and networks, therefore they have better job opportunities after graduation, confounding our earnings variable.</p>
+<p>An additional confounding variable is gender of those admitted, attending, and graduating from these institutions. In 2024, Jessica Prach, Ane Turner Johnson, and Sarah Ferfuson found that gender has a significant impact on the choice of college program and academic major based on varying factors including GPA, prestige, and reputation (Prach, Johnson, &amp; Ferguson, 2024). This choice was also found to impact the careers and potential earnings of graduates of these programs (Prach, Johnson, &amp; Ferguson, 2024). This suggests that one gender may select institutions with programs that result in lower potential earnings, leaving earning disparities between genders, confounding our earnings variable. This also impacts our rate of admissions variable as if men do not apply to an institution at the same rate as women, then they will not be admitted to the institution at the same rate as women. In future research, it may be helpful to take gender disparities in both earnings and selection of academic programs into account when examining the relationship between prestige of an institution and the future earnings of graduates.</p>
+<p>We also think it is important to continue to examine the relationship we observed between earnings, admission rate, cost, and SAT scores in order to see how it changes over time with inflation rates. It would also be beneficial to examine how socioeconomic status plays a role in the selection of higher education and if it impacts the amount earnings post graduation. It may also be beneficial to facet our findings by college majors to examine how prestige of the institution impacts future earnings by each field of study.</p>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<section id="figures" class="level2">
+<h2 data-anchor-id="figures">Figures</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of cost-additive model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of cost-additive model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of cost-additive model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of cost-additive model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of SAT-interaction model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of SAT-interaction model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of SAT-interaction model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of SAT-interaction model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of full model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of full model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of full model.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Stats2_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid figure-img" width="288"></p>
+<figcaption>Residual plots for checking the conditions of full model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sources" class="level2">
+<h2 data-anchor-id="sources">Sources</h2>
+<p>Marsh, C. M., Vandehey, M. A., &amp; Diekhoff, G. M. (2008). A Comparison of an Introductory Course to SAT/ACT Scores in Predicting Student Performance. The Journal of General Education, 57(4), 244–255. http://www.jstor.org/stable/27798113</p>
+<p>Most U.S. colleges have dropped ACT/SAT requirement for fall 2021 admission. (2020, June 26). THE FEED; Georgetown University. https://feed.georgetown.edu/access-affordability/most-u-s-colleges-have-dropped-act-sat-requirement-for-fall-2021-admission/</p>
+<p>Prach, J., Johnson, A. T., &amp; Ferguson, S. (2024). College choice &amp; the consumer: the impact of gender on higher education enrollment. Journal of Marketing for Higher Education, 34(1), 415–435. https://doi.org/10.1080/08841241.2021.2006851</p>
+<p>Russ, G. J., &amp; Chingos, M. M. (2015, October 15). Deconstructing and reconstructing the College Scorecard. Brookings. https://www.brookings.edu/articles/deconstructing-and-reconstructing-the-college-scorecard/</p>
+<p>Witteveen, D., &amp; Attewell, P. (2017). The earnings payoff from attending a selective college. Social Science Research, 66, 154-169. https://doi.org/10.1016/j.ssresearch.2017.01.005</p>
+<p>U.S. Department of Education (2025). College Scorecard.</p>
+
+
+</section>
+</section>
+</main>  
+</div>
+ <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

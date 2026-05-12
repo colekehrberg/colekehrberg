@@ -18,8 +18,9 @@ website:
     - id: stats
       title: "Statistics & Data Science"
       contents:
-        - about.qmd
-        - maps.qmd
+        - Stats/Stats2.qmd
+        - Stats/about.qmd
+        - Stats/maps.qmd
 
     - id: economics
       title: "Economics"
