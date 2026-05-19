@@ -32,6 +32,7 @@ website:
       title: "Environmental Studies"
       contents:
          - Environmental_Studies/PEN.qmd
+         - Environmental_Studies/GIS.qmd
 
     - id: personal
       title: "Personal Projects"
