@@ -10,6 +10,10 @@ format:
     css: styles.css
 ---
 
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Environmental_Studies/GIS_Poster.jpg") 
+```
+
 The way in which humans use land impacts the water quality within watersheds (Bonansea, 2016). Agriculture tends to leave high nutrient loads in the water as a result of the use of fertilizer, crop management, and the manure of farm animals. These farming practices lead to significant phosphorus and nitrogen pollution, which worsens water quality (Ni et al., 2021). In a study of Minnesota's watersheds, we pulled data layers from the University of Minnesota and the Minnesota Department of Natural Resources to analyze the correlation between land coverage and water quality within regions of similar watersheds. The watersheds in regions containing mostly wetlands and forests had the highest average water quality scores (around 75/100), while the two regions made of agricultural land scored the lowest (around 40-50/100). We calculated overall water quality scores by using a mean of several important quality indicators.
 
 Water is crucial to life on Earth and the degradation of water adversely affects the health and wellbeing of all the living organisms that depend on it. From our study of Minnesota, it is clear that modern-day agricultural practices negatively impact water quality. In contrast, wetlands and forests, which tend to be less controlled by humans, scored higher in water quality indices. However, we notably excluded the watershed of Minnesota around the Twin Cities, which contains the highest percentage of impervious surfaces in the state (University of Minnesota, 2013). Because Minnesota contains only one watershed with a significant percentage of impervious surfaces, we excluded it in our study of Minnesota due to a lack of data. This exclusion presents the opportunity to explore the impact of increased runoff and the impact of roads, sidewalks, and buildings on localized water quality.
