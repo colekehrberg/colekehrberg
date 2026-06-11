@@ -929,13 +929,13 @@ WAR_All |> print(n = 50)
 # Code Sample for Hitters
 
 ```{r, message = FALSE, warning = FALSE}
-catcher_hit <- mlb_stats(stat_type = 'season',          #pulls data using mlb_stats package
-  position = "C",                                       #selects only Catchers
+catcher_hit <- mlb_stats(stat_type = 'season',  #pulls data using mlb_stats package
+  position = "C",    #selects only Catchers
   player_pool = 'all',
-  stat_group = 'hitting',                               #pulls only hitting statistics
+  stat_group = 'hitting',    #pulls only hitting statistics
   season = Season,                                      
-  limit = 50) |>                                        #takes only the top 50 catchers
-  mutate(G = games_played,                              #renames stats to abbreviations
+  limit = 50) |>     #takes only the top 50 catchers
+  mutate(G = games_played,         #renames stats to abbreviations
          R = runs, 
          HR = home_runs,
          K = strike_outs,
@@ -959,31 +959,31 @@ catcher_hit <- mlb_stats(stat_type = 'season',          #pulls data using mlb_st
 catcher_field <- mlb_stats(stat_type = 'season',
   position = "C",
   player_pool = 'all',
-  stat_group = 'fielding',                            #selects fielding statistics
+  stat_group = 'fielding',   #selects fielding statistics
   season = Season, 
   limit = 750) |> 
-  mutate(name = player_full_name,                     #renames columns succinctly
+  mutate(name = player_full_name,  #renames columns succinctly
          E = errors) |>
   group_by(name) |>
   summarize(E = sum(E, na.rm = TRUE)) |>
-  select(name, E)                                     #keeps only player name and Errors
+  select(name, E)   #keeps only player name and Errors
 
-catchers <- catcher_hit |>                            #combines data frames
+catchers <- catcher_hit |>    #combines data frames
   left_join(catcher_field, by = "name") |>
-  mutate(pts = (pts - E),                        #calculates total points with fielding errors
-         ppg = pts/G) |>                         #calculates points per game
+  mutate(pts = (pts - E),  #calculates total points with fielding errors
+         ppg = pts/G) |>    #calculates points per game
   select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E) |>
-  arrange(desc(pts))                                  #arranges column by points
+  arrange(desc(pts)) #arranges column by points
     
     
-catcher_rep <- catchers |>                            #saves replacement-level catcher
+catcher_rep <- catchers |>   #saves replacement-level catcher
   ungroup() |>
   arrange(desc(pts), desc(ppg)) |>
   distinct() |>
-  slice(15) |>                                       #15th best catcher is 'replacement-level'
+  slice(15) |>     #15th best catcher is 'replacement-level'
   pull(pts)
   
-catchers <- catchers |>                              #edits the 'catchers' data frame
+catchers <- catchers |>   #edits the 'catchers' data frame
   ungroup() |>
   arrange(desc(pts), desc(ppg)) |>
   mutate(WAR = round((pts / 447.29) - (catcher_rep / 447.29)), 3) |>             
@@ -991,20 +991,20 @@ catchers <- catchers |>                              #edits the 'catchers' data 
   select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E) |>
   distinct()
 
-rm(catcher_field, catcher_hit)                #cleans environment in R
+rm(catcher_field, catcher_hit)  #cleans environment in R
 ```
 
 # Code Sample for Pitchers
 
 ```{r, message = FALSE, warning = FALSE}
 convert_innings <- function(ip) {
-  whole <- floor(ip)                    #finds whole number in IP statistic
-  decimal <- ip - whole                 #finds the decimal in the IP statistic
+  whole <- floor(ip)    #finds whole number in IP statistic
+  decimal <- ip - whole    #finds the decimal in the IP statistic
   if (decimal >= 0.3) return(NA_real_)  #avoids any bad conversions
   return(whole + (decimal * 10) / 3)}   #recalculates decimal to be more statistically accurate
 
 starting_pitchers <- mlb_stats(stat_type = 'season',
-  position = "P",                        #finds only pitchers
+  position = "P",   #finds only pitchers
   player_pool = 'all',
   stat_group = 'pitching',
   season = Season, 
@@ -1034,25 +1034,26 @@ starting_pitchers <- mlb_stats(stat_type = 'season',
          Pos = "SP") |>
   mutate(IP = sapply(IP_raw, convert_innings)) |>     #uses function to convert IP
   mutate(pts = (IP*4.5 - H*1 - ER*3 - BB*1 + K*1 - B*1 + PKO*1 + SV*6 + HD*5 - BS*3),
-         ppg = pts/G) |>              #calculates points using league's scoring system
-  select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+         ppg = pts/G) |>              
+#calculates points using league's scoring system
+  select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches) |>
   filter((Pitches/G) >= 30) |>        
 #only takes pitchers that tend to throw more than 30 pitchers per game (filters out relief pitchers)
   arrange(desc(pts))
     
-starting_pitcher_rep <- starting_pitchers |>        #saves replacement-level starting pitcher
+starting_pitcher_rep <- starting_pitchers |>   #saves replacement-level starting pitcher
   ungroup() |>
   arrange(desc(pts), desc(ppg)) |>
   distinct() |>
-  slice(92) |>                              #92nd best starting pitcher is 'replacement-level'
+  slice(92) |> #92nd best starting pitcher is 'replacement-level'
   pull(pts)
   
-starting_pitchers <- starting_pitchers |>      #edits the starting_pitchers data frame
+starting_pitchers <- starting_pitchers |> #edits the starting_pitchers data frame
   ungroup() |>
   arrange(desc(pts), desc(ppg)) |>
  mutate(WAR = round((pts / 447.29) - (starting_pitcher_rep / 447.29)), 3) |>  
   #finds a player's WAR in a year, given that 447.29 points creates a win
-  select(name, WAR, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  select(name, WAR, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches) |>
   distinct()
 ```
 ```
