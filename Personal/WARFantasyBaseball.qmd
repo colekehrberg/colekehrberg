@@ -1037,7 +1037,7 @@ starting_pitchers <- mlb_stats(stat_type = 'season',
          ppg = pts/G) |>              #calculates points using league's scoring system
   select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
   filter((Pitches/G) >= 30) |>        
-#only takes pitchers that tend to throw more than 30 pitchers per game (relief pitchers will throw under 30, starters will throw over 30)
+#only takes pitchers that tend to throw more than 30 pitchers per game (filters out relief pitchers)
   arrange(desc(pts))
     
 starting_pitcher_rep <- starting_pitchers |>        #saves replacement-level starting pitcher
