@@ -952,7 +952,8 @@ catcher_hit <- mlb_stats(stat_type = 'season',          #pulls data using mlb_st
          BABIP = babip,
          name = player_full_name,
          Pos = "C") |>
-  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>   #calculates points for a player, given the league scoring system for each hitting statistic
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+#calculates points for a player, given the league scoring system for each hitting statistic
   select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
          
 catcher_field <- mlb_stats(stat_type = 'season',
@@ -1034,7 +1035,8 @@ starting_pitchers <- mlb_stats(stat_type = 'season',
   mutate(pts = (IP*4.5 - H*1 - ER*3 - BB*1 + K*1 - B*1 + PKO*1 + SV*6 + HD*5 - BS*3),
          ppg = pts/G) |>              #calculates points using league's scoring system
   select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
-  filter((Pitches/G) >= 30) |>        #only takes pitchers that tend to throw more than 30 pitchers per game (relief pitchers will throw under 30, starters will throw over 30)
+  filter((Pitches/G) >= 30) |>        
+#only takes pitchers that tend to throw more than 30 pitchers per game (relief pitchers will throw under 30, starters will throw over 30)
   arrange(desc(pts))
     
 starting_pitcher_rep <- starting_pitchers |>        #saves replacement-level starting pitcher
@@ -1047,7 +1049,8 @@ starting_pitcher_rep <- starting_pitchers |>        #saves replacement-level sta
 starting_pitchers <- starting_pitchers |>      #edits the starting_pitchers data frame
   ungroup() |>
   arrange(desc(pts), desc(ppg)) |>
- mutate(WAR = round((pts / 447.29) - (starting_pitcher_rep / 447.29)), 3) |>  #finds a player's WAR in a year, given that 447.29 points creates a win
+ mutate(WAR = round((pts / 447.29) - (starting_pitcher_rep / 447.29)), 3) |>  
+  #finds a player's WAR in a year, given that 447.29 points creates a win
   select(name, WAR, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
   distinct()
 ```
