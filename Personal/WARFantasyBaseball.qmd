@@ -986,7 +986,8 @@ catcher_rep <- catchers |>                            #saves replacement-level c
 catchers <- catchers |>                              #edits the 'catchers' data frame
   ungroup() |>
   arrange(desc(pts), desc(ppg)) |>
-  mutate(WAR = round((pts / 447.29) - (catcher_rep / 447.29)), 3) |>             #finds a player's WAR in a year, given that 447.29 points creates a win
+  mutate(WAR = round((pts / 447.29) - (catcher_rep / 447.29)), 3) |>             
+  #finds a player's WAR in a year, given that 447.29 points creates a win
   select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E) |>
   distinct()
 
