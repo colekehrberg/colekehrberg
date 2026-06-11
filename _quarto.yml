@@ -36,7 +36,8 @@ website:
 
     - id: personal
       title: "Personal Projects"
-      contents: []
+      contents:
+         - Personal/FantasyBaseball.qmd
 
 format:
   html:

@@ -1,0 +1,1057 @@
+---
+title: "Fantasy Baseball Project"
+toc: false
+about: 
+  template: jolla
+format:
+  html:
+    theme: lux
+    css: styles.css
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(baseballr)
+library(mlbplotR)
+library(dplyr)
+library(tidytext)
+library(tidyr)
+library(ggplot2)
+library(tidyverse)
+```
+
+In this personal project, I wrote code in R to calculate the value of player, given a fantasy baseball league's scoring system. The results below display players' value during the 2024 season, but the season is adjustable. 
+
+WAR (Wins Above Replacement) is a statistic that Major League Baseball teams use to calculate the value a player adds over a replacement-level player at the same position. I applied the same concept to fantasy baseball in this project, where I identified:
+
+1. Replacement-level players at every position: I found the level of replacement by looking at which players were on a team, and which players were listed as 'free agents.' Players listed as free agents may be added by any team, which aligns with the definition of replacement-level.
+
+2. Points needed for a win: To win a game in fantasy baseball, a team must score more points than their opponent. To find the amount of points needed to win a matchup, I compiled a list of every matchup's winners and averaged their point totals. In theory, this stat describes 'what it takes' to win a game, on average. This value ended up being 447.29 points per game
+
+Finally, to calculate the WAR, I started by determining how many wins a player creates, which I did by dividing their total points by the team points needed for a win. To find how many wins their replacement generated, I used the same process. The difference between the two values describes the "Wins Above Replacement" (or WAR) for a player. The equation is shown below.
+
+WAR = (pts / 447.29) - (catcher_rep / 447.29)
+
+The following is a sample of the top 50 players in the league, followed by a sample of the code to calculate WAR for both hitters and pitchers.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+Season <- 2024
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+catcher_hit <- mlb_stats(stat_type = 'season',
+  position = "C",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 50) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name,
+         Pos = "C") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_catchers <- catcher_hit |> pull(name)
+         
+catcher_field <- mlb_stats(stat_type = 'season',
+  position = "C",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |> 
+  mutate(name = player_full_name,
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE)) |>
+  select(name, E)
+
+catcher_OFAST <- mlb_stats(stat_type = 'season',
+  position = "C",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>                            
+  summarize(OFAST = sum(OFAST, na.rm = TRUE)) 
+
+catchers <- catcher_hit |>
+  left_join(catcher_field, by = "name") |>
+  left_join(catcher_OFAST, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts - E + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  arrange(desc(pts))
+    
+    
+catcher_rep <- catchers |>                                   #Just Catchers in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(15) |>                                                #replacement level
+  pull(pts)
+  
+catchers <- catchers |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (catcher_rep / (447.29 * 19))) * 19, 3)
+  ) |>
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  distinct()
+
+rm(catcher_field, catcher_hit, catcher_OFAST, select_catchers)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+first_basemen_hit <- mlb_stats(stat_type = 'season',
+  position = "1B",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 75) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name,
+         Pos = "1B") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, G, Pos, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_first_basemen <- first_basemen_hit |> pull(name)
+         
+first_basemen_field <- mlb_stats(stat_type = 'season',
+  position = "1B",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |> 
+  filter(position_abbreviation == "1B") |>
+  mutate(name = player_full_name,
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE)) |>
+  select(name, E)
+
+first_basemen_OFAST <- mlb_stats(stat_type = 'season',
+  position = "1B",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>                            
+  summarize(OFAST = sum(OFAST, na.rm = TRUE)) 
+
+first_basemen <- first_basemen_hit |>
+  left_join(first_basemen_field, by = "name") |>
+  left_join(first_basemen_OFAST, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts - E + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  arrange(desc(pts))
+    
+    
+first_basemen_rep <- first_basemen |>                               #Just 1B in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(22) |>                                                      #replacement level
+  pull(pts)
+  
+first_basemen <- first_basemen |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (first_basemen_rep / (447.29 * 19))) * 19, 3)
+  ) |>           #adjust
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  distinct()
+
+rm(first_basemen_field, first_basemen_hit, first_basemen_OFAST, select_first_basemen)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+second_basemen_hit <- mlb_stats(stat_type = 'season',
+  position = "2B",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 75) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name,
+         Pos = "2B") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_second_basemen <- second_basemen_hit |> pull(name)
+         
+second_basemen_field <- mlb_stats(stat_type = 'season',
+  position = "2B",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 700) |> 
+  mutate(name = player_full_name,
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE)) |>
+  select(name, E)
+
+second_basemen_OFAST <- mlb_stats(stat_type = 'season',
+  position = "2B",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>                            
+  summarize(OFAST = sum(OFAST, na.rm = TRUE)) 
+
+second_basemen <- second_basemen_hit |>
+  left_join(second_basemen_field, by = "name") |>
+  left_join(second_basemen_OFAST, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts - E + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  arrange(desc(pts))
+    
+    
+second_basemen_rep <- second_basemen |>                               #Just 1B in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(14) |>                                                      #replacement level
+  pull(pts)
+  
+second_basemen <- second_basemen |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (second_basemen_rep / (447.29 * 19))) * 19, 3)
+  ) |>       #adjust
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  distinct()
+
+rm(second_basemen_field, second_basemen_hit, second_basemen_OFAST, select_second_basemen)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+shortstop_hit <- mlb_stats(stat_type = 'season',
+  position = "SS",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 75) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name,
+         Pos = "SS") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_shortstop <- shortstop_hit |> pull(name)
+         
+shortstop_field <- mlb_stats(stat_type = 'season',
+  position = "SS",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |> 
+  mutate(name = player_full_name,
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE)) |>
+  select(name, E)
+
+shortstop_OFAST <- mlb_stats(stat_type = 'season',
+  position = "SS",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>                            
+  summarize(OFAST = sum(OFAST, na.rm = TRUE)) 
+
+shortstop <- shortstop_hit |>
+  left_join(shortstop_field, by = "name") |>
+  left_join(shortstop_OFAST, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts - E + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  arrange(desc(pts))
+    
+    
+shortstop_rep <- shortstop |>                               #Just 1B in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(21) |>                                                      #replacement level
+  pull(pts)
+  
+shortstop <- shortstop |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (shortstop_rep / (447.29 * 19))) * 19, 3)
+  ) |>         #adjust
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  distinct()
+
+rm(shortstop_field, shortstop_hit, shortstop_OFAST, select_shortstop)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+third_basemen_hit <- mlb_stats(stat_type = 'season',
+  position = "3B",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 75) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name,
+         Pos = "3B") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_third_basemen <- third_basemen_hit |> pull(name)
+         
+third_basemen_field <- mlb_stats(stat_type = 'season',
+  position = "3B",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |> 
+  mutate(name = player_full_name,
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE)) |>
+  select(name, E)
+
+third_basemen_OFAST <- mlb_stats(stat_type = 'season',
+  position = "3B",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>                            
+  summarize(OFAST = sum(OFAST, na.rm = TRUE)) 
+
+third_basemen <- third_basemen_hit |>
+  left_join(third_basemen_field, by = "name") |>
+  left_join(third_basemen_OFAST, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts - E + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  arrange(desc(pts))
+    
+    
+third_basemen_rep <- third_basemen |>                               #Just 1B in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(15) |>                                                      #replacement level
+  pull(pts)
+  
+third_basemen <- third_basemen |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (third_basemen_rep / (447.29 * 19))) * 19, 3)
+  ) |>       #adjust
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  distinct()
+
+rm(third_basemen_field, third_basemen_hit, third_basemen_OFAST, select_third_basemen)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+outfielder_hit <- mlb_stats(stat_type = 'season',
+  position = "OF",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 150) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name, 
+         Pos = "OF") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_outfielder <- outfielder_hit |> pull(name)
+         
+outfielder_field <- mlb_stats(stat_type = 'season',
+  position = "OF",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |> 
+  mutate(name = player_full_name,
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE))
+  
+outfielder_assist <- mlb_stats(stat_type = 'season',
+  position = "OF",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>                           
+  summarize(OFAST = sum(OFAST, na.rm = TRUE)) 
+
+outfielder <- outfielder_hit |>
+  left_join(outfielder_field, by = "name") |>
+  left_join(outfielder_assist, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts - E + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  arrange(desc(pts))
+    
+    
+outfielder_rep <- outfielder |>                               #Just 1B in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(55) |>                                                      #replacement level
+  pull(pts)
+  
+outfielder <- outfielder |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (outfielder_rep / (447.29 * 19))) * 19, 3)
+  ) |>          #adjust
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E, OFAST) |>
+  distinct()
+
+rm(outfielder_field, outfielder_hit, outfielder_assist, select_outfielder)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+utility_hit <- mlb_stats(stat_type = 'season',
+  position = "DH",
+  player_pool = 'all',
+  stat_group = 'hitting',
+  season = Season, 
+  limit = 50) |>
+  mutate(G = games_played,
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name, 
+         Pos = "UTIL") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+
+select_utility <- utility_hit |> pull(name)
+
+utility_OFAST <- mlb_stats(stat_type = 'season',
+  position = "DH",
+  player_pool = 'all',
+  stat_group = 'fielding',
+  season = Season, 
+  limit = 750) |>
+  mutate(name = player_full_name,
+         OFAST = assists) |>
+  filter(position_name == "Outfielder") |>
+  select(name, OFAST) |>
+  group_by(name) |>
+  summarize(OFAST = max(OFAST))
+
+utility <- utility_hit |>
+  left_join(utility_OFAST, by = "name") |>
+  replace_na(list(OFAST = 0)) |>
+  mutate(pts = (pts + OFAST*3), 
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, OFAST) |>
+  arrange(desc(pts))
+    
+    
+utility_rep <- max(c(`catcher_rep`, `first_basemen_rep`, `second_basemen_rep`, shortstop_rep, third_basemen_rep, outfielder_rep))                        #top positional weight
+  
+utility <- utility |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (utility_rep / (447.29 * 19))) * 19, 3)
+  ) |>           #adjust
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, OFAST) |>
+  distinct()
+
+rm(utility_hit, utility_OFAST, select_utility)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+WAR_Hit <- catchers |>
+  full_join(first_basemen) |>
+  full_join(second_basemen) |>
+  full_join(shortstop) |>
+  full_join(third_basemen) |>
+  full_join(outfielder) |>
+  full_join(utility) |>
+  replace_na(list(E = 0)) |>
+  arrange(desc(WAR))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+convert_innings <- function(ip) {
+  whole <- floor(ip)
+  decimal <- ip - whole
+  if (decimal >= 0.3) return(NA_real_)  # to avoid bad conversions
+  return(whole + (decimal * 10) / 3)}
+
+starting_pitchers <- mlb_stats(stat_type = 'season',
+  position = "P",
+  player_pool = 'all',
+  stat_group = 'pitching',
+  season = Season, 
+  limit = 750) |>
+  mutate(G = games_played,
+         GS = games_started,
+         GO = ground_outs,
+         FO = air_outs,
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         GIDP = ground_into_double_play,
+         Pitches = number_of_pitches,
+         IP_raw = as.numeric(innings_pitched),
+         SV = saves,
+         HD = holds,
+         BS = blown_saves,
+         ER = earned_runs,
+         `Strike %` = strike_percentage,
+         B = balks,
+         PKO = pickoffs, 
+         name = player_full_name,
+         Pos = "SP") |>
+  mutate(IP = sapply(IP_raw, convert_innings)) |>
+  mutate(pts = (IP*4.5 - H*1 - ER*3 - BB*1 + K*1 - B*1 + PKO*1 + SV*6 + HD*5 - BS*3),
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  filter((Pitches/G) >= 30) |>
+  arrange(desc(pts))
+
+select_pitchers <- starting_pitchers |> pull(name)
+    
+starting_pitcher_rep <- starting_pitchers |>                          #Just SP in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(92) |>                                                      #replacement level
+  pull(pts)
+  
+starting_pitchers <- starting_pitchers |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+ mutate(WAR = round(((pts / (447.29 * 19)) - (starting_pitcher_rep / (447.29 * 19))) * 19, 3)
+  ) |>         #adjust
+  select(name, WAR, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  distinct()
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+convert_innings <- function(ip) {
+  whole <- floor(ip)
+  decimal <- ip - whole
+  if (decimal >= 0.3) return(NA_real_)  # to avoid bad conversions
+  return(whole + (decimal * 10) / 3)}
+
+relief_pitchers <- mlb_stats(stat_type = 'season',
+  position = "P",
+  player_pool = 'all',
+  stat_group = 'pitching',
+  season = Season, 
+  limit = 600) |>
+  mutate(G = games_played,
+         GS = games_started,
+         GO = ground_outs,
+         FO = air_outs,
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         GIDP = ground_into_double_play,
+         Pitches = number_of_pitches,
+         IP_raw = as.numeric(innings_pitched),
+         SV = saves,
+         HD = holds,
+         BS = blown_saves,
+         ER = earned_runs,
+         `Strike %` = strike_percentage,
+         B = balks,
+         PKO = pickoffs, 
+         name = player_full_name,
+         Pos = "RP") |>
+  mutate(IP = sapply(IP_raw, convert_innings)) |>
+  mutate(pts = (IP*4.5 - H*1 - ER*3 - BB*1 + K*1 - B*1 + PKO*1 + SV*6 + HD*5 - BS*3),
+         ppg = pts/G) |>
+  select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  filter((Pitches/G) <= 30) |>
+  arrange(desc(pts)) |>
+  slice_max(order_by = pts, n = 150)
+
+select_relief_pitchers <- relief_pitchers |> pull(name)
+    
+relief_pitcher_rep <- relief_pitchers |>                          #Just SP in the year 2025
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(26) |>                                                      #replacement level
+  pull(pts)
+  
+relief_pitchers <- relief_pitchers |>
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round(((pts / (447.29 * 19)) - (relief_pitcher_rep / (447.29 * 19))) * 19, 3)
+  ) |>
+  select(name, WAR, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  distinct()
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+WAR_Pitch <- starting_pitchers |>
+  full_join(relief_pitchers) |>
+  arrange(desc(WAR))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+WAR_All <- WAR_Pitch |>
+  full_join(WAR_Hit) |>
+  select(name, WAR, pts, ppg, Pos, G) |>
+  arrange(desc(WAR))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+statcast_hit_exitvelo <-scrape_savant_leaderboards(
+  leaderboard = "exit_velocity_barrels",
+  year = Season,
+  abs = 20,
+  min_pa = "q",
+  min_pitches = 50,
+  min_throws = 5,
+  min_field = "q",
+  min_run = 0,
+  player_type = "batter",
+  fielding_type = "player",
+  oaa_position = "",
+  oaa_roles = "",
+  team = "",
+  arsenal_type = "n_",
+  run_type = "raw",
+  min2b = 5,
+  min3b = 0,
+  position = "",
+  bats = "",
+  hand = ""
+) |>
+  separate(`last_name, first_name`, into = c("last", "first"), sep = ",\\s*") |> 
+  mutate(name = paste(first, last)) |>
+  mutate(launch_angle = avg_hit_angle,
+         sweetspot = anglesweetspotpercent) |>
+  select(name, launch_angle, sweetspot, avg_hit_speed, ev95percent, brl_pa)
+
+statcast_hit_exp <-scrape_savant_leaderboards(
+  leaderboard = "expected_statistics",
+  year = Season,
+  abs = 20,
+  min_pa = "q",
+  min_pitches = 50,
+  min_throws = 5,
+  min_field = "q",
+  min_run = 0,
+  player_type = "batter",
+  fielding_type = "player",
+  oaa_position = "",
+  oaa_roles = "",
+  team = "",
+  arsenal_type = "n_",
+  run_type = "raw",
+  min2b = 5,
+  min3b = 0,
+  position = "",
+  bats = "",
+  hand = ""
+) |>
+  separate(`last_name, first_name`, into = c("last", "first"), sep = ",\\s*") |> 
+  mutate(name = paste(first, last)) |>
+  mutate(ba_diff = est_ba_minus_ba_diff,
+         slg_diff = est_slg_minus_slg_diff,
+         woba_diff = est_woba_minus_woba_diff) |>
+  select(name, ba_diff, slg_diff, woba_diff)
+
+WAR_Hit_Statcast <- WAR_Hit |>
+  left_join(statcast_hit_exp) |>
+  left_join(statcast_hit_exitvelo)
+
+#write_csv(WAR_Hit_Statcast, "2025_hit.csv")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+Breakout_Hit <- WAR_Hit_Statcast |>
+  mutate(BABIP = as.numeric(BABIP)) |>
+  filter(ppg >= 2.6,
+         woba_diff <= 0,
+         ba_diff <= 0,
+         slg_diff <= 0) |>
+mutate(improve_hit = ((woba_diff + ba_diff + slg_diff - 1)*-1)*(.3/BABIP)) |>
+  arrange(desc(improve_hit)) |>
+  mutate(newppg = ppg*(sqrt(improve_hit)))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+Crashout_Hit <- WAR_Hit_Statcast |>
+  mutate(BABIP = as.numeric(BABIP)) |>
+  filter(ppg >= 2.6,
+         woba_diff >= 0,
+         ba_diff >= 0,
+         slg_diff >= 0) |>
+mutate(crash_hit = (woba_diff + ba_diff + slg_diff + 1)*(BABIP/.3)) |>
+  arrange(desc(crash_hit)) |>
+  mutate(newppg = ppg/(sqrt(crash_hit)))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+statcast_pitch_exitvelo <-scrape_savant_leaderboards(
+  leaderboard = "exit_velocity_barrels",
+  year = Season,
+  abs = 20,
+  min_pa = "q",
+  min_pitches = 50,
+  min_throws = 5,
+  min_field = "q",
+  min_run = 0,
+  player_type = "pitcher",
+  fielding_type = "player",
+  oaa_position = "",
+  oaa_roles = "",
+  team = "",
+  arsenal_type = "n_",
+  run_type = "raw",
+  min2b = 5,
+  min3b = 0,
+  position = "",
+  bats = "",
+  hand = ""
+) |>
+  separate(`last_name, first_name`, into = c("last", "first"), sep = ",\\s*") |> 
+  mutate(name = paste(first, last)) |>
+  mutate(launch_angle = avg_hit_angle,
+         sweetspot = anglesweetspotpercent) |>
+  select(name, launch_angle, sweetspot, avg_hit_speed, ev95percent, brl_pa)
+
+statcast_pitch_exp <-scrape_savant_leaderboards(
+  leaderboard = "expected_statistics",
+  year = Season,
+  abs = 20,
+  min_pa = "q",
+  min_pitches = 50,
+  min_throws = 5,
+  min_field = "q",
+  min_run = 0,
+  player_type = "pitcher",
+  fielding_type = "player",
+  oaa_position = "",
+  oaa_roles = "",
+  team = "",
+  arsenal_type = "n_",
+  run_type = "raw",
+  min2b = 5,
+  min3b = 0,
+  position = "",
+  bats = "",
+  hand = ""
+) |>
+  separate(`last_name, first_name`, into = c("last", "first"), sep = ",\\s*") |> 
+  mutate(name = paste(first, last)) |>
+  mutate(ba_diff = est_ba_minus_ba_diff,
+         slg_diff = est_slg_minus_slg_diff,
+         woba_diff = est_woba_minus_woba_diff,
+         era_diff = era_minus_xera_diff) |>
+  select(name, ba_diff, slg_diff, woba_diff, era_diff)
+
+WAR_Pitch_Statcast <- WAR_Pitch |>
+  left_join(statcast_pitch_exp) |>
+  left_join(statcast_pitch_exitvelo)
+
+#write_csv(WAR_Pitch_Statcast, "2025_pitch.csv")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+Breakout_Pitch_SP <- WAR_Pitch_Statcast |>
+  filter(Pos == "SP") |>
+  filter(ppg >= 8,
+         woba_diff >= 0,
+         ba_diff >= 0,
+         slg_diff >= 0, 
+         era_diff >= 0) |>
+mutate(improve_SP = ((woba_diff + ba_diff + slg_diff + 1)*((era_diff/25)+1))^2) |>
+  arrange(desc(improve_SP)) |>
+  mutate(newppg = ppg*(sqrt(improve_SP)))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+Crashout_Pitch_SP <- WAR_Pitch_Statcast |>
+  filter(ppg >= 8,
+         woba_diff <= 0,
+         ba_diff <= 0,
+         slg_diff <= 0,
+         era_diff <= 0) |>
+mutate(crash_SP = (((woba_diff + ba_diff + slg_diff - 1)*-1)*((era_diff/-25)+1))^2) |>
+  arrange(desc(crash_SP)) |>
+  mutate(newppg = ppg/(sqrt(crash_SP)))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+WAR_All |> print(n = 50)
+```
+
+# Code Sample for Hitters
+
+```{r, message = FALSE, warning = FALSE}
+catcher_hit <- mlb_stats(stat_type = 'season',          #pulls data using mlb_stats package
+  position = "C",                                       #selects only Catchers
+  player_pool = 'all',
+  stat_group = 'hitting',                               #pulls only hitting statistics
+  season = Season,                                      
+  limit = 50) |>                                        #takes only the top 50 catchers
+  mutate(G = games_played,                              #renames stats to abbreviations
+         R = runs, 
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         SB = stolen_bases,
+         GIDP = ground_into_double_play,
+         PA = plate_appearances,
+         TB = total_bases,
+         RBI = rbi,
+         BABIP = babip,
+         name = player_full_name,
+         Pos = "C") |>
+  mutate(pts = (R*1 + RBI*1 + H*1 + TB*1 + BB*2 + IBB*1 - K*1 - GIDP*1 + SB*2)) |>   #calculates points for a player, given the league scoring system for each hitting statistic
+  select(name, pts, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP)
+         
+catcher_field <- mlb_stats(stat_type = 'season',
+  position = "C",
+  player_pool = 'all',
+  stat_group = 'fielding',                            #selects fielding statistics
+  season = Season, 
+  limit = 750) |> 
+  mutate(name = player_full_name,                     #renames columns succinctly
+         E = errors) |>
+  group_by(name) |>
+  summarize(E = sum(E, na.rm = TRUE)) |>
+  select(name, E)                                     #keeps only player name and Errors
+
+catchers <- catcher_hit |>                            #combines data frames
+  left_join(catcher_field, by = "name") |>
+  mutate(pts = (pts - E),                        #calculates total points with fielding errors
+         ppg = pts/G) |>                         #calculates points per game
+  select(name, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E) |>
+  arrange(desc(pts))                                  #arranges column by points
+    
+    
+catcher_rep <- catchers |>                            #saves replacement-level catcher
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(15) |>                                       #15th best catcher is 'replacement-level'
+  pull(pts)
+  
+catchers <- catchers |>                              #edits the 'catchers' data frame
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  mutate(WAR = round((pts / 447.29) - (catcher_rep / 447.29)), 3) |>             #finds a player's WAR in a year, given that 447.29 points creates a win
+  select(name, WAR, pts, ppg, Pos, G, PA, AB, H, TB, RBI, R, HR, BB, IBB, K, SB, GIDP, HBP, BABIP, E) |>
+  distinct()
+
+rm(catcher_field, catcher_hit)                #cleans environment in R
+```
+
+# Code Sample for Pitchers
+
+```{r, message = FALSE, warning = FALSE}
+convert_innings <- function(ip) {
+  whole <- floor(ip)                    #finds whole number in IP statistic
+  decimal <- ip - whole                 #finds the decimal in the IP statistic
+  if (decimal >= 0.3) return(NA_real_)  #avoids any bad conversions
+  return(whole + (decimal * 10) / 3)}   #recalculates decimal to be more statistically accurate
+
+starting_pitchers <- mlb_stats(stat_type = 'season',
+  position = "P",                        #finds only pitchers
+  player_pool = 'all',
+  stat_group = 'pitching',
+  season = Season, 
+  limit = 750) |>
+  mutate(G = games_played,
+         GS = games_started,
+         GO = ground_outs,
+         FO = air_outs,
+         HR = home_runs,
+         K = strike_outs,
+         BB = base_on_balls,
+         IBB = intentional_walks,
+         H = hits,
+         HBP = hit_by_pitch,
+         AB = at_bats,
+         GIDP = ground_into_double_play,
+         Pitches = number_of_pitches,
+         IP_raw = as.numeric(innings_pitched),
+         SV = saves,
+         HD = holds,
+         BS = blown_saves,
+         ER = earned_runs,
+         `Strike %` = strike_percentage,
+         B = balks,
+         PKO = pickoffs, 
+         name = player_full_name,
+         Pos = "SP") |>
+  mutate(IP = sapply(IP_raw, convert_innings)) |>     #uses function to convert IP
+  mutate(pts = (IP*4.5 - H*1 - ER*3 - BB*1 + K*1 - B*1 + PKO*1 + SV*6 + HD*5 - BS*3),
+         ppg = pts/G) |>              #calculates points using league's scoring system
+  select(name, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  filter((Pitches/G) >= 30) |>        #only takes pitchers that tend to throw more than 30 pitchers per game (relief pitchers will throw under 30, starters will throw over 30)
+  arrange(desc(pts))
+    
+starting_pitcher_rep <- starting_pitchers |>        #saves replacement-level starting pitcher
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+  distinct() |>
+  slice(92) |>                              #92nd best starting pitcher is 'replacement-level'
+  pull(pts)
+  
+starting_pitchers <- starting_pitchers |>      #edits the starting_pitchers data frame
+  ungroup() |>
+  arrange(desc(pts), desc(ppg)) |>
+ mutate(WAR = round((pts / 447.29) - (starting_pitcher_rep / 447.29)), 3) |>  #finds a player's WAR in a year, given that 447.29 points creates a win
+  select(name, WAR, pts, ppg, Pos, G, GS, IP, K, BB, H, ER, SV, HD, BS, B, PKO, `Strike %`, Pitches, AB, GIDP, HBP, IBB, GO, FO) |>
+  distinct()
+```
+```
+
