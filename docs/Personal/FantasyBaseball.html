@@ -239,15 +239,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-title-meta column-page-right">
   </div>
 </header><main class="content column-page-right" id="quarto-document-content">
-<p>In this personal project, I wrote code in R to calculate the value of player, given a fantasy baseball league’s scoring system. The results below display players’ value during the 2024 season, but the season is adjustable.</p>
-<p>WAR (Wins Above Replacement) is a statistic that Major League Baseball teams use to calculate the value a player adds over a replacement-level player at the same position. I applied the same concept to fantasy baseball in this project, where I identified:</p>
+<p>In this personal project, I wrote code in R to calculate the value of player, given a fantasy baseball league’s scoring system. WAR (Wins Above Replacement) is a statistic that Major League Baseball teams use to calculate the value a player adds over a replacement-level player at the same position. I applied the same concept to fantasy baseball in this project, where I identified:</p>
 <ol type="1">
 <li><p>Replacement-level players at every position: I found the level of replacement by looking at which players were on a team, and which players were listed as ‘free agents.’ Players listed as free agents may be added by any team, which aligns with the definition of replacement-level.</p></li>
 <li><p>Points needed for a win: To win a game in fantasy baseball, a team must score more points than their opponent. To find the amount of points needed to win a matchup, I compiled a list of every matchup’s winners and averaged their point totals. In theory, this stat describes ‘what it takes’ to win a game, on average. This value ended up being 447.29 points per game</p></li>
 </ol>
-<p>Finally, to calculate the WAR, I started by determining how many wins a player creates, which I did by dividing their total points by the team points needed for a win. To find how many wins their replacement generated, I used the same process. The difference between the two values describes the “Wins Above Replacement” (or WAR) for a player. The equation is shown below.</p>
+<p>Finally, to calculate the WAR, I started by determining how many wins a player creates, which I did by dividing their total points by the team points needed for a win. To find how many wins their replacement generated, I used the same process. The difference between the two values describes the “Wins Above Replacement” (or WAR) for a player. The equation is shown below:</p>
 <p>WAR = (pts / 447.29) - (catcher_rep / 447.29)</p>
-<p>The following is a sample of the top 50 players in the league, followed by a sample of the code to calculate WAR for both hitters and pitchers.</p>
+<p>The following is a sample of the top 50 players in the league during the 2024 MLB season, followed by a sample of the code I used to calculate WAR for both hitters and pitchers.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 985 × 6
