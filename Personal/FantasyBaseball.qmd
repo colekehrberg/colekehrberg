@@ -1,5 +1,5 @@
 ---
-title: "Fantasy Baseball Project"
+title: "Fantasy Baseball WAR Project"
 toc: false
 about: 
   template: jolla
