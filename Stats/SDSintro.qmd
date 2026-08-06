@@ -1,6 +1,6 @@
 ---
 title: "About"
-subtitle: "My Academic Projects, Personal Projects, and Work Experience"
+subtitle: "Academic Projects, Personal Projects, and Work Experience"
 toc: false
 about: 
   template: jolla
