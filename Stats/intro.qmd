@@ -1,0 +1,13 @@
+---
+title: "My Experience"
+subtitle: "Academic Projects, Personal Projects, and Work Experience"
+toc: false
+about: 
+  template: jolla
+format:
+  html:
+    theme: lux
+    css: styles.css
+---
+
+To be completed soon
