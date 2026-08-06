@@ -11,5 +11,5 @@ format:
 ---
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-knitr::include_graphics("~/R/colekehrberg/Stats/SDSAbout.png") #uploads image
+knitr::include_graphics("~/R/colekehrberg/Stats/SDSabout.png") #uploads image
 ```
