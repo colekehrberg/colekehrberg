@@ -10,4 +10,6 @@ format:
     css: styles.css
 ---
 
-To be completed soon
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Stats/SDSAbout.png") #uploads image
+```

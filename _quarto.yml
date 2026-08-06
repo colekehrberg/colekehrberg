@@ -18,7 +18,7 @@ website:
     - id: stats
       title: "Statistics & Data Science"
       contents:
-        - Stats/intro.qmd
+        - Stats/SDSintro.qmd
         - Stats/Stats2.qmd
         - Stats/about.qmd
         - Stats/maps.qmd
