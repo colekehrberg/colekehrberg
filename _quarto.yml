@@ -26,6 +26,7 @@ website:
     - id: economics
       title: "Economics"
       contents:
+        - Economics/ECONintro.qmd
         - Economics/ECON385.qmd
         - Economics/ECON372.qmd
 

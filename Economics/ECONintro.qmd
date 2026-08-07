@@ -1,0 +1,15 @@
+---
+title: "About"
+subtitle: "Academic Projects, Personal Projects, and Work Experience"
+toc: false
+about: 
+  template: jolla
+format:
+  html:
+    theme: lux
+    css: styles.css
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Economics/aboutmeEcon.png") #uploads image
+```
