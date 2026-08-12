@@ -1,5 +1,5 @@
 ---
-title: "SDS Overview"
+title: "My SDS Experience"
 subtitle: "Academic Projects, Personal Projects, and Work Experience"
 toc: false
 about: 
