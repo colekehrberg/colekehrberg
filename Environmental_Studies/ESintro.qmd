@@ -1,0 +1,15 @@
+---
+title: "Environmental Studies Overview"
+subtitle: "Professional Experience and Academic Projects"
+toc: false
+about: 
+  template: jolla
+format:
+  html:
+    theme: lux
+    css: styles.css
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::include_graphics("~/R/colekehrberg/Environmental_Studies/aboutmeES.png") #uploads image
+```

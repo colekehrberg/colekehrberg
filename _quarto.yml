@@ -33,6 +33,7 @@ website:
     - id: environmental
       title: "Environmental Studies"
       contents:
+         - Environmental_Studies/ESintro.qmd
          - Environmental_Studies/PEN.qmd
          - Environmental_Studies/GIS.qmd
 
