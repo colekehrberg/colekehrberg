@@ -1,9 +1,11 @@
 ---
 title: "Text Analysis"
 subtitle: "Congressional Elections Sentiment Analysis"
+image: CongressTextImage.png
 toc: false
 about: 
   template: jolla
+  image-shape: rectangle
 format:
   html:
     theme: lux
