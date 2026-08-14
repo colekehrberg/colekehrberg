@@ -1,9 +1,11 @@
 ---
 title: "Regression Analysis"
 subtitle: "The Relationship Between College Prestige & Career Success"
+image: CollegePrestigeImage.png
 toc: false
 about: 
   template: jolla
+  image-shape: round
 format:
   html:
     theme: lux
