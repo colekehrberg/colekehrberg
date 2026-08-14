@@ -22,6 +22,7 @@ website:
         - Stats/Stats2.qmd
         - Stats/about.qmd
         - Stats/maps.qmd
+        - Stats/ShinyApp.qmd
 
     - id: economics
       title: "Economics"

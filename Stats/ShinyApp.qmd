@@ -1,0 +1,14 @@
+---
+title: "Shiny Application"
+subtitle: "NHL Team Analysis"
+toc: false
+about: 
+  template: jolla
+  links:
+    - text: Link to Shiny Application
+      href: https://gabriellehoover.shinyapps.io/FinalProject/#section-conference-strength
+format:
+  html:
+    theme: lux
+    css: styles.css
+---
