@@ -1,9 +1,11 @@
 ---
 title: "Time Series & Forecasting"
 subtitle: "Electrical and Purchasing Powers: The Effects of Loadshedding on Inflation in South Africa"
+image: LoadsheddingImage.png
 toc: false
 about: 
   template: jolla
+  image-shape: rectangle
 format:
   html:
     theme: lux

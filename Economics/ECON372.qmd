@@ -1,9 +1,11 @@
 ---
 title: "Behavioral Economics"
 subtitle: "Education’s Role in Preserving Human Intelligence in the Era of AI"
+image: AIBehavioralImage.png
 toc: false
 about: 
   template: jolla
+  image-shape: rectangle
 format:
   html:
     theme: lux
