@@ -1,1 +1,4 @@
 /* css styles */
+#title-block-header, .quarto-title-block {
+  text-align: center;
+}
