@@ -1,5 +1,5 @@
 ---
-title: "Senate Forecast"
+title: "2026 Senate Forecast"
 toc: false
 about:
   template: jolla
