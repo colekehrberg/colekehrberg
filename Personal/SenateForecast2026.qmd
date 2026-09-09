@@ -471,4 +471,8 @@ leaflet(interactive, width = "100%") |>
 
 Last Updated on September 8th, 2026
 
-Data source: https://www.nytimes.com/interactive/polls/congressional-vote-2026.html
+Data source for polls: https://www.nytimes.com/interactive/polls/congressional-vote-2026.html
+
+Data source for Political Index: https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index
+
+
