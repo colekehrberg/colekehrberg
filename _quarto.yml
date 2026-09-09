@@ -41,6 +41,7 @@ website:
     - id: personal
       title: "Personal Projects"
       contents:
+         - Personal/SenateForecast2026.qmd
          - Personal/WARFantasyBaseball.qmd
 
 format:

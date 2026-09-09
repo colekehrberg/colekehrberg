@@ -1,0 +1,474 @@
+---
+title: "Senate Forecast"
+toc: false
+about: 
+  template: jolla
+format:
+  html:
+    theme: lux
+    css: styles.css
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(rvest)
+library(polite)
+library(purrr)
+library(httr2)
+library(httr)
+library(lubridate)
+library(maps)
+library(statebins)
+library(sf)
+library(leaflet)
+library(htmltools)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| include: FALSE
+#National Democratic Advantage
+D_Adv <- 6
+
+#Importance of National Environment
+Nat_Env = .25
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| include: FALSE
+#State Cook Political Voting Index
+robotstxt::paths_allowed("https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| include: FALSE
+#Scrape
+CPVI <- read_html("https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index")
+str(CPVI)
+
+#Get Table
+table <- html_nodes(CPVI, css = "table")
+untidy_tables <- html_table(table, header = TRUE, fill = TRUE)
+StatesCPVI <- untidy_tables[[2]]
+CPVI <- StatesCPVI |>
+  mutate(state = state.abb[match(StatesCPVI$State, state.name)]) |>
+  mutate(
+    pvi = case_when(
+      grepl("EVEN", PVI, ignore.case = TRUE) ~ 0,
+      grepl("^D", PVI) ~ as.numeric(sub("D\\+", "", PVI)),
+      grepl("^R", PVI) ~ -as.numeric(sub("R\\+", "", PVI)))) |>
+  mutate(adj_pvi = pvi + D_Adv) |>
+  select(state, adj_pvi)
+
+rm(StatesCPVI, untidy_tables, table)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+today <- today()
+
+polls_unclean <- read.csv("~/Downloads/senate.csv")
+polls <- polls_unclean |>
+  select(state, end_date, sponsor_candidate_party, sample_size, population, stage, pct, answer, poll_id) |>
+  mutate(date = mdy(end_date)) |>
+  filter(pct >= 10)
+
+AK_polls <- polls |>
+  filter(state == "AK") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Peltola", "Sullivan (Dan)")) |>
+    group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Republican" = "Sullivan (Dan)") |>
+  rename("Democrat" = "Peltola") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+FL_polls <- polls |>
+  filter(state == "FL") |>
+  filter(stage == "general") |>
+  filter(!answer %in% c("Vindman (Alexander)", "Don't know", "Jenkins", "Mujica"))  |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Republican" = "Moody (Ashley)") |>
+  rename("Democrat" = "Nixon (Angie)") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+GA_polls <- polls |>
+  filter(state == "GA") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Ossoff", "Collins (Mike)")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Republican" = "Collins (Mike)") |>
+  rename("Democrat" = "Ossoff") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+IA_polls <- polls |>
+  filter(state == "IA") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Turek", "Hinson")) |> 
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Republican" = "Hinson") |>
+  rename("Democrat" = "Turek") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+KS_polls <- polls |>
+  filter(state == "KS") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Marshall", "Hamilton")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+ pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Republican" = "Marshall") |>
+  rename("Democrat" = "Hamilton") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+ME_polls <- polls |>
+  filter(state == "ME") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Jackson (Troy)", "Collins (Susan M.)")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Jackson (Troy)") |>
+  rename("Republican" = "Collins (Susan M.)") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+MI_polls <- polls |>
+  filter(state == "MI") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("El-Sayed", "Rogers (Mike)")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Republican" = "Rogers (Mike)") |>
+  rename("Democrat" = "El-Sayed") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+MN_polls <- polls |>
+  filter(state == "MN") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Flanagan (Peggy)", "Tafoya")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Flanagan (Peggy)") |>
+  rename("Republican" = "Tafoya") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+NC_polls <- polls |>
+  filter(state == "NC") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Whatley", "Cooper")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Cooper") |>
+  rename("Republican" = "Whatley") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+NE_polls <- polls |>
+  filter(state == "NE") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Osborn", "Ricketts")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Osborn") |>
+  rename("Republican" = "Ricketts") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+NH_polls <- polls |>
+  filter(state == "NH") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Pappas", "Sununu")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Pappas") |>
+  rename("Republican" = "Sununu") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+OH_polls <- polls |>
+  filter(state == "OH") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Brown", "Husted")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct")  |>
+  rename("Democrat" = "Brown") |>
+  rename("Republican" = "Husted") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+TX_polls <- polls |>
+  filter(state == "TX") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Talarico", "Paxton")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Talarico") |>
+  rename("Republican" = "Paxton") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
+all_polls <- bind_rows(
+  "AK" = AK_polls, 
+  "FL" = FL_polls, 
+  "GA" = GA_polls, 
+  "IA" = IA_polls, 
+  "KS" = KS_polls, 
+  "ME" = ME_polls, 
+  "MI" = MI_polls, 
+  "MN" = MN_polls, 
+  "NC" = NC_polls, 
+  "NE" = NE_polls, 
+  "NH" = NH_polls, 
+  "OH" = OH_polls, 
+  "TX" = TX_polls,
+  .id = "state" # This creates a new column named "state" with your labels
+)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+all_states_summary <- all_polls |>
+  group_by(state) |> 
+  mutate(
+    R_num      = as.numeric(as.character(Republican)),
+    D_num      = as.numeric(as.character(Democrat)),
+    weight_num = as.numeric(as.character(weight)),
+    
+    R_W  = R_num * weight_num,
+    D_W  = D_num * weight_num,
+    ss_W = sample_size * weight_num
+  ) |>
+  summarize(
+    Rs     = sum(R_W, na.rm = TRUE) / sum(weight_num, na.rm = TRUE),
+    Ds     = sum(D_W, na.rm = TRUE) / sum(weight_num, na.rm = TRUE),
+    ss    = sum(ss_W, na.rm = TRUE) / sum(weight_num, na.rm = TRUE),
+    polls = n(),
+    ME    = (.98 / sqrt(ss)) * 100,
+    SD    = ME / 1.96,
+    .groups = "drop" 
+  )
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+All_Data <- CPVI |>
+  right_join(all_states_summary) |>
+  mutate(D_pvi = 50 + adj_pvi / 2,
+         R_pvi = 50 - adj_pvi / 2) |>
+  mutate(D_pvi_adj = ((Rs + Ds)/100) * D_pvi,
+         R_pvi_adj = ((Rs + Ds)/100) * R_pvi) |>
+  mutate(R = Rs*(1-Nat_Env) + R_pvi_adj*Nat_Env,
+         D = Ds*(1-Nat_Env) + D_pvi_adj*Nat_Env)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+run_state_sim <- function(state_df, iterations = 10000) {
+  sim_R <- rnorm(iterations, mean = state_df$R, sd = state_df$ME)
+  sim_D <- rnorm(iterations, mean = state_df$D, sd = state_df$ME)
+  
+  data.frame(
+    State      = state_df$state,
+    Republican = mean(sim_R > sim_D),
+    Democrat   = mean(sim_D > sim_R)
+  )
+}
+
+all_simulations <- do.call(rbind, lapply(split(All_Data, All_Data$state), run_state_sim, iterations = 1000)) |>
+  mutate(D_win = ifelse(Democrat > Republican, 1, 0))
+ 
+Dem_Wins <- sum(all_simulations$D_win)
+rownames(all_simulations) <- NULL
+
+print(str_c("According to this forecast, Democrats would win ", (43 + Dem_Wins), " seats, and Republicans would win ", (100 - (43 + Dem_Wins)), " seats in the 2026 Elections for the U.S. Senate."))
+```
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+states_sf <- read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson")  #For interactive plot
+
+states_int <- states_sf |>
+  mutate(State = state.abb[match(name, state.name)]) |>
+  mutate(State = if_else(name == "District of Columbia", "DC", State))
+
+interactive <- states_int |>
+  left_join(all_simulations) |>
+  filter(!is.na(Democrat)) |>
+  mutate(Dem_pct = if_else(Democrat <= 1, Democrat * 100, Democrat),
+    Rep_pct = if_else(Republican <= 1, Republican * 100, Republican))
+
+#Creating bins for coloring the plot
+bins_party <- c(0, 20, 40, 48, 52, 60, 80, 100)
+pal_party  <- colorBin("RdBu", domain = c(0, 100), bins = bins_party)
+states <- interactive |>
+  mutate(labels = str_c(State, ": ", Democrat, " Percent Chance of Winning"))
+labels <- lapply(states$labels, HTML)
+
+labels_party <- sprintf("<div style='font-family: sans-serif;'>
+     <strong style='font-size: 14px;'>%s (%s)</strong><br/>
+     <span style='color: #2B5C8F;'>&#9632; Democrat:</span> <b>%.1f%%</b><br/>
+     <span style='color: #A61C1C;'>&#9632; Republican:</span> <b>%.1f%%</b>
+   </div>", interactive$name, interactive$State, interactive$Dem_pct, interactive$Rep_pct) |> lapply(HTML)
+
+leaflet(interactive) |>
+  setView(-96, 37.8, 4) |>
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal_party(Dem_pct),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.8,
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "#333",
+      dashArray = "",
+      fillOpacity = 0.9,
+      bringToFront = TRUE),
+    label = labels_party,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "6px 10px"),
+      textsize = "13px",
+      direction = "auto")) |>
+  addLegend(pal = pal_party, values = ~Dem_pct, opacity = 0.8, title = "Win Probability", position = "bottomright", labFormat = labelFormat(suffix = "%"))
+```
+
+Data source: https://www.nytimes.com/interactive/polls/michigan-us-senate-election-polls-2026.html
