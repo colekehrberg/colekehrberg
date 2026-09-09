@@ -1,12 +1,12 @@
 ---
 title: "Senate Forecast"
 toc: false
-about: 
+about:
   template: jolla
 format:
   html:
     theme: lux
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -420,7 +420,6 @@ cat("According to this forecast, Democrats will win ", 43 + Dem_Wins, " seats, a
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-
 states_sf <- read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson")  #For interactive plot
 
 states_int <- states_sf |>
