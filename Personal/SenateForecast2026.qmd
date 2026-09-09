@@ -6,7 +6,6 @@ about:
 format:
   html:
     theme: lux
-    css: styles.css
 editor_options: 
   chunk_output_type: console
 ---
@@ -416,7 +415,7 @@ all_simulations <- do.call(rbind, lapply(split(All_Data, All_Data$state), run_st
 Dem_Wins <- sum(all_simulations$D_win)
 rownames(all_simulations) <- NULL
 
-print(str_c("According to this forecast, Democrats will win ", (43 + Dem_Wins), " seats, and Republicans will win ", (100 - (43 + Dem_Wins)), " seats in the 2026 Elections for the U.S. Senate."))
+cat("According to this forecast, Democrats will win ", 43 + Dem_Wins, " seats, and Republicans will win ", 100 - (43 + Dem_Wins), " seats in the 2026 Elections for the U.S. Senate.")
 ```
 
 
@@ -447,7 +446,7 @@ labels_party <- sprintf("<div style='font-family: sans-serif;'>
      <span style='color: #A61C1C;'>&#9632; Republican:</span> <b>%.1f%%</b>
    </div>", interactive$name, interactive$State, interactive$Dem_pct, interactive$Rep_pct) |> lapply(HTML)
 
-leaflet(interactive) |>
+leaflet(interactive, width = "100%") |>
   setView(-96, 37.8, 4) |>
   addTiles() |>
   addPolygons(
