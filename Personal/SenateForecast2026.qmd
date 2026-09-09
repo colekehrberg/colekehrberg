@@ -397,6 +397,10 @@ All_Data <- CPVI |>
          R_pvi_adj = ((Rs + Ds)/100) * R_pvi) |>
   mutate(R = Rs*(1-Nat_Env) + R_pvi_adj*Nat_Env,
          D = Ds*(1-Nat_Env) + D_pvi_adj*Nat_Env)
+
+Some_Data <- All_Data |>
+  select(state, Rs, Ds) |>
+  rename("State" = "state")
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -429,6 +433,7 @@ states_int <- states_sf |>
 interactive <- states_int |>
   left_join(all_simulations) |>
   filter(!is.na(Democrat)) |>
+  left_join(Some_Data) |>
   mutate(Dem_pct = if_else(Democrat <= 1, Democrat * 100, Democrat),
     Rep_pct = if_else(Republican <= 1, Republican * 100, Republican))
 
@@ -439,14 +444,29 @@ states <- interactive |>
   mutate(labels = str_c(State, ": ", Democrat, " Percent Chance of Winning"))
 labels <- lapply(states$labels, HTML)
 
-labels_party <- sprintf("<div style='font-family: sans-serif;'>
+labels_party <- sprintf(
+  "<div style='font-family: sans-serif;'>
      <strong style='font-size: 14px;'>%s (%s)</strong><br/>
-     <span style='color: #2B5C8F;'>&#9632; Democrat:</span> <b>%.1f%%</b><br/>
-     <span style='color: #A61C1C;'>&#9632; Republican:</span> <b>%.1f%%</b>
-   </div>", interactive$name, interactive$State, interactive$Dem_pct, interactive$Rep_pct) |> lapply(HTML)
+     <span style='color: #2B5C8F;'>&#9632; Democrat Win Probability:</span> <b>%.1f%%</b><br/>
+     <span style='color: #A61C1C;'>&#9632; Republican Win Probability:</span> <b>%.1f%%</b><br/>
+     
+     <hr style='margin: 5px 0;'/>
+     
+     <span style='color: #2B5C8F;'>&#9632; Democrat Vote Share:</span> <b>%.1f%%</b><br/>
+     <span style='color: #A61C1C;'>&#9632; Republican Vote Share:</span> <b>%.1f%%</b>
+   </div>",
+   
+  interactive$name,
+  interactive$State,
+  interactive$Dem_pct,
+  interactive$Rep_pct,
+  interactive$Ds,
+  interactive$Rs
+  ) |> lapply(HTML)
+
 
 leaflet(interactive, width = "100%") |>
-  setView(-96, 37.8, 4) |>
+  setView(-84, 37.8, 4) |>
   addTiles() |>
   addPolygons(
     fillColor = ~pal_party(Dem_pct),
@@ -470,6 +490,7 @@ leaflet(interactive, width = "100%") |>
 ```
 
 Last Updated on September 8th, 2026
+
 
 Data source for polls: https://www.nytimes.com/interactive/polls/congressional-vote-2026.html
 
