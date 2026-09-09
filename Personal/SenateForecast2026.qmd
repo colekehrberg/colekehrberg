@@ -25,6 +25,8 @@ library(leaflet)
 library(htmltools)
 ```
 
+According to this forecast, Democrats will win 52 seats, and Republicans will win 48 seats in the 2026 Elections for the U.S. Senate.
+
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #| include: FALSE
 #National Democratic Advantage
@@ -414,8 +416,6 @@ all_simulations <- do.call(rbind, lapply(split(All_Data, All_Data$state), run_st
  
 Dem_Wins <- sum(all_simulations$D_win)
 rownames(all_simulations) <- NULL
-
-cat("According to this forecast, Democrats will win ", 43 + Dem_Wins, " seats, and Republicans will win ", 100 - (43 + Dem_Wins), " seats in the 2026 Elections for the U.S. Senate.")
 ```
 
 
