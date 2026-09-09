@@ -30,7 +30,7 @@ According to this forecast, Democrats will win 52 seats, and Republicans will wi
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #| include: FALSE
 #National Democratic Advantage
-D_Adv <- 6
+D_Adv <- 5
 
 #Importance of National Environment
 Nat_Env = .25
