@@ -530,8 +530,6 @@ Using this 75/25 model, I ran 10,000 simulations of each race using the **Monte 
 
 
 
-Data source for polls: https://www.nytimes.com/interactive/polls/congressional-vote-2026.html
+[Data source for polls](https://www.nytimes.com/interactive/polls/congressional-vote-2026.html)
 
-Data source for Political Index: https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index
-
-
+[Data source for Political Index](https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index)

@@ -150,7 +150,7 @@ wordcloud2(data = rep_words,
 knitr::include_graphics("~/R/colekehrberg/Images/DemWordCloud.png") #uploads image of word cloud for pdf render
 ```
 
-The biographies of Democratic candidates tended to focus on words related to the public good. Words like 'public', 'district', 'served', 'health', 'community', and 'service' demonstrate a messaging strategy of commitment to the local public interests. While Democrats focused in on a community-oriented brand of politics, Republicans had a slight shift in tone.
+The biographies of Democratic candidates tended to focus on words related to the public good. Words like **'public', 'district', 'served', 'health', 'community', and 'service'** demonstrate a messaging strategy of commitment to the local public interests. While Democrats focused in on a community-oriented brand of politics, Republicans had a slight shift in tone.
 
 ## Word Cloud of Republican Biographies
 
@@ -158,7 +158,7 @@ The biographies of Democratic candidates tended to focus on words related to the
 knitr::include_graphics("~/R/colekehrberg/Images/RepWordCloud.png") #uploads image of word cloud for pdf render
 ```
 
-The biographies of Republican candidates echoed some of the same interests as Democrats, but also included private interests on a broader scale. The emphasis of words like 'business', 'law', 'national', and 'American' demonstrate values that expand beyond community impact, and into a federal, private realm. 
+The biographies of Republican candidates echoed some of the same interests as Democrats, but also included private interests on a broader scale. The emphasis of words like **'business', 'law', 'national', and 'American'** demonstrate values that expand beyond community impact, and into a federal, private realm. 
 
 Once I understood some high-level values that go into each party's messages, I turned my attention specifically to what sets the parties apart. 
 
@@ -197,7 +197,7 @@ all_tfidf |>
                                "Republican" = "darkred"))
 ```
 
-The tf-idf statistic describes how important unique terms are, between different dataframes. The bar chart above describes the most commonly used used words used by Democrats and not Republicans, and vice versa. 
+The **tf-idf statistic** describes how important unique terms are, between different dataframes. The bar chart above describes the most commonly used used words used by Democrats and not Republicans, and vice versa. 
 
 Clearly, from 2018-2022, Democratic candidates focused in on issues of lgbtq rights. Similarly, many words associated with Democratic platforms were used, including 'gerry' (most likely used in the context of opposition to gerrymandering), 'universal' (probably used in the context of social welfare programs), and 'reproductive' (likely used for describing support for the pro-choice movement). 
 
