@@ -1,0 +1,15 @@
+---
+title: "NASA Technology Consulting"
+subtitle: "Reversible Polymer Nanofiber-Based Reversible Switch/Sensor Schottke Diode (nanoSSSD)"
+toc: false
+about: 
+  template: jolla
+  links:
+    - text: Link to "Space for Innovation" Article
+      href: https://wp.stolaf.edu/news/space-for-innovation
+format:
+  html:
+    theme: lux
+    css: styles.css
+---
+Message

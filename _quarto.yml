@@ -39,8 +39,9 @@ website:
          - Environmental_Studies/GIS.qmd
 
     - id: personal
-      title: "Personal Projects"
+      title: "Projects"
       contents:
+         - Personal/NASA.qmd
          - Personal/SenateForecast2026.qmd
          - Personal/WARFantasyBaseball.qmd
 
