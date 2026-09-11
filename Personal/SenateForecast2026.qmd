@@ -491,7 +491,7 @@ leaflet(interactive, width = "100%") |>
 
 Last Updated on September 8th, 2026
 
-**Forecast Methodology:**
+## Forecast Methodology: ##
 
 These forecasts rely on polling data pulled from the New York Times’ database. This model aggregates each state’s polling data to find a race average, which places greater weights on recent polls to account for race momentum. 
 
@@ -502,7 +502,7 @@ The remaining 25% of the forecast’s weight comes from the national political e
 Using this 75/25 model, I ran 10,000 simulations of each race using the **Monte Carlo method**. I matched each simulation result between Democratic and Republican opponents against one another, crowning a victor in each simulation. Based on the total amounts of wins for both Democrats and Republicans, I estimated the probability of victory for each race, alongside an estimated vote share.
 
 
-**With greater data availability, I would:**
+## With greater data availability, I would: ##
 
 **1. Weight polls differently, depending on the pollster.** In its current form, the forecast only assigns weights based on the recency of a poll, in order to account for momentum shifts in the race. If I had access to data regarding the reliability of each pollster, I would also assign stronger weights to polls conducted by trusted pollsters. 
 
