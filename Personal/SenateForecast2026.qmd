@@ -25,7 +25,7 @@ library(leaflet)
 library(htmltools)
 ```
 
-This model forecasts **Democrats to win 52 seats** and **Republicans to win 48 seats** in the 2026 U.S. Senate Elections.
+This model forecasts **Democrats to win 53 seats** and **Republicans to win 47 seats** in the 2026 U.S. Senate Elections.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #| include: FALSE
