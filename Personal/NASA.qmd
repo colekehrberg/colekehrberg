@@ -1,6 +1,6 @@
 ---
-title: "NASA Technology Consulting"
-subtitle: "Reversible Polymer Nanofiber-Based Reversible Switch/Sensor Schottke Diode (nanoSSSD)"
+title: "NASA Consulting Experience"
+subtitle: "Innovation Scholars (2025-2026)"
 image: InnovationScholars.jpeg
 toc: false
 about: 
@@ -19,7 +19,7 @@ format:
     css: styles.css
 ---
 ## Project Stages ##
-**1. Technology Review:** In this stage, we studied the patent claims to understand the technology's purpose and use. As we compiled questions about the technology, we also gathered any information necessary to fully understand it. We researched the nanoSSSD's fit within the current technological landscape, and examined competitor technology. Once we had an understanding of the nanoSSSD, we drafted a SWOT analysis for the technology to detail its strengths, weaknesses, opportunities, and threats.
+**1. Technology Review:** We were assigned to examine NASA's Reversible Polymer Nanofiber-Based Reversible Switch/Sensor Schottke Diode (nanoSSSD). In the first stage, we studied the patent claims to understand the technology's purpose and use. As we compiled questions about the technology, we also gathered any information necessary to fully understand it. We researched the nanoSSSD's fit within the current technological landscape, and examined competitor technology. Once we had an understanding of the nanoSSSD, we drafted a SWOT analysis for the technology to detail its strengths, weaknesses, opportunities, and threats.
 
 **2. Market Survey:** After reviewing the patent, we envisioned key markets for application. For each application, we put together baseline profile information, considering major attributes, including technology fit, market size and growth, implementation timeline, regulatory risks, Net Present Value, implementation timeline and risks, and more. We identified both existing products to apply the technology to and new applications for which this technology may be used today or in the future. Leaving no stone unturned, we generated a list of 47 potential new and existing applications for the product.
 
