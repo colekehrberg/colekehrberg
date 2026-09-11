@@ -504,7 +504,7 @@ Using this 75/25 model, I ran 10,000 simulations of each race using the **Monte 
 
 ## With greater data availability, I would: ##
 
-**1. Weight polls differently, depending on the pollster.** In its current form, the forecast only assigns weights based on the recency of a poll, in order to account for momentum shifts in the race. If I had access to data regarding the reliability of each pollster, I would also assign stronger weights to polls conducted by trusted pollsters. 
+**1. Weigh polls differently, depending on the pollster.** In its current form, the forecast only assigns weights based on the recency of a poll, in order to account for momentum shifts in the race. If I had access to data regarding the reliability of each pollster, I would also assign stronger weights to polls conducted by trusted pollsters. 
 
 **2. Integrate campaign “war chests” into the model.** Candidates with cash on hand use their money for advertisements to gain traction with voters. As election day approaches and campaigns dip into their savings, spent cash may translate into stronger poll numbers. Therefore, candidates with a stronger financial outlook than their opponents should expect to have stronger odds of winning a race.
 
