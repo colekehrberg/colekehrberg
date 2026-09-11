@@ -25,7 +25,9 @@ library(leaflet)
 library(htmltools)
 ```
 
-This model forecasts **Democrats to win 53 seats** and **Republicans to win 47 seats** in the 2026 U.S. Senate Elections.
+This model forecasts the 2026 U.S. Senate Elections for 13 key races.
+
+**D - 53, R - 47**
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #| include: FALSE
@@ -489,7 +491,7 @@ leaflet(interactive, width = "100%") |>
   addLegend(pal = pal_party, values = ~Dem_pct, opacity = 0.8, title = "Win Probability", position = "bottomright", labFormat = labelFormat(suffix = "%"))
 ```
 
-Last Updated on September 8th, 2026
+Last Updated on September 11th, 2026
 
 ## Forecast Methodology: ##
 
