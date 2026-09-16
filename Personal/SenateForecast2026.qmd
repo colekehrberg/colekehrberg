@@ -27,15 +27,17 @@ library(htmltools)
 
 This model forecasts the 2026 U.S. Senate Elections for 13 key races.
 
-**D - 53, R - 47**
+**D - 52, R - 48**
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-#| include: FALSE
 #National Democratic Advantage
-D_Adv <- 5
+D_Adv <- 7
 
 #Importance of National Environment
-Nat_Env = .25
+Nat_Env = .15
+
+#Importance of State Environment
+Sta_Env = .15
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -62,7 +64,7 @@ CPVI <- StatesCPVI |>
       grepl("^D", PVI) ~ as.numeric(sub("D\\+", "", PVI)),
       grepl("^R", PVI) ~ -as.numeric(sub("R\\+", "", PVI)))) |>
   mutate(adj_pvi = pvi + D_Adv) |>
-  select(state, adj_pvi)
+  select(state, pvi, adj_pvi)
 
 rm(StatesCPVI, untidy_tables, table)
 ```
@@ -387,37 +389,45 @@ all_states_summary <- all_polls |>
     ME    = (.98 / sqrt(ss)) * 100,
     SD    = ME / 1.96,
     .groups = "drop" 
+  ) |>
+ mutate(
+    total_pct = Rs + Ds,
+    Rs_norm = (Rs / total_pct) * 100,
+    Ds_norm = (Ds / total_pct) * 100
   )
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 All_Data <- CPVI |>
   right_join(all_states_summary) |>
-  mutate(D_pvi = 50 + adj_pvi / 2,
-         R_pvi = 50 - adj_pvi / 2) |>
-  mutate(D_pvi_adj = ((Rs + Ds)/100) * D_pvi,
-         R_pvi_adj = ((Rs + Ds)/100) * R_pvi) |>
-  mutate(R = Rs*(1-Nat_Env) + R_pvi_adj*Nat_Env,
-         D = Ds*(1-Nat_Env) + D_pvi_adj*Nat_Env)
+  mutate(D_adj_pvi = 50 + adj_pvi / 2,
+         R_adj_pvi = 50 - adj_pvi / 2,
+         D_pvi = 50 + pvi / 2,
+         R_pvi = 50 - pvi / 2) |>
+  mutate(R = Rs_norm*(1-Nat_Env-Sta_Env) + R_adj_pvi*Nat_Env + R_pvi*Sta_Env,
+         D = Ds_norm*(1-Nat_Env-Sta_Env) + D_adj_pvi*Nat_Env + D_pvi*Sta_Env)  |>
+    mutate(D_margin = D-R,
+           SD_margin = SD*2)
+  
 
 Some_Data <- All_Data |>
-  select(state, Rs, Ds) |>
+  select(state, R, D) |>
   rename("State" = "state")
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 run_state_sim <- function(state_df, iterations = 10000) {
-  sim_R <- rnorm(iterations, mean = state_df$R, sd = state_df$ME)
-  sim_D <- rnorm(iterations, mean = state_df$D, sd = state_df$ME)
+  # Simulate margin directly using Normal Distribution
+  sim_margin <- rnorm(iterations, mean = state_df$D_margin, sd = state_df$SD_margin)
   
   data.frame(
     State      = state_df$state,
-    Republican = mean(sim_R > sim_D),
-    Democrat   = mean(sim_D > sim_R)
+    Republican = mean(sim_margin < 0),
+    Democrat   = mean(sim_margin > 0)
   )
 }
 
-all_simulations <- do.call(rbind, lapply(split(All_Data, All_Data$state), run_state_sim, iterations = 1000)) |>
+all_simulations <- do.call(rbind, lapply(split(All_Data, All_Data$state), run_state_sim, iterations = 10000)) |>
   mutate(D_win = ifelse(Democrat > Republican, 1, 0))
  
 Dem_Wins <- sum(all_simulations$D_win)
@@ -451,20 +461,17 @@ labels_party <- sprintf(
      <strong style='font-size: 14px;'>%s (%s)</strong><br/>
      <span style='color: #2B5C8F;'>&#9632; Democrat Win Probability:</span> <b>%.1f%%</b><br/>
      <span style='color: #A61C1C;'>&#9632; Republican Win Probability:</span> <b>%.1f%%</b><br/>
-     
      <hr style='margin: 5px 0;'/>
-     
      <span style='color: #2B5C8F;'>&#9632; Democrat Vote Share:</span> <b>%.1f%%</b><br/>
      <span style='color: #A61C1C;'>&#9632; Republican Vote Share:</span> <b>%.1f%%</b>
    </div>",
-   
   interactive$name,
   interactive$State,
   interactive$Dem_pct,
   interactive$Rep_pct,
-  interactive$Ds,
-  interactive$Rs
-  ) |> lapply(HTML)
+  interactive$D, # Ensure columns match your dataset (D / R or Ds / Rs)
+  interactive$R
+) |> lapply(htmltools::HTML)
 
 
 leaflet(interactive, width = "100%") |>
@@ -491,15 +498,15 @@ leaflet(interactive, width = "100%") |>
   addLegend(pal = pal_party, values = ~Dem_pct, opacity = 0.8, title = "Win Probability", position = "bottomright", labFormat = labelFormat(suffix = "%"))
 ```
 
-Last Updated on September 11th, 2026
+Last Updated on September 16th, 2026
 
 ## Forecast Methodology: ##
 
 These forecasts rely on polling data pulled from the New York Times’ database. This model aggregates each state’s polling data to find a race average, which places greater weights on recent polls to account for race momentum. 
 
-The polls in this model account for 75% of the forecast’s weight, but that weight is easily modifiable in the forecast’s code. 
+The polls in this model account for 70% of the forecast’s weight, but that weight is easily modifiable in the forecast’s code. 
 
-The remaining 25% of the forecast’s weight comes from the national political environment, which emerges from a combination of the national polling advantage (currently about +5% towards Democrats), in concert with the Cook Political Voting Index, which estimates each state’s baseline political preference. Accounting for this national advantage over their baseline in each state allows for an estimated baseline for how well a Democrat and a Republican should do in any given state during the current election cycle. 
+The remaining 30% of the forecast’s weight comes from a combination of the national political environment and each state's political environment. The national political environment currently gives Democrats a ~7% advantage. However, that advantage is different state-to-state. The Cook Political Voting Index estimates each state’s baseline political preference, providing a strong baseline expectation for how a state could vote in any given election. Accounting for a national advantage over each state's baseline proivdes an estimation for how well a Democrat and a Republican should do in any given state during the current election cycle. 
 
 Using this 75/25 model, I ran 10,000 simulations of each race using the **Monte Carlo method**. I matched each simulation result between Democratic and Republican opponents against one another, crowning a victor in each simulation. Based on the total amounts of wins for both Democrats and Republicans, I estimated the probability of victory for each race, alongside an estimated vote share.
 
