@@ -165,7 +165,7 @@
     "href": "Personal/SenateForecast2026.html",
     "title": "2026 Senate Forecast",
     "section": "",
-    "text": "This model forecasts the 2026 U.S. Senate Elections for 13 key races.\nD - 53, R - 47\nLast Updated on September 11th, 2026",
+    "text": "This model forecasts the 2026 U.S. Senate Elections for 13 key races.\nD - 52, R - 48\nLast Updated on September 16th, 2026",
     "crumbs": [
       "2026 Senate Forecast"
     ]
@@ -175,7 +175,7 @@
     "href": "Personal/SenateForecast2026.html#forecast-methodology",
     "title": "2026 Senate Forecast",
     "section": "Forecast Methodology:",
-    "text": "Forecast Methodology:\nThese forecasts rely on polling data pulled from the New York Times’ database. This model aggregates each state’s polling data to find a race average, which places greater weights on recent polls to account for race momentum.\nThe polls in this model account for 75% of the forecast’s weight, but that weight is easily modifiable in the forecast’s code.\nThe remaining 25% of the forecast’s weight comes from the national political environment, which emerges from a combination of the national polling advantage (currently about +5% towards Democrats), in concert with the Cook Political Voting Index, which estimates each state’s baseline political preference. Accounting for this national advantage over their baseline in each state allows for an estimated baseline for how well a Democrat and a Republican should do in any given state during the current election cycle.\nUsing this 75/25 model, I ran 10,000 simulations of each race using the Monte Carlo method. I matched each simulation result between Democratic and Republican opponents against one another, crowning a victor in each simulation. Based on the total amounts of wins for both Democrats and Republicans, I estimated the probability of victory for each race, alongside an estimated vote share.",
+    "text": "Forecast Methodology:\nThese forecasts rely on polling data pulled from the New York Times’ database. This model aggregates each state’s polling data to find a race average, which places greater weights on recent polls to account for race momentum.\nThe polls in this model account for 70% of the forecast’s weight, but that weight is easily modifiable in the forecast’s code.\nThe remaining 30% of the forecast’s weight comes from a combination of the national political environment and each state’s political environment. The national political environment currently gives Democrats a ~7% advantage. However, that advantage is different state-to-state. The Cook Political Voting Index estimates each state’s baseline political preference, providing a strong baseline expectation for how a state could vote in any given election. Accounting for a national advantage over each state’s baseline provides an estimation for how well a Democrat and a Republican should do in any given state during the current election cycle.\nUsing this 75/25 model, I ran 10,000 simulations of each race using the Monte Carlo method. I matched each simulation result between Democratic and Republican opponents against one another, crowning a victor in each simulation. Based on the total amounts of wins for both Democrats and Republicans, I estimated the probability of victory for each race, alongside an estimated vote share.",
     "crumbs": [
       "2026 Senate Forecast"
     ]
@@ -196,6 +196,26 @@
     "title": "NASA Consulting Experience",
     "section": "",
     "text": "1. Technology Review: We were assigned to examine NASA’s Reversible Polymer Nanofiber-Based Reversible Switch/Sensor Schottke Diode (nanoSSSD). In the first stage, we studied the patent claims to understand the technology’s purpose and use. As we compiled questions about the technology, we also gathered any information necessary to fully understand it. We researched the nanoSSSD’s fit within the current technological landscape, and examined competitor technology. Once we had an understanding of the nanoSSSD, we drafted a SWOT analysis for the technology to detail its strengths, weaknesses, opportunities, and threats.\n2. Market Survey: After reviewing the patent, we envisioned key markets for application. For each application, we put together baseline profile information, considering major attributes, including technology fit, market size and growth, implementation timeline, regulatory risks, Net Present Value, implementation timeline and risks, and more. We identified both existing products to apply the technology to and new applications for which this technology may be used today or in the future. Leaving no stone unturned, we generated a list of 47 potential new and existing applications for the product.\n3. Application Screening: For each application, we scored the key attributes to determine each use’s overall potential. Upon final screening, our group came to an agreement on the 3 most promising applications from the list of 47.\n4. Application Detailing & Recommendation Development: We then developed each top selected application with additional research. Compiling all necessary data, we completed profiles for each application. Each profile contained a rationale for selection. We planned for the final presentation while simultaneously drafting a thorough research report. Ensuring comprehensive and clear communication, we drafted our report and presentation with an outside lens in mind. Create a first draft of the presentation. This draft should be high-quality and include all the required sections. We rehearsed the presentation several times with a script in preparation for the 30-minute pitch to NASA Technology Transfer Officers, making adjustments as needed. We also detailed recommendations in a 40-page report.",
+    "crumbs": [
+      "NASA Consulting Experience"
+    ]
+  },
+  {
+    "objectID": "Personal/NASA.html#project-stages",
+    "href": "Personal/NASA.html#project-stages",
+    "title": "NASA Consulting Experience",
+    "section": "",
+    "text": "1. Technology Review: We were assigned to examine NASA’s Reversible Polymer Nanofiber-Based Reversible Switch/Sensor Schottke Diode (nanoSSSD). In the first stage, we studied the patent claims to understand the technology’s purpose and use. As we compiled questions about the technology, we also gathered any information necessary to fully understand it. We researched the nanoSSSD’s fit within the current technological landscape, and examined competitor technology. Once we had an understanding of the nanoSSSD, we drafted a SWOT analysis for the technology to detail its strengths, weaknesses, opportunities, and threats.\n2. Market Survey: After reviewing the patent, we envisioned key markets for application. For each application, we put together baseline profile information, considering major attributes, including technology fit, market size and growth, implementation timeline, regulatory risks, Net Present Value, implementation timeline and risks, and more. We identified both existing products to apply the technology to and new applications for which this technology may be used today or in the future. Leaving no stone unturned, we generated a list of 47 potential new and existing applications for the product.\n3. Application Screening: For each application, we scored the key attributes to determine each use’s overall potential. Upon final screening, our group came to an agreement on the 3 most promising applications from the list of 47.\n4. Application Detailing & Recommendation Development: We then developed each top selected application with additional research. Compiling all necessary data, we completed profiles for each application. Each profile contained a rationale for selection. We planned for the final presentation while simultaneously drafting a thorough research report. Ensuring comprehensive and clear communication, we drafted our report and presentation with an outside lens in mind. Create a first draft of the presentation. This draft should be high-quality and include all the required sections. We rehearsed the presentation several times with a script in preparation for the 30-minute pitch to NASA Technology Transfer Officers, making adjustments as needed. We also detailed recommendations in a 40-page report.",
+    "crumbs": [
+      "NASA Consulting Experience"
+    ]
+  },
+  {
+    "objectID": "Personal/NASA.html#awards-reception",
+    "href": "Personal/NASA.html#awards-reception",
+    "title": "NASA Consulting Experience",
+    "section": "Awards & Reception",
+    "text": "Awards & Reception\nUpon completion of the report and presentation, NASA Technology Transfer Officers awarded our group with a NASA Technology Transfer Certificate of Achievement, the first in program history. We also received acclaim from our Provost in an email to St. Olaf faculty, and were interviewed for a highlight in the St. Olaf Magazine.",
     "crumbs": [
       "NASA Consulting Experience"
     ]
@@ -445,26 +465,6 @@
     "text": "Sources\nMarsh, C. M., Vandehey, M. A., & Diekhoff, G. M. (2008). A Comparison of an Introductory Course to SAT/ACT Scores in Predicting Student Performance. The Journal of General Education, 57(4), 244–255. http://www.jstor.org/stable/27798113\nMost U.S. colleges have dropped ACT/SAT requirement for fall 2021 admission. (2020, June 26). THE FEED; Georgetown University. https://feed.georgetown.edu/access-affordability/most-u-s-colleges-have-dropped-act-sat-requirement-for-fall-2021-admission/\nPrach, J., Johnson, A. T., & Ferguson, S. (2024). College choice & the consumer: the impact of gender on higher education enrollment. Journal of Marketing for Higher Education, 34(1), 415–435. https://doi.org/10.1080/08841241.2021.2006851\nRuss, G. J., & Chingos, M. M. (2015, October 15). Deconstructing and reconstructing the College Scorecard. Brookings. https://www.brookings.edu/articles/deconstructing-and-reconstructing-the-college-scorecard/\nWitteveen, D., & Attewell, P. (2017). The earnings payoff from attending a selective college. Social Science Research, 66, 154-169. https://doi.org/10.1016/j.ssresearch.2017.01.005\nU.S. Department of Education (2025). College Scorecard.",
     "crumbs": [
       "Regression Analysis"
-    ]
-  },
-  {
-    "objectID": "Personal/NASA.html#project-stages",
-    "href": "Personal/NASA.html#project-stages",
-    "title": "NASA Consulting Experience",
-    "section": "",
-    "text": "1. Technology Review: We were assigned to examine NASA’s Reversible Polymer Nanofiber-Based Reversible Switch/Sensor Schottke Diode (nanoSSSD). In the first stage, we studied the patent claims to understand the technology’s purpose and use. As we compiled questions about the technology, we also gathered any information necessary to fully understand it. We researched the nanoSSSD’s fit within the current technological landscape, and examined competitor technology. Once we had an understanding of the nanoSSSD, we drafted a SWOT analysis for the technology to detail its strengths, weaknesses, opportunities, and threats.\n2. Market Survey: After reviewing the patent, we envisioned key markets for application. For each application, we put together baseline profile information, considering major attributes, including technology fit, market size and growth, implementation timeline, regulatory risks, Net Present Value, implementation timeline and risks, and more. We identified both existing products to apply the technology to and new applications for which this technology may be used today or in the future. Leaving no stone unturned, we generated a list of 47 potential new and existing applications for the product.\n3. Application Screening: For each application, we scored the key attributes to determine each use’s overall potential. Upon final screening, our group came to an agreement on the 3 most promising applications from the list of 47.\n4. Application Detailing & Recommendation Development: We then developed each top selected application with additional research. Compiling all necessary data, we completed profiles for each application. Each profile contained a rationale for selection. We planned for the final presentation while simultaneously drafting a thorough research report. Ensuring comprehensive and clear communication, we drafted our report and presentation with an outside lens in mind. Create a first draft of the presentation. This draft should be high-quality and include all the required sections. We rehearsed the presentation several times with a script in preparation for the 30-minute pitch to NASA Technology Transfer Officers, making adjustments as needed. We also detailed recommendations in a 40-page report.",
-    "crumbs": [
-      "NASA Consulting Experience"
-    ]
-  },
-  {
-    "objectID": "Personal/NASA.html#awards-reception",
-    "href": "Personal/NASA.html#awards-reception",
-    "title": "NASA Consulting Experience",
-    "section": "Awards & Reception",
-    "text": "Awards & Reception\nUpon completion of the report and presentation, NASA Technology Transfer Officers awarded our group with a NASA Technology Transfer Certificate of Achievement, the first in program history. We also received acclaim from our Provost in an email to St. Olaf faculty, and were interviewed for a highlight in the St. Olaf Magazine.",
-    "crumbs": [
-      "NASA Consulting Experience"
     ]
   }
 ]
