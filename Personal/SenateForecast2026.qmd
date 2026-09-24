@@ -498,7 +498,7 @@ leaflet(interactive, width = "100%") |>
   addLegend(pal = pal_party, values = ~Dem_pct, opacity = 0.8, title = "Win Probability", position = "bottomright", labFormat = labelFormat(suffix = "%"))
 ```
 
-Last Updated on September 16th, 2026
+Last Updated on September 24th, 2026
 
 ## Forecast Methodology: ##
 
