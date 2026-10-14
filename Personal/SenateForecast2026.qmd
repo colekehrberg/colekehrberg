@@ -330,6 +330,27 @@ pivot_wider(names_from = "answer", values_from = "pct")  |>
               days > 90 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
+SC_polls <- polls |>
+  filter(state == "SC") |>
+  filter(stage == "general") |>
+  filter(answer %in% c("Graham (Darline)", "Andrews (Annie)")) |>
+  group_by(poll_id) |>
+    filter(n_distinct(answer) > 1) |> 
+    distinct(answer, .keep_all = TRUE) |> 
+    slice_head(n = 2) |>
+   ungroup() |>
+pivot_wider(names_from = "answer", values_from = "pct") |>
+  rename("Democrat" = "Andrews (Annie)") |>
+  rename("Republican" = "Graham (Darline)") |>
+  mutate(days = as.numeric(today() - date),
+         weight = factor(
+            case_when(
+              days >= 0  & days <= 14 ~ "4",
+              days > 14  & days <= 31 ~ "3",
+              days > 31  & days <= 90 ~ "2",
+              days > 90 ~ "1"))) |>
+  select(state, sample_size, population, Republican, Democrat, weight)
+
 TX_polls <- polls |>
   filter(state == "TX") |>
   filter(stage == "general") |>
@@ -364,6 +385,7 @@ all_polls <- bind_rows(
   "NE" = NE_polls, 
   "NH" = NH_polls, 
   "OH" = OH_polls, 
+  "SC" = SC_polls,
   "TX" = TX_polls,
   .id = "state" # This creates a new column named "state" with your labels
 )
