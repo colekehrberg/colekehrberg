@@ -548,7 +548,7 @@ seat_distribution <- data.frame(Total_Seats = total_d_seats) |>
   arrange(Total_Seats)
 ```
 
-Last Updated on October 12th, 2026
+Last Updated on October 14th, 2026
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 ggplot(seat_distribution, aes(x = factor(Total_Seats), y = Percentage, fill = Total_Seats <= 50)) +
