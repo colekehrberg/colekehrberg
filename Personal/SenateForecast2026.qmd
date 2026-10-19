@@ -26,9 +26,9 @@ library(htmltools)
 library(ggplot2)
 ```
 
-This model forecasts the 2026 U.S. Senate Elections for 13 key races.
+This model forecasts the 2026 U.S. Senate Elections for 14 key races.
 
-**D - 52, R - 48**
+**D - 53, R - 47**
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #National Democratic Advantage
@@ -548,7 +548,7 @@ seat_distribution <- data.frame(Total_Seats = total_d_seats) |>
   arrange(Total_Seats)
 ```
 
-Last Updated on October 14th, 2026
+Last Updated on October 19th, 2026
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 ggplot(seat_distribution, aes(x = factor(Total_Seats), y = Percentage, fill = Total_Seats <= 50)) +
