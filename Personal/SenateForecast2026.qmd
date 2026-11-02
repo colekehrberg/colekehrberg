@@ -100,10 +100,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 FL_polls <- polls |>
@@ -121,10 +121,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 GA_polls <- polls |>
@@ -142,10 +142,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 IA_polls <- polls |>
@@ -163,10 +163,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 KS_polls <- polls |>
@@ -184,10 +184,10 @@ KS_polls <- polls |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 ME_polls <- polls |>
@@ -205,10 +205,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 MI_polls <- polls |>
@@ -226,10 +226,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 MN_polls <- polls |>
@@ -247,10 +247,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 MS_polls <- polls |>
@@ -268,10 +268,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 NC_polls <- polls |>
@@ -289,10 +289,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 NE_polls <- polls |>
@@ -310,10 +310,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 NH_polls <- polls |>
@@ -331,10 +331,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 OH_polls <- polls |>
@@ -352,10 +352,10 @@ pivot_wider(names_from = "answer", values_from = "pct")  |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 SC_polls <- polls |>
@@ -373,10 +373,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 TX_polls <- polls |>
@@ -394,10 +394,10 @@ pivot_wider(names_from = "answer", values_from = "pct") |>
   mutate(days = as.numeric(today() - date),
          weight = factor(
             case_when(
-              days >= 0  & days <= 14 ~ "4",
-              days > 14  & days <= 31 ~ "3",
-              days > 31  & days <= 90 ~ "2",
-              days > 90 ~ "1"))) |>
+              days >= 0  & days <= 7 ~ "4",
+              days > 7  & days <= 21 ~ "3",
+              days > 21  & days <= 45 ~ "2",
+              days > 45 ~ "1"))) |>
   select(state, sample_size, population, Republican, Democrat, weight)
 
 all_polls <- bind_rows(
@@ -570,7 +570,7 @@ seat_distribution <- data.frame(Total_Seats = total_d_seats) |>
   arrange(Total_Seats)
 ```
 
-Last Updated on October 31th, 2026
+Last Updated on November 1st, 2026
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 ggplot(seat_distribution, aes(x = factor(Total_Seats), y = Percentage, fill = Total_Seats <= 50)) +
