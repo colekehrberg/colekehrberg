@@ -32,7 +32,7 @@ This model forecasts the 2026 U.S. Senate Elections for 15 key races.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #National Democratic Advantage
-D_Adv <- 9
+D_Adv <- 10.5
 
 #Importance of National Environment
 Nat_Env = .15
@@ -56,7 +56,7 @@ robotstxt::paths_allowed("https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Ind
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 #| include: FALSE
 #Scrape
-CPVI <- read_html("https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index")
+CPVI <- read_html("https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index") 
 str(CPVI)
 
 #Get Table
@@ -64,13 +64,16 @@ table <- html_nodes(CPVI, css = "table")
 untidy_tables <- html_table(table, header = TRUE, fill = TRUE)
 StatesCPVI <- untidy_tables[[2]]
 CPVI <- StatesCPVI |>
-  mutate(state = state.abb[match(StatesCPVI$State, state.name)]) |>
+  rename(State = 1) |>
   mutate(
+    state = state.abb[match(State, state.name)],
     pvi = case_when(
       grepl("EVEN", PVI, ignore.case = TRUE) ~ 0,
       grepl("^D", PVI) ~ as.numeric(sub("D\\+", "", PVI)),
-      grepl("^R", PVI) ~ -as.numeric(sub("R\\+", "", PVI)))) |>
-  mutate(adj_pvi = pvi + D_Adv) |>
+      grepl("^R", PVI) ~ -as.numeric(sub("R\\+", "", PVI))
+    ),
+    adj_pvi = pvi + D_Adv
+  ) |>
   select(state, pvi, adj_pvi)
 
 rm(StatesCPVI, untidy_tables, table)

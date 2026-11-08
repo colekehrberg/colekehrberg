@@ -18,8 +18,8 @@ format:
     css: styles.css
 ---
 
-I am an **analyst** with a background in **quantitative economics, data analysis, and organizational leadership.** I use data-driven perspectives to bring clarity to complex problems.
+In January, I will begin as a **Catastrophe Modeling Trainee** in Aon's Bloomington office, where I'll apply quantitative modeling to help people understand and recover from the financial challenges posed by natural disasters.
 
-In May, I graduated summa cum laude from St. Olaf College, with Distinction in Quantitative Economics. Alongside my academic work, I played a key role in a consulting project for NASA, delivered lectures as a Teaching Assistant in the Economics Department, and served in executive leadership positions with the St. Olaf Band and St. Olaf's Environmental Coalition.
+I recently graduated summa cum laude from St. Olaf College, with Distinction in Quantitative Economics. Alongside my academic work, I played a key role in a consulting project for **NASA**, delivered lectures as a Teaching Assistant in the **Economics Department**, and served in executive **leadership positions** with the St. Olaf Band and St. Olaf's Environmental Coalition. 
 
-Across these experiences, I developed a combination of quantitative rigor, strategic thinking, and detail-oriented technical expertise in service of a larger vision. I am particularly drawn to opportunities where my analytical problem-solving abilities can create meaningful organizational or societal impact.
+Through personal, professional, and organizational experiences, I have developed skills with **quantitative rigor**, **strategic thinking**, and **detail-oriented technical expertise in service of a larger vision**. I am particularly drawn to opportunities where my analytical problem-solving abilities can create meaningful organizational or societal impact.
